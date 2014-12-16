@@ -1,0 +1,18 @@
+<% provide(:title, @user.name) %>
+<div class="user">
+  <h1><%= @user == current_user ? 'My Account' : 'View User' %></h1>
+  <table>
+  	<tr><td>Name:</td><td><%= @user.name %></td></tr>
+	  <tr><td>Email:</td><td><%= @user.email %></td></tr>
+	  <tr><td>Joined:</td><td><%= @user.created_at.strftime('%B %e, %Y') %></td></tr>
+	</table>
+	<% if signed_in? %>
+	  <% if current_user.admin? || current_user?(@user) %>
+	  	<br><%= link_to "Edit Account".html_safe, edit_user_path(@user), class: 'button' %> 
+	  <% end %>
+	  <% if current_user.admin? && !current_user?(@user) %>
+	     | <%= link_to "Delete", @user, method: :delete,
+	                                  data: { confirm: "You sure?" } %>
+	  <% end %>
+	<% end %>
+</div>

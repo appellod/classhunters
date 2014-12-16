@@ -1,0 +1,91 @@
+<% provide(:title, 'All Schools') %>
+<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>'' }) %>
+<% if params[:user_id].present? %>
+  <h1>My Schools</h1>
+<% else %>
+  <h1>All Schools</h1>
+<% end %>
+<div class="sort">
+	<% if params[:sort].present? %>
+		<%= link_to "Name", schools_path %>
+	<% else %>
+		<strong>Name</strong>
+	<% end %>
+	 | 
+	<% if params[:sort].present? && params[:sort] == "distance" %>
+		<strong>Distance</strong>
+	<% else %>
+		<%= link_to "Distance", schools_path(sort: "distance") %>
+	<% end %>
+	 | 
+	<% if params[:sort].present? && params[:sort] == "state" %>
+		<strong>State</strong>
+	<% else %>
+		<%= link_to "State", schools_path(sort: "state") %>
+	<% end %>
+  <% if !is_mobile_device? %>
+     | 
+    <% if params[:sort].present? && params[:sort] == "map" %>
+      <strong>Map</strong>
+    <% else %>
+      <%= link_to "Map", schools_path(sort: "map") %>
+    <% end %>
+  <% end %>
+</div>
+
+<% if params[:sort].present? && params[:sort] == "distance" %>
+  <div class="location-container">
+    <h2>Please enter a city, zip code, or full address.</h2>
+    <%= form_tag schools_path, method: :get, id: "search_form" do %>
+      <div class="input-group">
+        <%= text_field_tag :location, params[:location], class: 'form-control', placeholder: '12345, Chicago IL, etc...' %>
+        <%= hidden_field_tag :sort, "distance" %>
+        <span class="input-group-btn">
+          <button class="btn btn-default orange" type="button" onclick="this.form.submit();">Locate</button>
+        </span>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<% if params[:sort].present? && params[:sort] == "state" %>
+  <div class="state-container">
+    <h2>Select a state:</h2>
+    <%= form_tag schools_path, method: :get, id: "states_form" do %>
+        <%= select_tag :state, options_for_select(us_states, params[:state]), onchange: "this.form.submit();" %>
+        <%= hidden_field_tag :sort, "state" %>
+      <noscript><%= submit_tag 'Select', class: "btn btn-large btn-primary" %></noscript>
+    <% end %>
+  </div>
+<% end %>
+<% if params[:sort].nil? %>
+  <div class="search-container">
+    <h2>Search for a school:</h2>
+    <%= form_tag schools_path, method: :get do %>
+      <div class="input-group">
+        <%= text_field_tag :search, params[:search], class: 'form-control' %>
+        <span class="input-group-btn">
+          <button class="btn btn-default orange" type="button" onclick="this.form.submit();">Search</button>
+        </span>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if params[:sort] != "map" %>
+  <%= will_paginate %>
+
+  <ul class="schools">
+    <%= render @schools %>
+  </ul>
+
+  <%= will_paginate %>
+<% else %>
+  <h2>Click on a marker to view school info.</h2>
+  <div id="map-canvas"></div>
+  <script>
+    maps.initializeWithBounds(<%= @min_lat %>, <%= @min_lon %>, <%= @max_lat %>, <%= @max_lon %>);
+    <% @schools.each do |school| %>
+      maps.markerWithInfo(<%= school.latitude %>, <%= school.longitude %>, "<%= school.name %>", "<%= school.address %>", <%= school.id %>);
+    <% end %>
+  </script>
+<% end %>

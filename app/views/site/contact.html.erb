@@ -1,0 +1,10 @@
+<% provide :title, "Contact" %>
+<% breadcrumbs({ 'Home'=>root_url, 'Contact'=>'' }) %>
+<div class="container-fluid content">
+	<div class="container contact">
+		<div class="breadcrumbs">
+			<%= yield(:crumbs) %>
+		</div>
+		<%= render 'contacts/form', contact: @contact %>
+	</div>
+</div>

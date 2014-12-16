@@ -1,0 +1,10 @@
+<% provide(:title, 'Sign Up') %>
+<% breadcrumbs({ 'Home'=>root_url, 'Sign Up'=>'' }) %>
+<h1>Sign Up</h1>
+<h2>Signing up will not prompt any email messages.</h2>
+
+<%= form_for(@user) do |f| %>
+	<%= render "form", f: f, object: @user %>
+
+  <%= f.submit "Create My Account", class: "btn btn-large btn-primary" %>
+<% end %>

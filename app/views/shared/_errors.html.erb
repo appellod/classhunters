@@ -1,0 +1,9 @@
+<% if object.errors.any? %>
+  <div class="error-explanation">
+    <ul>
+      <% object.errors[field].each_with_index do |error, i| %>
+        <li><%= "#{field.to_s.titleize} #{object.errors[field][i]}." %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

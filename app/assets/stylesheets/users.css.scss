@@ -1,0 +1,29 @@
+.user {
+	text-align: left;
+	h1 {
+		margin-bottom: 15px;
+	}
+	table {
+		tr {
+			td {
+				padding: 5px 0px;
+				&:nth-child(1) {
+					font-weight: bold;
+					vertical-align: top;
+					padding-right: 5px;
+				}
+			}
+		}
+	}
+	button {
+		margin: 0px auto;
+	}
+}
+
+@media (max-width: 767px) {
+	.user {
+		h1 {
+			font-size: 2em;
+		}
+	}
+}

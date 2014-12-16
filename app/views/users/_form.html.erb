@@ -1,0 +1,15 @@
+<%= f.label :name %>
+<%= f.text_field :name %>
+<%= render 'shared/errors', object: object, field: :name %>
+
+<%= f.label :email %>
+<%= f.email_field :email %>
+<%= render 'shared/errors', object: object, field: :email %>
+
+<%= f.label :password %>
+<%= f.password_field :password %>
+<%= render 'shared/errors', object: object, field: :password %>
+
+<%= f.label :password_confirmation, "Confirm Password" %>
+<%= f.password_field :password_confirmation %>
+<%= render 'shared/errors', object: object, field: :password_confirmation %>

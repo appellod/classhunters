@@ -1,0 +1,59 @@
+.import {
+	form {
+		label {
+			text-align: center;
+		}
+		input[type=file] {
+			margin: 10px auto;
+			border: 1px solid black;
+			padding: 10px;
+		}
+	}
+}
+
+.course {
+	table {
+		margin: 10px 0px;
+		width: 100%;
+		tr {
+			td, th{
+				padding: 5px 10px;
+			}
+			th {
+				background-color: rgba(0,0,0,.075);
+			}
+			&:nth-child(odd) {
+				background-color: rgba(0,0,0,.05);
+			}
+			&:nth-child(even) {
+				background-color: transparent;
+			}
+		}
+	}
+}
+
+table.courses {
+	width: 100%;
+	tr {
+		td, th{
+			padding: 5px 10px;
+		}
+		th {
+			background-color: rgba(0,0,0,.075);
+		}
+		&:nth-child(odd) {
+			background-color: rgba(0,0,0,.05);
+		}
+		&:nth-child(even) {
+			background-color: transparent;
+		}
+	}
+}
+
+@media (max-width: 767px) {
+	.school {
+		h1 {
+			font-size: 2em;
+		}
+	}
+}

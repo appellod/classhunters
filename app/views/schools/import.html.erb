@@ -1,0 +1,14 @@
+<% provide(:title, "Import Schools") %>
+<h1>Import Schools</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_tag import_schools_action_path, multipart: true do %>
+
+			<%= label_tag "Upload schools from CSV file" %>
+			<%= file_field_tag :file %><br>
+
+      <%= submit_tag "Import Schools", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

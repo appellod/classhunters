@@ -1,0 +1,7 @@
+<li>
+  <strong><%= link_to school.name, school_path(school) %></strong><br>
+  <%= school.address %><br>
+  <% if params[:sort].present? && params[:sort] == "distance" && session[:latitude].present? && session[:longitude] %>
+    <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles away.</i><br>
+  <% end %>
+</li>

@@ -1,0 +1,18 @@
+<% provide(:title, 'All Courses') %>
+<% if @user.present? %>
+  <h1>My Courses</h1>
+<% elsif @school.present? %>
+	<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>'' }) %>
+  <h1>Courses at <%= @school.name %></h1>
+<% else %>
+  <h1>All Courses</h1>
+<% end %>
+
+<%= will_paginate %>
+
+<table class="courses">
+	<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
+  <%= render @courses %>
+</table>
+
+<%= will_paginate %>

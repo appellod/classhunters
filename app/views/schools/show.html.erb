@@ -1,0 +1,29 @@
+<% provide(:title, @school.name) %>
+<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>'' }) %>
+
+<div class="school">
+  <h1><%= @school.name %></h1>
+  <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
+  <table>
+    <tr>
+      <td>Address:</td>
+      <td>
+        <% if @school.address.split(',')[0] != @school.city %>
+          <%= @school.address.split(',')[0] %><br>
+        <% end %>
+        <%= "#{@school.city}, #{@school.state} #{@school.zip}" %>
+      </td>
+    </tr>
+    <% if @school.phone.present? %>
+      <tr><td>Phone:</td><td><%= @school.phone %></td></tr>
+    <% end %>
+  <% if @school.website.present? %>
+    <tr><td>Website:</td><td><%= link_to @school.website, "http://#{@school.website}"%></td></tr>
+  <% end %>
+  </table>
+  <div id="map-canvas"></div>
+</div>
+
+<script>
+  maps.initialize(<%= @school.latitude %>, <%= @school.longitude %>);
+</script>

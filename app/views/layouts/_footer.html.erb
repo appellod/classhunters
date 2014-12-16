@@ -1,0 +1,26 @@
+<% if mobile? || tablet? %>
+	<footer>
+	  &copy; 2014 Classhunters. All rights reserved.
+	</footer>
+<% else %>
+	<footer>
+		<div class="container">
+			<table>
+				<tr>
+					<td>
+						&copy; <%= Time.now.year %> Classhunters. All rights reserved.
+					</td>
+					<td>
+						<strong>Follow Us: </strong>
+					  <%= link_to image_tag('facebook-clear.png'), 'http://www.facebook.com/pages/Classhunters/1532180956997878' %>
+					  <%= link_to image_tag('twitter-clear.png'), 'http://www.twitter.com/classhunters' %>
+					  <%= link_to image_tag('google-plus-clear.png'), 'https://plus.google.com/b/106769320437314948500/106769320437314948500/about?hl=en&service=plus' %>
+					</td>
+					<td>
+						<strong>Contact Us: </strong><%= link_to 'info@classhunters.com', 'mailto:info@classhunters.com' %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</footer>
+<% end %>

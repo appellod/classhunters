@@ -1,0 +1,45 @@
+<div class="container-fluid home-form">
+  <div class="container-fluid">
+    <%= form_tag search_path, method: 'get' do %>
+      <div class="group">
+        <h1>
+          Find A Class Near You
+        </h1>
+        <div class="input-group">
+          <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...' %>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="this.form.submit();">Search Classes</button>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="container-fluid home-perks">
+  <div class="container">
+    <div class="col-md-4 perk">
+      <h1>Find Classes</h1>
+      <h2>
+        Search for all nearby classes currently being offered or view all courses that a school is currently offering.
+      </h2>
+    </div>
+    <div class="col-md-4 perk">
+      <h1>Find Schools</h1>
+      <h2>
+        Search for schools by name, distance, state and map.
+      </h2>
+    </div>
+    <div class="col-md-4 perk">
+      <h1>Save Time</h1>
+      <h2>
+        All searches and features on Classhunters are designed with simplicity in mind. No confusing forms. All results are displayed in uniform format.
+      </h2>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+<div class="container-fluid home-contact">
+  <div class="container">
+    <%= render 'contacts/form', contact: @contact %>
+  </div>
+</div>

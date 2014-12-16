@@ -1,0 +1,29 @@
+<div class="contact-form">
+	<h1>Interested in Classhunters?</h1>
+	<h2>Part of a school or organization that is interested in listing classes on Classhunters? Fill out the form below and we'll be sure to contact you!</h2>
+	<% if flash.any? %>
+		<% flash.each do |key, value| %>
+	    <div class="alert alert-<%= key %>"><%= value %></div>
+	  <% end %>
+	<% else %>
+		<%= form_for contact, url: contact_path(contact) do |f| %>
+
+			<%= f.label :name %>
+			<%= f.text_field :name %>
+			<%= render 'shared/errors', object: contact, field: :name %>
+
+			<%= f.label :email %>
+			<%= f.email_field :email %>
+			<%= render 'shared/errors', object: contact, field: :email %>
+
+			<%= f.label :school, "School (optional)" %>
+			<%= f.text_field :school %>
+			<%= render 'shared/errors', object: contact, field: :school %>
+
+			<%#= f.label :message, "Message (optional)" %>
+			<%#= f.text_area :message, rows: 3 %><br>
+
+			<%= f.submit "Submit Information", class: "btn btn-large btn-primary" %>
+		<% end %>
+	<% end %>
+</div>

@@ -1,0 +1,10 @@
+<% course.sessions.each do |session| %>
+	<tr>
+		<td><%= link_to course.name, school_course_path(course.school, course) %></td>
+	  <td><%= session.crn %></td>
+	  <td><%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %></td>
+		<td><%= days(session) %></td>
+		<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+		<td><%= session.instructor.name %></td>
+	</tr>
+<% end %>

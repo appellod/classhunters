@@ -1,0 +1,25 @@
+<% provide(:title, @course.name) %>
+<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), @course.name=>'' }) %>
+<div class="course">
+  <h1><%= @course.name %></h1>
+  <h2><%= link_to "At #{@course.school.name}", school_path(@course.school) %></h2>
+  <%= @course.department.present? ? "<strong>Department: </strong>#{@course.department}<br>".html_safe : '' %>
+  <%= @course.number.present? ? "<strong>Course Number: </strong>#{@course.number}<br>".html_safe : '' %>
+  <%= @course.description.present? ? "<strong>Description: </strong>#{@course.description}<br>".html_safe : '' %>
+  <br>
+  <strong>Sessions:</strong><br>
+  <table>
+	  <tr><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th><th>Building</th><th>Room</th></tr>
+	  <% @course.sessions.each do |session| %>
+	  	<tr>
+	  		<td><%= session.crn %></td>
+	  		<td><%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %></td>
+	  		<td><%= days(session) %></td>
+	  		<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+	  		<td><%= session.instructor.name %></td>
+	  		<td><%= session.location %></td>
+	  		<td><%= session.room != 'TBA' ? session.room.to_f.round(0) : session.room %></td>
+	  	</tr>
+	  <% end %>
+  </table>
+</div>

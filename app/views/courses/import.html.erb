@@ -1,0 +1,12 @@
+<% provide(:title, "Import Courses") %>
+<h1>Import Courses</h1>
+
+<div class="import">
+	<%= form_tag school_import_action_path(@school), multipart: true do %>
+
+		<%= label_tag 'Upload classes from CSV file' %>
+		<%= file_field_tag :file %>
+
+	  <%= submit_tag "Import Courses", class: "btn btn-large btn-primary" %>
+	<% end %>
+</div>
