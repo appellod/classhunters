@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
 		  @courses = current_user.courses.order(:name).paginate(page: params[:page])
     elsif params[:school_id].present?
       @school = School.find(params[:school_id])
-      @courses = School.find(params[:school_id]).courses.order(:name).paginate(page: params[:page])
+      @courses = @school.courses.order(:name).paginate(page: params[:page])
     else
       @courses = Course.order(:name).paginate(page: params[:page])
     end

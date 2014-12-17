@@ -345,7 +345,8 @@ hr {
       border-bottom-left-radius: 10px;
       color: black;
       border-radius: 0px;
-      box-shadow: 0px 3px 4px black, inset 0px 0px 10px 3px rgba(0,0,0,.75);
+      box-shadow: 0px 3px 4px black, inset 0px 0px 10px 3px rgba(0,0,0,.35);
+      padding: 0px;
     }
     button {
       font-size: 24px;
@@ -357,7 +358,7 @@ hr {
       font-family: 'Oswald', sans-serif;
       border-radius: 0px;
       text-shadow: 2px 2px 2px black;
-      box-shadow: 3px 3px 4px black, inset 0px 0px 15px 3px rgba(0,0,0,.5);;
+      box-shadow: 3px 3px 4px black, inset 0px 0px 15px 3px rgba(0,0,0,.5);
     }
   }
 }

@@ -26,18 +26,20 @@ class Course < ActiveRecord::Base
 	    course = school.courses.where(name: row["name"])
 	    if course.count == 1
 	    	course = course.first
-	      course = setCourseAttributes(course, row)
+	      course = setName(course, row)
+	      course = setDepartment(course, row)
 	    else
 	      course = school.courses.build
-	      course = setCourseAttributes(course, row)
+	      course = setName(course, row)
+	      course = setDepartment(course, row)
 	    end
 	    course.save
 	    session = course.sessions.build
-	    session = self.parseDay(row['days'], session)
-	    session.location = row["location"]
-	    session.room = row["room"]
-	    session.crn = row['crn']
-	    session.credits = row['credits']
+	    session = setDays(session, row)
+	    session = setLocation(session, row)
+	    session = setRoom(session, row)
+	    session = setCRN(session, row)
+	    session = setCredits(session, row)
 	    instructor = school.instructors.where(name: row["instructor"])
 	    if instructor.count == 1
 	    	instructor = instructor.first
@@ -45,9 +47,8 @@ class Course < ActiveRecord::Base
 	    	instructor = school.instructors.create!(name: row["instructor"])
 	    end
 	    session.instructor = instructor
-	    session = self.parseTime(row['time'], session)
+	    session = setTime(session, row)
 	    session.save
-	    sleep 0.2
 	  end
 	end
 
@@ -60,62 +61,104 @@ class Course < ActiveRecord::Base
 	  end
 	end
 
-	def self.setCourseAttributes(course, row)
+	def self.setName(course, row)
 		if row['name'].present?
 			course.name = row['name']
-			if row['department'].present?
-				if row['department'].include? ' '
-					course.department = row['department'].split(' ')[0]
-					course.department = row['department'].split(' ')[1]
-				else
-					course.department = row['department']
-				end
+		end
+		return course
+	end
+
+	def self.setDepartment(course, row)
+		if row['department'].present?
+			if row['number'].present?
+				course.department = row['department']
+				course.number = row['number']
+			else
+				course.department = row['department']
 			end
 		end
 		return course
 	end
 
-	def self.parseDay(str, session)
-		if str.present?
-			str = str.downcase
-			if str.include? 'm'
+	def self.setDays(session, row)
+		if row['days'].present?
+			days = row['days'].downcase
+			if days.include? 'm'
 				session.monday = true
 			end
-			if str.include? 't'
+			if days.include? 't'
 				session.tuesday = true
 			end
-			if str.include? 'w'
+			if days.include? 'w'
 				session.wednesday = true
 			end
-			if str.include? 'r'
+			if days.include?('r') || days.include?('h')
 				session.thursday = true
 			end
-			if str.include? 'f'
+			if days.include? 'f'
 				session.friday = true
 			end
-			if str.include? 's'
+			if days.include? 's'
 				session.saturday = true
 			end
 		end
 		return session
 	end
 
-	def self.parseTime(str, session)
-		if str.present?
-			if !str.include? 'TBA'
-				str = str.downcase
-				str.insert 2, ':'
-				str.insert 8, ':'
-				start_time = str[0..4]
-				end_time = str[6..12]
+	def self.setLocation(session, row)
+		if row['location'].present?
+			session.location = row['location']
+		end
+		return session
+	end
+
+	def self.setRoom(session, row)
+		if row['room'].present?
+			session.room = row['room']
+		end
+		return session
+	end
+
+	def self.setCRN(session, row)
+		if row['crn'].present?
+			session.crn = row['crn']
+		end
+		return session
+	end
+
+	def self.setCredits(session, row)
+		if row['credits'].present?
+			session.credits = row['credits']
+		end
+		return session
+	end
+
+	def self.setTime(session, row)
+		if row['time'].present?
+			time = row['time']
+			if time.include? 'TBA'
+				return session
+			end
+			time = time.downcase
+			if time.length == 11
+				time.insert 2, ':'
+				time.insert 8, ':'
+				start_time = time[0..4]
+				end_time = time[6..12]
 				start_time = Time.parse(start_time)
 				end_time = Time.parse(end_time)
 				if end_time >= Time.parse('13:00') && start_time + 12*60*60 < end_time
 					start_time = start_time + 12*60*60
 				end
-				session.start_time = start_time.to_s[10..18]
-				session.end_time = end_time.to_s[10..18]
+			elsif time.length == 15
+				start_time = Time.parse(time[0..6])
+				end_time = Time.parse(time[8..15])
+			elsif time.length == 13 || time.length == 14
+				start_time = Time.parse(time.split('-')[0])
+				end_time = Time.parse(time.split('-')[1])
 			end
+			session.start_time = start_time.to_s[10..18]
+			session.end_time = end_time.to_s[10..18]
 		end
 		return session
 	end
