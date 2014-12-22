@@ -1,18 +1,102 @@
-<% provide(:title, 'All Courses') %>
 <% if @user.present? %>
+	<% provide(:title, 'My Courses') %>
   <h1>My Courses</h1>
 <% elsif @school.present? %>
+	<% provide(:title, 'Courses at #{@school}') %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>'' }) %>
   <h1>Courses at <%= @school.name %></h1>
 <% else %>
+	<% provide(:title, 'All Courses') %>
   <h1>All Courses</h1>
 <% end %>
 
-<%= will_paginate %>
+<div class="sort">
+	<% if !params[:show].present? || params[:show] == 'courses' %>
+		<strong>Courses</strong>
+	<% else %>
+		<%= link_to "Courses", school_courses_path(@school, show: 'courses') %>
+	<% end %>
+	 | 
+	<% if params[:show].present? && params[:show] == 'sessions' %>
+		<strong>Sessions</strong>
+	<% else %>
+		<%= link_to "Sessions", school_courses_path(@school, show: 'sessions') %>
+	<% end %>
+</div>
 
-<table class="courses">
-	<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
-  <%= render @courses %>
-</table>
+<% if params[:show].present? && params[:show] == 'sessions' %>
+	<%= form_tag school_courses_path(@school), method: :get, id: "semester" do %>
+	  <%= select_tag :semester, options_for_select(semesters, params[:semester]), onchange: "this.form.submit();" %>
+	  <%= hidden_field_tag :show, 'sessions' %>
+	  <noscript><%= submit_tag 'Select', class: "btn btn-large btn-primary" %></noscript>
+	<% end %>
+<% end %>
 
-<%= will_paginate %>
+<div class="expand">+ Advanced Search Options</div>
+<div class="expand-container">
+  <%= form_tag school_courses_path(@school), method: :get, id: "search_form" do %>
+    <div class="col-md-4">
+      <label>Specify a new search:</label>
+      <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+    </div>
+    <div class="col-md-4">
+      <label>Specify a location:</label>
+      <%= text_field_tag :location, params[:location], placeholder: '12345, Chicago IL, etc...' %>
+    </div>
+    <div class="col-md-4">
+    	<label>Specify days:</label>
+    	<div class="days-container">
+    		<label>Su</label>
+    		<%= check_box_tag 'days[]', 'sunday', params[:days].present? && params[:days].include?('sunday') %>
+    		<label>M</label>
+    		<%= check_box_tag 'days[]', 'monday', params[:days].present? && params[:days].include?('monday') %>
+    		<label>Tu</label>
+    		<%= check_box_tag 'days[]', 'tuesday', params[:days].present? && params[:days].include?('tuesday') %>
+    		<label>W</label>
+    		<%= check_box_tag 'days[]', 'wednesday', params[:days].present? && params[:days].include?('wednesday') %><br>
+    		<label>Th</label>
+    		<%= check_box_tag 'days[]', 'thursday', params[:days].present? && params[:days].include?('thursday') %>
+    		<label>F</label>
+    		<%= check_box_tag 'days[]', 'friday', params[:days].present? && params[:days].include?('friday') %>
+    		<label>Sa</label>
+    		<%= check_box_tag 'days[]', 'saturday', params[:days].present? && params[:days].include?('saturday') %>
+    	</div>
+    </div>
+    <%= hidden_field_tag :sort, params[:sort] %>
+    <%= hidden_field_tag :order, params[:order] %>
+    <%= hidden_field_tag :show, params[:show] %>
+    <br>
+    <%= submit_tag 'Search', id: 'submit', class: "btn btn-large btn-primary" %>
+  <% end %>
+</div>
+
+<% if !params[:show].present? || params[:show] == 'courses' %>
+	<% if @courses.count > 0 %>
+		<%= will_paginate @courses %>
+			<table class="courses">
+				<tr><th>Name</th><th>Department</th></tr>
+			  <%= render @courses %>
+			</table>
+		<%= will_paginate @courses %>
+	<% else %>
+		<div class="empty">There are currently no course listings for this school.</div>
+	<% end %>
+<% elsif params[:show] == 'sessions' %>
+	<% if @sessions.count > 0 %>
+		<%= will_paginate @sessions %>
+			<table class="courses">
+				<tr>
+					<th>Name</th>
+					<th>CRN</th>
+					<th>Credits</th>
+					<th>Days</th>
+					<th>Time</th>
+					<th>Instructor</th>
+				</tr>
+			  <%= render partial: 'session', collection: @sessions, as: :session %>
+			</table>
+		<%= will_paginate @sessions %>
+	<% else %>
+			<div class="empty">There are currently no course listings for this semester.</div>
+	<% end %>
+<% end %>

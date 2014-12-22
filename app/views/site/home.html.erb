@@ -6,7 +6,7 @@
           Find A Class Near You
         </h1>
         <div class="input-group">
-          <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...' %>
+          <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...', id: 'home-search' %>
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" onclick="this.form.submit();">Search Classes</button>
           </span>

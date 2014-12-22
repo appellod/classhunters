@@ -170,4 +170,12 @@ $(document).ready(function() {
   $( ".search-container #search" ).autocomplete({
     source: 'schools/autocomplete'
   });
+  $('.expand').click(function() {
+    $('.expand-container').toggle();
+    if ($('.expand').html().indexOf('+') >= 0) {
+      $('.expand').html($('.expand').html().replace('+', '-'));
+    } else {
+      $('.expand').html($('.expand').html().replace('-', '+'));
+    }
+  });
 });

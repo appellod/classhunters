@@ -4,6 +4,9 @@
 <div class="import">
 	<%= form_tag school_import_action_path(@school), multipart: true do %>
 
+		<%= label_tag :semester %>
+		<%= select_tag :semester, options_for_select(semesters, params[:semester]) %>
+
 		<%= label_tag 'Upload classes from CSV file' %>
 		<%= file_field_tag :file %>
 

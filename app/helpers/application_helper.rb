@@ -41,4 +41,19 @@ module ApplicationHelper
     end
     provide :crumbs, string[0..string.length-4].html_safe
   end
+
+  def sortable(display, attribute = nil)
+    attribute ||= display.downcase
+    if params[:sort] == attribute
+      str = link_to display, params.merge({ order: (params[:order] == 'asc' || params[:order].nil?) ?  'des' : 'asc' })
+      if params[:order] == 'asc' || params[:order].nil?
+        str << " <small>&#x25BC;</small>".html_safe
+      else
+        str << " <small>&#x25B2;</small>".html_safe
+      end
+    else
+      str = link_to display, params.merge({ order: (params[:order] == 'asc' || params[:order].nil?) ?  'desc' : 'asc', sort: attribute })
+    end
+    return str
+  end
 end

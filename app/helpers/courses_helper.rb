@@ -1,5 +1,5 @@
 module CoursesHelper
-	def days(session)
+	def days_to_string(session)
 		str = ''
 		if session.sunday?
 			str += 'Su'
@@ -23,5 +23,17 @@ module CoursesHelper
 			str += 'S'
 		end
 		return str
+	end
+
+	def semesters_select
+		[
+			['All Semesters', ''], 'Summer 2015', 'Spring 2015', 'Winter 2014', 'Fall 2014'
+		]
+	end
+
+	def semesters
+		[
+			'Summer 2015', 'Spring 2015', 'Winter 2014', 'Fall 2014'
+		]
 	end
 end

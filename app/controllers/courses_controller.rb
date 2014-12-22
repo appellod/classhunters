@@ -1,5 +1,7 @@
 class CoursesController < ApplicationController
   require 'csv'
+
+  include CoursesHelper
   
   before_action :get_school, except: [:index, :add_to_user, :remove_from_user, :saved]
 	before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy]
@@ -8,13 +10,43 @@ class CoursesController < ApplicationController
 	def index
     if params[:user_id].present?
       @user = User.find(params[:user_id])
-		  @courses = current_user.courses.order(:name).paginate(page: params[:page])
+		  @courses = current_user.courses.order(:name)
     elsif params[:school_id].present?
       @school = School.find(params[:school_id])
-      @courses = @school.courses.order(:name).paginate(page: params[:page])
+      @courses = @school.courses.order(:name)
     else
-      @courses = Course.order(:name).paginate(page: params[:page])
+      @courses = Course.order(:name)
     end
+    if @courses.count > 0
+      if params[:semester].present?
+        @sessions = Session.includes(:course).where(semester: params[:semester], course_id: @courses.pluck(:id)).order('courses.name')
+      else
+        i = 0
+        while @sessions.nil? || @sessions.count == 0
+          @sessions = Session.includes(:course).where(semester: semesters[i], course_id: @courses.pluck(:id)).order('courses.name')
+          params[:semester] = semesters[i]
+          i+=1
+        end
+      end
+      if params[:search].present?
+        @sessions = @sessions.where(['courses.name LIKE ?', "%#{params[:search]}%"])
+      end
+      if params[:days].present?
+        days = ""
+        params[:days].each_with_index do |day, i|
+          if Session.column_names.include?(day)
+            days << "#{day} = 1"
+            if i < params[:days].count - 1
+              days << " OR "
+            end
+          end
+        end
+        @sessions = @sessions.where(days)
+      end
+    end
+    @courses = @courses.paginate(page: params[:page])
+    @sessions = @sessions.paginate(page: params[:page])
+    params[:sort] ||= 'name'
 	end
 
 	def new
@@ -33,6 +65,8 @@ class CoursesController < ApplicationController
 
   def show
 		@course = @school.courses.find(params[:id])
+    @sessions = @course.sessions
+    @sessions = @sessions.group_by(&:semester)
 	end
 
 	def edit
@@ -60,7 +94,7 @@ class CoursesController < ApplicationController
       file = params[:file]
       file.tempfile.binmode
       file.tempfile = Base64.encode64(file.tempfile.read)
-      Resque.enqueue(CourseImporter, file, @school.id)
+      Resque.enqueue(CourseImporter, file, @school.id, params[:semester])
       redirect_to school_courses_path(@school), notice: "Courses are being imported."
     end
   end

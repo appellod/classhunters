@@ -6,24 +6,28 @@
   <%= @course.department.present? ? "<strong>Department: </strong>#{@course.department}<br>".html_safe : '' %>
   <%= @course.number.present? ? "<strong>Course Number: </strong>#{@course.number}<br>".html_safe : '' %>
   <%= @course.description.present? ? "<strong>Description: </strong>#{@course.description}<br>".html_safe : '' %>
-  <br>
-  <strong>Sessions:</strong><br>
-  <table>
-	  <tr><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th><th>Building</th><th>Room</th></tr>
-	  <% @course.sessions.each do |session| %>
-	  	<tr>
-	  		<td><%= session.crn %></td>
-	  		<td>
-	  			<% if session.credits.present? %>
-			  		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
-			  	<% end %>
-	  		</td>
-	  		<td><%= days(session) %></td>
-	  		<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
-	  		<td><%= session.instructor.name %></td>
-	  		<td><%= session.location %></td>
-	  		<td><%= session.room != 'TBA' ? session.room.to_f.round(0) : session.room %></td>
-	  	</tr>
-	  <% end %>
-  </table>
+  <% semesters.each do |semester| %>
+  	<% if @sessions.include?(semester) %>
+  	<br>
+	  <strong><%= semester %> Sessions:</strong><br>
+	  <table>
+		  <tr><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th><th>Building</th><th>Room</th></tr>
+			<% @sessions[semester].each do |session| %>
+		  	<tr>
+		  		<td><%= session.crn %></td>
+		  		<td>
+		  			<% if session.credits.present? %>
+				  		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
+				  	<% end %>
+		  		</td>
+		  		<td><%= days(session) %></td>
+		  		<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+		  		<td><%= session.instructor.name %></td>
+		  		<td><%= session.location %></td>
+		  		<td><%= session.room != 'TBA' ? session.room.to_f.round(0) : session.room %></td>
+		  	</tr>
+			<% end %>
+  	</table>
+  	<% end %>
+	<% end %>
 </div>

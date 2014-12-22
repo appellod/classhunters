@@ -38,6 +38,7 @@ $(document).ready(function() {
       $(this).html($(this).html().replace('-', '+'));
     }
     $("ul", this).toggle();
+    alert($(this).parent().get(0).tagName);
   });
 });
 </script>

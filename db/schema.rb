@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141201033335) do
+ActiveRecord::Schema.define(version: 20141219021632) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20141201033335) do
     t.string   "location"
     t.integer  "crn"
     t.decimal  "credits",       precision: 4, scale: 2
+    t.string   "semester"
   end
 
   add_index "sessions", ["course_id"], name: "index_sessions_on_course_id", using: :btree

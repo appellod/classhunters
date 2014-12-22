@@ -1,0 +1,12 @@
+<tr>
+	<td><%= link_to session.course.name, school_course_path(session.course.school, session.course) %></td>
+  <td><%= session.crn %></td>
+  <td>
+  	<% if session.credits.present? %>
+  		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
+  	<% end %>
+  </td>
+	<td><%= days_to_string(session) %></td>
+	<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+	<td><%= session.instructor.name %></td>
+</tr>

@@ -12,7 +12,7 @@ class Course < ActiveRecord::Base
 		string(:school_id_str) { |p| p.school_id.to_s }
 	end
 
-	def self.import(file, school_id)
+	def self.import(file, school_id, semester)
 		school = School.find(school_id)
 	  spreadsheet = open_spreadsheet(file)
 	  header = spreadsheet.row(1)
@@ -40,6 +40,7 @@ class Course < ActiveRecord::Base
 	    session = setRoom(session, row)
 	    session = setCRN(session, row)
 	    session = setCredits(session, row)
+	    session.semester = semester
 	    instructor = school.instructors.where(name: row["instructor"])
 	    if instructor.count == 1
 	    	instructor = instructor.first
