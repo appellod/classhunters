@@ -27,6 +27,7 @@ Site::Application.routes.draw do
   resources :schools do
     match "/courses/import", to: "courses#import", via: "get", as: "import"
     match "/courses/import", to: "courses#import", via: "post", as: "import_action"
+    match "/courses/sessions", to: "courses#sessions", via: "get", as: "sessions"
     resources :courses
   end
   resources :courses, only: [:index]

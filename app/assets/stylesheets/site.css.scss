@@ -47,6 +47,7 @@ body {
   background-size: 100% auto;
   background-attachment: fixed;
   font-family: 'Roboto', sans-serif;
+  font-size: 14px;
 }
 .container-fluid {
   padding-left: 0px;
@@ -64,17 +65,17 @@ h1 {
 }
 h2 {
   font-size: 1.2em;
-  letter-spacing: -1px;
+  letter-spacing: 0px;
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: #555555;
+  color: black;
 }
 p {
   font-size: 1.1em;
   line-height: 1.7em;
 }
-button, input[type=submit], .orange, a.button {
+button, input[type=submit], .orange, a.button, .button {
   display: block;
   color: #FFF;
   background: $button-color;
@@ -88,7 +89,7 @@ button, input[type=submit], .orange, a.button {
   text-shadow: 1px 1px 3px black;
   &:hover {
     border-color: #CC2200;
-    background: linear-gradient(mix($menu-color, white, 80%),mix($menu-color, white, 90%), mix($menu-color, white, 80%));
+    background: mix($menu-color, white, 80%);
     color: white;
   }
 }
@@ -175,7 +176,7 @@ hr {
         }
       }
     }
-    .top-right {
+    .bottom-right {
       bottom: 0px;
       position: absolute;
       right: 0px;
@@ -189,6 +190,18 @@ hr {
         box-shadow: 0px -2px 5px rgba(0,0,0,.5);
         &:hover, &:active {
           background-color: mix(#FF5500, white, 75%);
+        }
+      }
+    }
+    .top-right {
+      top: 0px;
+      position: absolute;
+      right: 0px;
+      font-size: .7em;
+      a {
+        color: white;
+        &:hover {
+          text-decoration: none;
         }
       }
     }
@@ -346,7 +359,7 @@ hr {
       color: black;
       border-radius: 0px;
       box-shadow: 0px 3px 4px black, inset 0px 0px 10px 3px rgba(0,0,0,.35);
-      padding: 0px;
+      padding: 0px 25px;
     }
     button {
       font-size: 24px;
@@ -408,11 +421,9 @@ hr {
 
 .content {
   background-color: #ffffff;
-  //box-shadow: inset 0px 2px 1px rgba(0,0,0,.75);
   z-index: -2px;
   position: relative;
   border-bottom: 5px solid #FF5500;
-  box-shadow: 0px 5px 10px 0px rgba(0,0,0,.4);
   & > .container {
     position: relative;
     padding: 0px 30px;

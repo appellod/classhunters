@@ -1,0 +1,89 @@
+<script>
+	$(document).ready(function() {
+		$('.check-all').click(function() {
+			$(this).closest('.col-md-4').find(':checkbox').prop('checked', true);
+		});
+		$('.uncheck-all').click(function() {
+			$(this).closest('.col-md-4').find(':checkbox').prop('checked', false);
+		});
+	});
+</script>
+
+<% if @user.present? %>
+	<% provide(:title, 'My Sessions') %>
+  <h1>My Sessions</h1>
+<% elsif @school.present? %>
+	<% provide(:title, "Sessions at #{@school.name}".html_safe) %>
+	<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), 'Sessions'=>'' }) %>
+  <h1>Sessions at <%= @school.name %></h1>
+<% else %>
+	<% provide(:title, 'All Courses') %>
+  <h1>All Sessions</h1>
+<% end %>
+
+<div class="sort">
+	<%= link_to "Courses", school_courses_path(@school) %>
+	 | 
+	<strong>Sessions</strong>
+</div>
+
+<%= form_tag school_sessions_path(@school), method: :get, id: "semester" do %>
+  <%= select_tag :semester, options_for_select(semesters, params[:semester]), onchange: "this.form.submit();" %>
+  <%= hidden_field_tag :search, params[:search] %>
+  <% if params[:days].present? %>
+	  <% params[:days].each do |day| %>
+	  	<%= hidden_field_tag 'days[]', day %>
+	  <% end %>
+  <% end %>
+  <% if params[:departments].present? %>
+	  <% params[:departments].each do |department| %>
+	  	<%= hidden_field_tag 'departments[]', department %>
+	  <% end %>
+  <% end %>
+  <noscript><%= submit_tag 'Select', class: "btn btn-large btn-primary" %></noscript>
+<% end %>
+
+<div class="expand button">+ Advanced Search Options</div>
+<div class="expand-container">
+  <%= form_tag school_sessions_path(@school), method: :get, id: "search_form" do %>
+    <div class="col-md-4">
+      <label>Search:</label>
+      <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+    </div>
+    <% if @school.nil? %>
+	    <div class="col-md-4">
+	      <label>Specify a location:</label>
+	      <%= text_field_tag :location, params[:location], placeholder: '12345, Chicago IL, etc...' %>
+	    </div>
+	  <% end %>
+    <div class="col-md-4">
+    	<%= render 'days_form' %>
+    </div>
+    <div class="col-md-4">
+    	<%= render 'departments_form' %>
+    </div>
+    <%= hidden_field_tag :semester, params[:semester] %>
+    <%= hidden_field_tag :sort, params[:sort] %>
+    <%= hidden_field_tag :order, params[:order] %>
+    <div style="clear: both"></div>
+    <%= submit_tag 'Search', id: 'submit', class: "btn btn-large btn-primary" %>
+  <% end %>
+</div>
+
+<% if @sessions.count > 0 %>
+	<%= will_paginate @sessions %>
+		<table class="courses">
+			<tr>
+				<th>Name</th>
+				<th>CRN</th>
+				<th>Credits</th>
+				<th>Days</th>
+				<th>Time</th>
+				<th>Instructor</th>
+			</tr>
+		  <%= render partial: 'session', collection: @sessions, as: :session %>
+		</table>
+	<%= will_paginate @sessions %>
+<% else %>
+		<div class="empty">There are currently no course listings for this semester.</div>
+<% end %>

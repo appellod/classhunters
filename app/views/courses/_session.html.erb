@@ -7,6 +7,10 @@
   	<% end %>
   </td>
 	<td><%= days_to_string(session) %></td>
-	<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+  <% if session.start_time.present? && session.end_time.present? %>
+	 <td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+  <% else %>
+    <td></td>
+  <% end %>
 	<td><%= session.instructor.name %></td>
 </tr>

@@ -1,0 +1,16 @@
+<label>Department:</label>
+<div class="department-container">
+	<table>
+	<tr>
+		<td colspan="2"><div class="check-all">Check All</div></td>
+	</tr>
+	<tr>
+		<td colspan="2"><div class="uncheck-all">Uncheck All</div></td>
+	</tr>
+	<% @departments.each do |department| %>
+		<tr>
+			<td><%= check_box_tag 'departments[]', department, params[:departments].nil? || (params[:departments].present? && params[:departments].include?(department)) %></td><td><label><%= department %></label></td>
+		</tr>
+	<% end %>
+	</table>
+</div>

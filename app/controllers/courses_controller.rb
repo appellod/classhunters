@@ -17,6 +17,27 @@ class CoursesController < ApplicationController
     else
       @courses = Course.order(:name)
     end
+    @departments = @courses.pluck(:department).uniq.sort
+    if params[:departments].present?
+      @courses = @courses.where(department: params[:departments])
+    end
+    if params[:search].present?
+      @courses = @courses.where(['name LIKE ?', "%#{params[:search]}%"])
+    end
+    @courses = @courses.paginate(page: params[:page])
+    params[:sort] ||= 'name'
+	end
+
+  def sessions
+    if params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @courses = current_user.courses.order(:name)
+    elsif params[:school_id].present?
+      @school = School.find(params[:school_id])
+      @courses = @school.courses.order(:name)
+    else
+      @courses = Course.order(:name)
+    end
     if @courses.count > 0
       if params[:semester].present?
         @sessions = Session.includes(:course).where(semester: params[:semester], course_id: @courses.pluck(:id)).order('courses.name')
@@ -43,11 +64,15 @@ class CoursesController < ApplicationController
         end
         @sessions = @sessions.where(days)
       end
+      if params[:departments].present?
+        @sessions = @sessions.where(['courses.department IN (?)', params[:departments]])
+      end
     end
+    @departments = @courses.pluck(:department).uniq.sort
     @courses = @courses.paginate(page: params[:page])
     @sessions = @sessions.paginate(page: params[:page])
     params[:sort] ||= 'name'
-	end
+  end
 
 	def new
 		@course = @school.courses.build

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219021632) do
+ActiveRecord::Schema.define(version: 20150108195321) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -70,9 +70,11 @@ ActiveRecord::Schema.define(version: 20141219021632) do
     t.string   "city"
     t.string   "state"
     t.string   "zip"
+    t.string   "url"
   end
 
   add_index "schools", ["name"], name: "index_schools_on_name", unique: true, using: :btree
+  add_index "schools", ["url"], name: "index_schools_on_url", unique: true, using: :btree
 
   create_table "schools_users", id: false, force: true do |t|
     t.integer "school_id"

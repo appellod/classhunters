@@ -18,7 +18,7 @@
       <tr><td>Phone:</td><td><%= @school.phone %></td></tr>
     <% end %>
   <% if @school.website.present? %>
-    <tr><td>Website:</td><td><%= link_to @school.website, "http://#{@school.website}"%></td></tr>
+    <tr><td>Website:</td><td><%= link_to @school.website, "http://#{@school.website}", target: '_blank' %></td></tr>
   <% end %>
   </table>
   <div id="map-canvas"></div>

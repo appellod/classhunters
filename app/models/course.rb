@@ -5,11 +5,19 @@ class Course < ActiveRecord::Base
 	has_and_belongs_to_many :users
 	has_many :sessions
 
+	before_validation :strip_attributes
+
 	validates :name, presence: true
 
 	searchable do
 		text :name, :description, :department
 		string(:school_id_str) { |p| p.school_id.to_s }
+	end
+
+	def strip_attributes
+		self.name = self.name.strip
+		self.description = self.description.strip unless self.description.nil?
+		self.department = self.department.strip unless self.department.nil?
 	end
 
 	def self.import(file, school_id, semester)
@@ -23,7 +31,7 @@ class Course < ActiveRecord::Base
 	    		item[1].strip!
 	    	end
 	    end
-	    course = school.courses.where(name: row["name"])
+	    course = school.courses.where(name: row["name"].strip)
 	    if course.count == 1
 	    	course = course.first
 	      course = setName(course, row)
@@ -41,11 +49,11 @@ class Course < ActiveRecord::Base
 	    session = setCRN(session, row)
 	    session = setCredits(session, row)
 	    session.semester = semester
-	    instructor = school.instructors.where(name: row["instructor"])
+	    instructor = school.instructors.where(name: row["instructor"].strip)
 	    if instructor.count == 1
 	    	instructor = instructor.first
 	    else
-	    	instructor = school.instructors.create!(name: row["instructor"])
+	    	instructor = school.instructors.create!(name: row["instructor"].strip)
 	    end
 	    session.instructor = instructor
 	    session = setTime(session, row)

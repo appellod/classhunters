@@ -23,7 +23,13 @@ function resizeHomePage() {
     	input_height = 75;
     }
     perks_height = document.querySelector('.home-perks').clientHeight + 5;
-    perks_height = 217;
+    if(screenHeight <= 650) {
+      perks_height = 175;
+      $('.home-perks').css('font-size', '12px');
+      $('.home-contact').css('font-size', '12px');
+    } else {
+      perks_height = 217;
+    }
     $('.home-form').css('height', elementHeight - perks_height + 'px');
     $('.home-form .container-fluid').css('height', elementHeight - perks_height - 5 + 'px');
     $('.home-form h1').css('font-size', caption_size + 'px');
@@ -159,10 +165,13 @@ $(document).ready(function() {
 	}
   $('input').focus(function() {
   	placeholder = $(this).attr('placeholder');
+    alignment = $(this).css('text-align');
   	$(this).attr('placeholder', '');
+    $(this).css('textAlign', 'left');
   });
   $('input').focusout(function() {
   	$(this).attr('placeholder', placeholder);
+    $(this).css('textAlign', alignment);
   });
   $(window).scroll(function() {
     //fixMenuOnScroll();

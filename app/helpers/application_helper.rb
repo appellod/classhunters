@@ -56,4 +56,18 @@ module ApplicationHelper
     end
     return str
   end
+
+  def preserve_params
+    str = ""
+    params.each do |param|
+      if param[1].is_a? Array
+        param[1].each do |arr|
+          str << (hidden_field_tag "#{param[0]}[]", arr)
+        end
+      else
+        str << (hidden_field_tag param[0], param[1])
+      end
+    end
+    return str.html_safe
+  end
 end
