@@ -38,7 +38,7 @@
     <h2>Please enter a city, zip code, or full address.</h2>
     <%= form_tag schools_path, method: :get, id: "search_form" do %>
       <div class="input-group">
-        <%= text_field_tag :location, params[:location], class: 'form-control', placeholder: '12345, Chicago IL, etc...' %>
+        <%= text_field_tag :location, params[:location], class: 'form-control' %>
         <%= hidden_field_tag :sort, "distance" %>
         <span class="input-group-btn">
           <button class="btn btn-default orange" type="button" onclick="this.form.submit();">Locate</button>
@@ -84,6 +84,9 @@
   <div id="map-canvas"></div>
   <script>
     maps.initializeWithBounds(<%= @min_lat %>, <%= @min_lon %>, <%= @max_lat %>, <%= @max_lon %>);
+    <% if session[:latitude].present? && session[:longitude].present? %>
+      maps.currentLocation(<%= "#{session[:latitude]}, #{session[:longitude]}" %>);
+    <% end %>
     <% @schools.each do |school| %>
       maps.markerWithInfo(<%= school.latitude %>, <%= school.longitude %>, "<%= school.name %>", "<%= school.address %>", <%= school.id %>);
     <% end %>

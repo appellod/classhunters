@@ -12,5 +12,5 @@
   <% else %>
     <td></td>
   <% end %>
-	<td><%= session.instructor.name %></td>
+	<td><%= session.instructor.present? ? session.instructor.name : "" %></td>
 </tr>

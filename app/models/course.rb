@@ -49,13 +49,15 @@ class Course < ActiveRecord::Base
 	    session = setCRN(session, row)
 	    session = setCredits(session, row)
 	    session.semester = semester
-	    instructor = school.instructors.where(name: row["instructor"].strip)
-	    if instructor.count == 1
-	    	instructor = instructor.first
-	    else
-	    	instructor = school.instructors.create!(name: row["instructor"].strip)
-	    end
-	    session.instructor = instructor
+	    if row["instructor"].present?
+		    instructor = school.instructors.where(name: row["instructor"].strip)
+		    if instructor.count == 1
+		    	instructor = instructor.first
+		    else
+		    	instructor = school.instructors.create!(name: row["instructor"].strip)
+		    end
+		    session.instructor = instructor
+		  end
 	    session = setTime(session, row)
 	    session.save
 	  end

@@ -31,6 +31,7 @@ Site::Application.routes.draw do
     resources :courses
   end
   resources :courses, only: [:index]
+  match "/courses/sessions", to: "courses#sessions", via: "get", as: "course_sessions"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

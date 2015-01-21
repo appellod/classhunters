@@ -72,6 +72,7 @@ var maps = (function() {
       var marker = new google.maps.Marker({
           position: new google.maps.LatLng(lat, lon),
           map: map,
+          zIndex: 1
       });
       return marker;
     },
@@ -88,12 +89,42 @@ var maps = (function() {
       var marker = new google.maps.Marker({
           position: new google.maps.LatLng(lat, lon),
           map: map,
+          zIndex: 1
       });
       var infowindow = new google.maps.InfoWindow({
         content: '<a href="schools/'+id+'"><strong>'+school+'</strong><br>'+address+'</a>'
       });
       google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
+        if(infowindow.getMap() == null) {
+          infowindow.open(map,marker);
+        } else {
+          infowindow.close(map,marker);
+        }
+      });
+      return marker;
+    },
+
+    /**
+     * Places a marker indicating user's current location on #map-canvas.
+     * @param lat The latitude
+     * @param lon The longitude
+     * @return The generated marker
+     */
+    currentLocation: function(lat, lon) {
+      var width = 20;
+      var height = 20;
+      var image = {
+        url: "<%= image_url('current-location.png') %>",
+        size: new google.maps.Size(width, height),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(width/2, height/2),
+        scaledSize: new google.maps.Size(width, height)
+      };
+      var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lon),
+          map: map,
+          icon: image,
+          zIndex: 2
       });
       return marker;
     },

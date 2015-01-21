@@ -17,6 +17,7 @@ gem 'mysql2', '~> 0.3.16'
 gem 'sass-rails', '4.0.3'
 gem 'uglifier', '2.1.1'
 gem 'jbuilder', '1.0.2'
+gem 'progress_bar'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'

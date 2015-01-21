@@ -13,7 +13,7 @@ class SiteController < ApplicationController
       @contact = Contact.new(contact_params)
       if @contact.save
         flash[:notice] = "Contact information submitted! Thank you for expressing interest in Classhunters."
-        Mailer.contact_email(@contact.name, @contact.email, @contact.school).deliver
+        Mailer.contact_email(@contact.name, @contact.email, @contact.school, @contact.message).deliver
         redirect_to contact_url
       else
         render 'contact'

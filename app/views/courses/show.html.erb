@@ -22,7 +22,7 @@
 		  		</td>
 		  		<td><%= days_to_string(session) %></td>
 		  		<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
-		  		<td><%= session.instructor.name %></td>
+		  		<td><%= session.instructor.present? ? session.instructor.name : "" %></td>
 		  		<td><%= session.location %></td>
 		  		<td><%= session.room != 'TBA' ? session.room.to_f.round(0) : session.room %></td>
 		  	</tr>

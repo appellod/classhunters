@@ -1,0 +1,24 @@
+<% if course.school == school %>
+<li>
+	<% if signed_in? %>
+		<div style="float: right;">
+	  	<%= form_tag user_add_course_path(current_user), method: "post", class: "form-save-to-use" do %>
+	  		<%= hidden_field_tag :course_id, course.id %>
+	  		<!--
+	  		<% if signed_in? %>
+		  		<% if current_user.courses.exists?(course) %>
+		  			Saved
+		  		<% else %>
+		  			<div class="save-to-user btn">Save to My Courses</div>
+		  		<% end %>
+	  		<% end %>
+	  		-->
+	  	<% end %>
+	  </div>
+	<% end %>
+	<a href="<%= school_course_path(course.school, course) %>">
+  <strong><%= course.name %></strong><br>
+  <%= course.description unless course.description.nil? %>
+  </a>
+</li>
+<% end %>

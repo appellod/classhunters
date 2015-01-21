@@ -30,16 +30,23 @@ class SchoolsController < ApplicationController
         end
       elsif params[:sort] == "map"
         @schools = School.all
-        lats = []
-        lons = []
-        @schools.each do |school|
-          lats << school.latitude
-          lons << school.longitude
+        if session[:latitude].present? && session[:longitude].present?
+          @min_lat = session[:latitude] - 0.1
+          @min_lon = session[:longitude] - 0.1
+          @max_lat = session[:latitude] + 0.1
+          @max_lon = session[:longitude] + 0.1
+        else
+          lats = []
+          lons = []
+          @schools.each do |school|
+            lats << school.latitude
+            lons << school.longitude
+          end
+          @min_lat = lats.min
+          @min_lon = lons.min
+          @max_lat = lats.max
+          @max_lon = lons.max
         end
-        @min_lat = lats.min
-        @min_lon = lons.min
-        @max_lat = lats.max
-        @max_lon = lons.max
       end
     end
     if params[:search].present?

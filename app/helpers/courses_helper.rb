@@ -33,7 +33,17 @@ module CoursesHelper
 
 	def semesters
 		[
-			'Summer 2015', 'Spring 2015', 'Winter 2014', 'Fall 2014'
+			'Spring 2015', 'Summer 2015', 'Fall 2015', 'Winter 2015'
 		]
+	end
+
+	def times
+		time = Time.parse('2015/1/1')
+		times = Array.new
+		for i in 0..23
+			times << time.strftime('%l:%M%p')
+			time += 1.hour
+		end
+		return times
 	end
 end

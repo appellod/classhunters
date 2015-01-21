@@ -1,3 +1,5 @@
+var lastHeight = 0;
+
 function resizeHomePage() {
   screenHeight = document.documentElement.clientHeight;
   screenWidth = document.documentElement.clientWidth;
@@ -9,7 +11,7 @@ function resizeHomePage() {
     caption_size = screenWidth / 20;
     input_size = screenWidth / 50;
     input_width = screenWidth / 2;
-    input_height = screenHeight / 12;
+    input_height = screenWidth / 16;
     if (caption_size > 70) {
     	caption_size = 70;
     }
@@ -25,9 +27,11 @@ function resizeHomePage() {
     perks_height = document.querySelector('.home-perks').clientHeight + 5;
     if(screenHeight <= 650) {
       perks_height = 175;
-      $('.home-perks').css('font-size', '12px');
-      $('.home-contact').css('font-size', '12px');
+      //$('.home-perks').css('font-size', '12px');
+      //$('.home-contact').css('font-size', '12px');
     } else {
+      //$('.home-perks').css('font-size', '14px');
+      //$('.home-contact').css('font-size', '14px');
       perks_height = 217;
     }
     $('.home-form').css('height', elementHeight - perks_height + 'px');
@@ -47,19 +51,30 @@ function resizeHomePage() {
   } else {
   	menuHeight = document.querySelector('.mobile-menu .header').clientHeight;
   	elementHeight = screenHeight - menuHeight;
-  	if(screenWidth / elementHeight > 1.727910238429173) {
-  		//wide
-	  	$('.home-form').css('height', elementHeight + 'px');
-	  	$('.home-form .container-fluid').css('height', elementHeight + 'px');
-    	$('.home-form').css('backgroundSize', '100% auto');
-    	$('.home-form').css('backgroundPosition', '0px 0px');
-    } else {
-    	//tall
-    	$('.home-form').css('height', elementHeight + 'px');
-	  	$('.home-form .container-fluid').css('height', elementHeight + 'px');
-    	$('.home-form').css('backgroundSize', 'auto 100%');
-    	$('.home-form').css('backgroundPosition', '50% 0px');
+    if(Math.abs(elementHeight - lastHeight) > 100) {
+      if(screenWidth / elementHeight > 1.727910238429173) {
+        //wide
+        $('.home-form').css('height', elementHeight + 'px');
+        $('.home-form .container-fluid').css('height', elementHeight + 'px');
+        $('.home-form').css('backgroundSize', '100% auto');
+        $('.home-form').css('backgroundPosition', '0px 0px');
+      } else {
+        //tall
+        $('.home-form').css('height', elementHeight + 'px');
+        $('.home-form .container-fluid').css('height', elementHeight + 'px');
+        $('.home-form').css('backgroundSize', 'auto 100%');
+        $('.home-form').css('backgroundPosition', '50% 0px');
+      }
     }
+  	lastHeight = elementHeight;
+  }
+}
+
+function resizeBackground() {
+  if(document.documentElement.clientWidth / document.documentElement.clientHeight > 1.509803921568627) {
+    $('body').css('backgroundSize', '100% auto');
+  } else {
+    $('body').css('backgroundSize', 'auto 100%');
   }
 }
 
@@ -151,12 +166,36 @@ function fixMenuOnScroll() {
   }
 }
 
+function isDescendant(p, c) {
+  if(p.indexOf('.')) {
+    p = document.getElementsByClassName(p)[0];
+  } else {
+    p = document.getElementById(p);
+  }
+  if(c.indexOf('.')) {
+    c = document.getElementsByClassName(c)[0];
+  } else {
+    c = document.getElementById(c);
+  }
+  var node = c.parentNode;
+  while (node != null) {
+    if (node == p) {
+      return true;
+    }
+    node = node.parentNode;
+  }
+  return false;
+}
+
 $(document).ready(function() {
   $(function() {
     $("#menu").mmenu();
   });
-  //setContentHeight();
 	setActiveMenuItem();
+  resizeBackground();
+  $(window).on('resize', function() {
+    resizeBackground()
+  });
 	if(document.title == 'Classhunters | Find A Class Near You') {
 	  resizeHomePage();
 	  $(window).on('resize', function() {
@@ -173,9 +212,6 @@ $(document).ready(function() {
   	$(this).attr('placeholder', placeholder);
     $(this).css('textAlign', alignment);
   });
-  $(window).scroll(function() {
-    //fixMenuOnScroll();
-  });
   $( ".search-container #search" ).autocomplete({
     source: 'schools/autocomplete'
   });
@@ -186,5 +222,25 @@ $(document).ready(function() {
     } else {
       $('.expand').html($('.expand').html().replace('-', '+'));
     }
+  });
+  $('.check-all').click(function() {
+    $(this).closest('table').find(':checkbox').prop('checked', true);
+  });
+  $('.uncheck-all').click(function() {
+    $(this).closest('table').find(':checkbox').prop('checked', false);
+  });
+  $("ul.search-school li:has(ul) .info").click(function() {
+    if ($(this).html().indexOf('+') >= 0) {
+      $(this).html($(this).html().replace('+', '-'));
+    } else {
+      $(this).html($(this).html().replace('-', '+'));
+    }
+    $("ul", $(this).parent()).toggle();
+  });
+  $(".location-form button").click(function(e) {
+    e.preventDefault();
+    navigator.geolocation.getCurrentPosition(function(position) {
+      $(".location-form input").val(position.coords.latitude + ', ' + position.coords.longitude);
+    });
   });
 });
