@@ -1,4 +1,6 @@
-<label>Time range:</label>
-<%= select_tag "start_time", options_for_select([['Start Time', '']] + times, params[:start_time]) %>
-<div class="to"><span>to</span></div>
-<%= select_tag "end_time", options_for_select([['End Time', '']] + times, params[:end_time]) %>
+<div class="time-container">
+	<label>Time range:</label>
+	<%= select_tag "start_time", options_for_select([['Start Time', '']] + times, params[:start_time]) %>
+	<div class="to"><span>to</span></div>
+	<%= select_tag "end_time", options_for_select([['End Time', '']] + times, params[:end_time]) %>
+</div>

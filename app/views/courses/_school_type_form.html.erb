@@ -1,0 +1,11 @@
+<label>School Type:</label>
+<div class="department-container scrollable">
+	<table>
+		<tr>
+			<td><%= check_box_tag 'type[]', 'four-year', params[:meeting].present? && params[:meeting].include?('four-year') %></td><td><label>Four-Year</label></td>
+		</tr>
+		<tr>
+			<td><%= check_box_tag 'type[]', 'two-year', params[:meeting].present? && params[:meeting].include?('two-year') %></td><td><label>Two-Year</label></td>
+		</tr>
+	</table>
+</div>

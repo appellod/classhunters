@@ -5,6 +5,8 @@
   <div class="span6 offset3">
     <%= form_tag import_schools_action_path, multipart: true do %>
 
+    	<%= select_tag "category", options_for_select(["Four-Year", "Two-Year"]) %><br><br>
+
 			<%= label_tag "Upload schools from CSV file" %>
 			<%= file_field_tag :file %><br>
 

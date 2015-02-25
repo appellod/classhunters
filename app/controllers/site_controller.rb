@@ -2,7 +2,6 @@ class SiteController < ApplicationController
 
   def home
   	@contact = Contact.new
-  	Visit.create(remote_ip: request.remote_ip, referrer: request.referrer) unless Rails.env.development?
   end
 
   def about

@@ -5,11 +5,8 @@ class SchoolsController < ApplicationController
 
 	def index
     if params[:location].present?
-      coords = Geocoder.coordinates(params[:location]);
-      if coords.present?
-        session[:latitude] = coords[0];
-        session[:longitude] = coords[1];
-      end
+      #geo = Geocoder.search(params[:location])
+      #store_geolocation(geo[0].coordinates[0], geo[0].coordinates[1], geo[0].city, geo[0].state_code, 'geocoder')
     end
     if params[:user_id].present?
       @schools = current_user.schools.order(:name)
@@ -108,7 +105,7 @@ class SchoolsController < ApplicationController
         file = params[:file]
         file.tempfile.binmode
         file.tempfile = Base64.encode64(file.tempfile.read)
-        Resque.enqueue(SchoolImporter, file)
+        Resque.enqueue(SchoolImporter, file, params[:category])
         redirect_to schools_path, notice: "Schools are currently being imported."
       #rescue
       #  flash.now[:error] = "Wrong file format."

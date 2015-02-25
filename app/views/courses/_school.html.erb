@@ -1,9 +1,30 @@
 <ul class="search-school">
-  <li><div class="info"><strong>+&nbsp&nbsp<%= school.name %></strong> - <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles</i> - <%= pluralize(courses.count, 'course') %></div>
+  <li><div class="info"><strong>+&nbsp&nbsp<%= school.name %></strong> - <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles</i> - 
+  <% if @sessions.nil? %>
+  	<%= pluralize(courses.count, 'course') %>
+  <% else %>
+  	<%= pluralize(sessions.count, 'session') %>
+  <% end %>
+  </div>
 
-    <ul class="search-courses" style="display: none;">
-      <%= render partial: 'search', collection: courses, as: :course, locals: {school: school} %>
-    </ul>
+	<% if @sessions.nil? %>
+		<table class="search-courses">
+      <tbody class="scrollable">
+  		  <%= render partial: 'search', collection: courses, as: :course, locals: {school: school} %>
+      </tbody>
+  	</table>
+  <% else %>
+  	<table class="search-courses">
+  		<thead>
+				<tr>
+					<th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th>
+				</tr>
+			</thead>
+			<tbody class="scrollable">
+  			<%= render partial: 'search', collection: sessions, as: :session, locals: {school: school} %>
+  		</tbody>
+  	</table>
+  <% end %>
 
-    </li>
+  </li>
 </ul>

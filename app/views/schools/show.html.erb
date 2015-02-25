@@ -3,7 +3,9 @@
 
 <div class="school">
   <h1><%= @school.name %></h1>
-  <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
+  <% if @school.courses.present? %>
+    <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
+  <% end %>
   <table>
     <tr>
       <td>Address:</td>

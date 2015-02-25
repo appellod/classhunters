@@ -31,23 +31,26 @@ class Course < ActiveRecord::Base
 	    		item[1].strip!
 	    	end
 	    end
-	    course = school.courses.where(name: row["name"].strip)
+	    if row['number'].present?
+	    	course = school.courses.where(department: row['department'], number: row['number'])
+			else
+				course = school.courses.where(department: row['department'])
+			end
 	    if course.count == 1
 	    	course = course.first
-	      course = setName(course, row)
-	      course = setDepartment(course, row)
 	    else
 	      course = school.courses.build
 	      course = setName(course, row)
 	      course = setDepartment(course, row)
+	      course.save
 	    end
-	    course.save
 	    session = course.sessions.build
 	    session = setDays(session, row)
 	    session = setLocation(session, row)
 	    session = setRoom(session, row)
 	    session = setCRN(session, row)
 	    session = setCredits(session, row)
+	    session = setOnline(session, row)
 	    session.semester = semester
 	    if row["instructor"].present?
 		    instructor = school.instructors.where(name: row["instructor"].strip)
@@ -63,6 +66,37 @@ class Course < ActiveRecord::Base
 	  end
 	end
 
+	def self.import_descriptions(file, school_id)
+		school = School.find(school_id)
+	  spreadsheet = open_spreadsheet(file)
+	  header = spreadsheet.row(1)
+	  (2..spreadsheet.last_row).each do |i|
+	    row = Hash[[header, spreadsheet.row(i)].transpose]
+	    row.each do |item|
+	    	if item[1].is_a? String
+	    		item[1].strip!
+	    	end
+	    end
+	    if row['number'].present?
+	    	course = school.courses.where(department: row['department'], number: row['number'])
+			else
+				course = school.courses.where(department: row['department'])
+			end
+	    if course.count == 1
+	    	course = course.first
+	      course = setName(course, row)
+	      course = setDepartment(course, row)
+	      course = setDescription(course, row)
+	    else
+	      course = school.courses.build
+	      course = setName(course, row)
+	      course = setDepartment(course, row)
+	      course = setDescription(course, row)
+	    end
+	    course.save
+	  end
+	end
+
 	def self.open_spreadsheet(file)
 	  case File.extname(file.original_filename)
 	  when ".csv" then Roo::CSV.new(file.path, file_warning: :ignore)
@@ -74,7 +108,30 @@ class Course < ActiveRecord::Base
 
 	def self.setName(course, row)
 		if row['name'].present?
-			course.name = row['name']
+			name = ''
+			if row['name'] == row['name'].upcase
+				exceptions = ["and", "the", "to", "of", "by", "from", "or", 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
+				name_split = row['name'].split(' ')
+				name_split.each_with_index do |word, i|
+					if !exceptions.include?(word)
+						if word.titleize.split(' ').count == 1
+							name_split[i] = word.titleize
+						end
+					end
+				end
+				name = name_split.join(' ')
+			else
+				name = row['name']
+			end
+			if course.name.present?
+				if row['name'].downcase.include?('online') && course.name.downcase.include?('online')
+					course.name = name
+				elsif !row['name'].downcase.include?('online') && !course.name.downcase.include?('online')
+					course.name = name
+				end
+			else
+				course.name = name
+			end
 		end
 		return course
 	end
@@ -87,6 +144,14 @@ class Course < ActiveRecord::Base
 			else
 				course.department = row['department']
 			end
+		end
+		return course
+	end
+
+	def self.setDescription(course, row)
+		if row['description'].present?
+			description = row['description'].gsub('\\n', '<br>')
+			course.description = description
 		end
 		return course
 	end
@@ -146,30 +211,40 @@ class Course < ActiveRecord::Base
 
 	def self.setTime(session, row)
 		if row['time'].present?
-			time = row['time']
-			if time.include? 'TBA'
+			begin
+				time = row['time']
+				time = time.downcase
+				if time.length == 11
+					time.insert 2, ':'
+					time.insert 8, ':'
+					start_time = time[0..4]
+					end_time = time[6..12]
+					start_time = Time.parse(start_time)
+					end_time = Time.parse(end_time)
+					if end_time >= Time.parse('13:00') && start_time + 12*60*60 < end_time
+						start_time = start_time + 12*60*60
+					end
+				elsif time.length == 15
+					start_time = Time.parse(time[0..6])
+					end_time = Time.parse(time[8..15])
+				elsif time.length == 13 || time.length == 14
+					start_time = Time.parse(time.split('-')[0])
+					end_time = Time.parse(time.split('-')[1])
+				end
+				session.start_time = start_time.to_s[10..18]
+				session.end_time = end_time.to_s[10..18]
+			rescue ArgumentError
 				return session
 			end
-			time = time.downcase
-			if time.length == 11
-				time.insert 2, ':'
-				time.insert 8, ':'
-				start_time = time[0..4]
-				end_time = time[6..12]
-				start_time = Time.parse(start_time)
-				end_time = Time.parse(end_time)
-				if end_time >= Time.parse('13:00') && start_time + 12*60*60 < end_time
-					start_time = start_time + 12*60*60
-				end
-			elsif time.length == 15
-				start_time = Time.parse(time[0..6])
-				end_time = Time.parse(time[8..15])
-			elsif time.length == 13 || time.length == 14
-				start_time = Time.parse(time.split('-')[0])
-				end_time = Time.parse(time.split('-')[1])
+		end
+		return session
+	end
+
+	def self.setOnline(session, row)
+		row.each do |key, value|
+			if value.present? && value.to_s.downcase.include?('online')
+				session.online = true
 			end
-			session.start_time = start_time.to_s[10..18]
-			session.end_time = end_time.to_s[10..18]
 		end
 		return session
 	end

@@ -24,15 +24,14 @@ function resizeHomePage() {
     if (input_height > 75) {
     	input_height = 75;
     }
-    perks_height = document.querySelector('.home-perks').clientHeight + 5;
     if(screenHeight <= 650) {
-      perks_height = 175;
-      //$('.home-perks').css('font-size', '12px');
-      //$('.home-contact').css('font-size', '12px');
+      $('.top-banner').css('font-size', '10px');
+      $('.home-perks').css('font-size', '10px');
+      $('.home-contact').css('font-size', '10px');
+      $('.home-contact label').css('font-size', '14px');
+      perks_height = 160;
     } else {
-      //$('.home-perks').css('font-size', '14px');
-      //$('.home-contact').css('font-size', '14px');
-      perks_height = 217;
+      perks_height = 210;
     }
     $('.home-form').css('height', elementHeight - perks_height + 'px');
     $('.home-form .container-fluid').css('height', elementHeight - perks_height - 5 + 'px');
@@ -56,14 +55,29 @@ function resizeHomePage() {
         //wide
         $('.home-form').css('height', elementHeight + 'px');
         $('.home-form .container-fluid').css('height', elementHeight + 'px');
+        $('.home-form .container-fluid').css('background', 'rgba(0,0,0,.8)');
         $('.home-form').css('backgroundSize', '100% auto');
         $('.home-form').css('backgroundPosition', '0px 0px');
+        $('.home-form h1').css('font-size', '3.2em');
+        $('.home-form h1').html('Find a Class Near You');
+        $('.home-form form').css('padding', '0px');
+        $('.home-form form').css('border', 'none');
+        $('.home-form form').css('background-color', 'transparent');
+        $('.home-form form').css('margin-top', '0px');
       } else {
         //tall
         $('.home-form').css('height', elementHeight + 'px');
         $('.home-form .container-fluid').css('height', elementHeight + 'px');
+        $('.home-form .container-fluid').css('background', 'rgba(0,0,0,0)');
         $('.home-form').css('backgroundSize', 'auto 100%');
         $('.home-form').css('backgroundPosition', '50% 0px');
+        $('.home-form h1').css('font-size', '3.75em');
+        $('.home-form h1').html('Find a Class<br>Near You');
+        $('.home-form form').css('padding', '10px 0px 35px 0px');
+        $('.home-form form').css('border-top', '2px solid #FF5500');
+        $('.home-form form').css('margin-top', '15px');
+        $('.home-form form').css('border-bottom', '2px solid #FF5500');
+        $('.home-form form').css('background-color', 'rgba(0,0,0,.8)');
       }
     }
   	lastHeight = elementHeight;
@@ -128,24 +142,6 @@ function setLiToActive(str) {
 }
 
 /**
- * Finds the coordinates of the user and sends them in an AJAX request to the 
- * site_controller's location action.
- */
-function locate() {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    var url = "/location";
-    var data = 'latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude;
-    $.ajax({
-      type: "POST",
-      url: url,
-      data: data,
-      success: function(data) {
-      }
-    });
-  });
-}
-
-/**
  * Checks to see if current scroll position is greater than the 
  * top desktop banner. If so, sets menu to fixed. If at top of page,
  * sets the menu back to relative.
@@ -191,6 +187,12 @@ $(document).ready(function() {
   $(function() {
     $("#menu").mmenu();
   });
+  $("input").keypress(function(event) {
+    if (event.which == 13) {
+      event.preventDefault();
+      $(this).closest('form').submit();
+    }
+  });
 	setActiveMenuItem();
   resizeBackground();
   $(window).on('resize', function() {
@@ -219,8 +221,10 @@ $(document).ready(function() {
     $('.expand-container').toggle();
     if ($('.expand').html().indexOf('+') >= 0) {
       $('.expand').html($('.expand').html().replace('+', '-'));
+      $(this).addClass('open');
     } else {
       $('.expand').html($('.expand').html().replace('-', '+'));
+      $(this).removeClass('open');
     }
   });
   $('.check-all').click(function() {
@@ -229,18 +233,145 @@ $(document).ready(function() {
   $('.uncheck-all').click(function() {
     $(this).closest('table').find(':checkbox').prop('checked', false);
   });
-  $("ul.search-school li:has(ul) .info").click(function() {
+  bindActionsToSearchResults();
+  $(".location-form button").click(function(e) {
+    e.preventDefault();
+    navigator.geolocation.getCurrentPosition(function(position) {
+      locate.byCoordinates(position.coords.latitude, position.coords.longitude);
+    });
+  });
+  $("#school-location-form").submit(function(e) {
+    e.preventDefault();
+    locate.byGeocoder($('#school-location-form input#location').val(), true);
+  });
+  $(window).resize(function() {
+    resizeSearchHeaders();
+    fitTablesToContainer();
+  }).resize(); // Trigger resize handler
+  $('.days-container tr, .department-container tr').click(function(e) {
+    if(!$(e.target).is(':checkbox')){
+      var checkbox = $(this).find(':checkbox');
+      checkbox.prop("checked", !checkbox.prop("checked"));
+    }
+  });
+  $('form.search_form .submit').click(function(e) {
+    $(this).closest('form').submit();
+  });
+  $('form.search_form').submit(function(e) {
+    submitSearchForm($(this), e);
+  });
+});
+
+function fitTablesToContainer() {
+  $('table.search-courses').css('width', $('ul.search-school').width());
+  $('table.search-courses thead').css('width', $('ul.search-school').width());
+  $('table.search-courses tbody').css('width', $('ul.search-school').width());
+}
+
+function resizeSearchHeaders() {
+  var $table = $('table.search-courses'),
+      $bodyCells = $table.find('tbody tr:first').children(),
+      colWidth;
+
+  // Get the tbody columns width array
+  colWidth = $bodyCells.map(function() {
+      return $(this).width();
+  }).get();
+  
+  // Set the width of thead columns
+  $table.find('thead tr').children().each(function(i, v) {
+      $(v).width(colWidth[i]);
+  });
+}
+
+function displayCourseInfo(element, id, data_type) {
+  if(element.next().attr('class') == "inspect") {
+    element.next().slideToggle(function() {
+      element.next().remove();
+    });
+  } else {
+    $.ajax({
+      type: "GET",
+      url: '/courses/json',
+      data: data_type + '_id=' + id,
+      success: function(data) {
+        element.after(data.html);
+        element.next().toggle();
+        element.next().slideToggle();
+      }
+    });
+  }
+}
+
+function submitSearchForm(element, e) {
+  e.preventDefault();
+  school = '&school_id=' + $('form.search_form').data("id");
+  $.ajax({
+    url: '/courses/search', 
+    type: 'GET', 
+    data: $('form.search_form').serialize() + school, 
+    success: function(results) {
+      $('.results').html(results.html);
+      var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + $('form.search_form').serialize() };
+      history.pushState(obj, obj.Title, obj.Url);
+      bindActionsToSearchResults();
+    },
+    error: function(e) {
+      element.submit();
+    }
+  });
+}
+
+function bindActionsToSearchResults() {
+  $("ul.search-school .info").click(function() {
     if ($(this).html().indexOf('+') >= 0) {
       $(this).html($(this).html().replace('+', '-'));
     } else {
       $(this).html($(this).html().replace('-', '+'));
     }
+    $("table", $(this).parent()).toggle();
     $("ul", $(this).parent()).toggle();
+    resizeSearchHeaders();
   });
-  $(".location-form button").click(function(e) {
-    e.preventDefault();
-    navigator.geolocation.getCurrentPosition(function(position) {
-      $(".location-form input").val(position.coords.latitude + ', ' + position.coords.longitude);
-    });
+  $('table.search-courses tr').click(function() {
+    data_type = '';
+    if($(this).data("course-id") > 0) {
+      data_type = 'course';
+      id = $(this).data("course-id");
+    } else {
+      data_type = 'session';
+      id = $(this).data("session-id");
+    }
+    displayCourseInfo($(this), id, data_type);
   });
+}
+
+$(document).on('DOMMouseScroll mousewheel', '.scrollable', function(ev) {
+    if(Math.abs($(this).css('maxHeight').replace('px', '') - $(this).height()) < 5) {
+      var $this = $(this),
+          scrollTop = this.scrollTop,
+          scrollHeight = this.scrollHeight,
+          height = $this.height(),
+          delta = (ev.type == 'DOMMouseScroll' ?
+              ev.originalEvent.detail * -40 :
+              ev.originalEvent.wheelDelta),
+          up = delta > 0;
+
+      var prevent = function() {
+          ev.stopPropagation();
+          ev.preventDefault();
+          ev.returnValue = false;
+          return false;
+      }
+
+      if (!up && -delta > scrollHeight - height - scrollTop) {
+          // Scrolling down, but this will take us past the bottom.
+          $this.scrollTop(scrollHeight);
+          return prevent();
+      } else if (up && delta > scrollTop) {
+          // Scrolling up, but this will take us past the top.
+          $this.scrollTop(0);
+          return prevent();
+      }
+    }
 });

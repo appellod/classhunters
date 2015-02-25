@@ -10,7 +10,8 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'sunspot_solr', '~> 2.1.1'
 gem 'sunspot_rails', '~> 2.1.1'
 gem 'geocoder', '~> 1.2.4'
-gem 'roo', '~> 1.13.2'
+gem 'roo', :git => 'git://github.com/roo-rb/roo.git'
+gem 'roo-xls', :git => 'git://github.com/roo-rb/roo-xls.git'
 gem 'mobile-fu', '~> 1.3.1'
 gem 'resque'
 gem 'mysql2', '~> 0.3.16'
@@ -18,6 +19,7 @@ gem 'sass-rails', '4.0.3'
 gem 'uglifier', '2.1.1'
 gem 'jbuilder', '1.0.2'
 gem 'progress_bar'
+gem 'rubyzip', '1.1.7', :require => 'zip'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'
@@ -27,7 +29,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'selenium-webdriver', '2.35.1'
   gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.2.0'
   gem 'cucumber-rails', '1.4.0', :require => false

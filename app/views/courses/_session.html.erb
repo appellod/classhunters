@@ -1,16 +1,27 @@
-<tr>
-	<td><%= link_to session.course.name, school_course_path(session.course.school, session.course) %></td>
-  <td><%= session.crn %></td>
-  <td>
+<tr data-session-id="<%= session.id %>">
+	<td>
+    <% if @school.present? %>
+      <%= link_to session.course.name, school_course_path(@school, session.course) %>
+    <% else %>
+      <strong><%= session.course.name %></strong>
+    <% end %>
+  </td><td>
+    <%= session.crn %>
+  </td><td>
   	<% if session.credits.present? %>
   		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
   	<% end %>
-  </td>
-	<td><%= days_to_string(session) %></td>
-  <% if session.start_time.present? && session.end_time.present? %>
-	 <td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
+  <% if session.start_time.nil? && session.end_time.nil? && days_to_string(session).length == 0 && session.online %>
+    </td><td colspan="2" class="online">
+      <span>Online</span>
   <% else %>
-    <td></td>
+    </td><td>
+    <%= days_to_string(session) %>
+    </td><td>
+    <% if session.start_time.present? && session.end_time.present? %><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %>-<%= session.end_time.present? ? session.end_time.strftime('%l:%M%p').strip : '' %>
+    <% end %>
   <% end %>
-	<td><%= session.instructor.present? ? session.instructor.name : "" %></td>
+	</td><td>
+    <%= session.instructor.present? ? session.instructor.name : "" %>
+  </td>
 </tr>

@@ -43,14 +43,25 @@ table.courses {
 		td, th{
 			padding: 5px 10px;
 		}
+		td.online {
+			background: transparent image-url('strikeout.png') 0 50% repeat-x;
+			text-align: center;
+		}
 		th {
-			background-color: rgba(0,0,0,.075);
+			background-color: #e2e2e2;
 		}
 		&:nth-child(odd) {
-			background-color: rgba(0,0,0,.05);
+			background-color: #f2f2f2;
+			td span{
+				background-color: #f2f2f2;
+				padding: 0px 10px;
+			}
 		}
 		&:nth-child(even) {
-			background-color: transparent;
+			td span{
+				background-color: #ffffff;
+				padding: 0px 10px;
+			}
 		}
 	}
 }
@@ -59,6 +70,7 @@ form#semester {
 	select {
 		margin: 10px auto;
 		display: block;
+		padding: 5px;
 	}
 }
 
@@ -79,7 +91,8 @@ form#semester {
 	cursor: pointer;
 	display: table;
 	margin: 10px auto 0px auto;
-	font-size: 1.1em;
+	font-size: 1em;
+	padding: 7px 15px;
 }
 
 form.course_search {
@@ -90,123 +103,186 @@ form.course_search {
 	}
 }
 
-.expand-container {
-	display: none;
-	form {
+form.search_form {
+	width: 100%;
+	.outside {
+		max-width: 400px;
+		margin: 15px auto 25px auto;
+		.input-group {
+			margin-bottom: 10px;
+			input {
+				border-top-right-radius: 0px;
+				border-bottom-right-radius: 0px;
+				margin: 0px;
+			}
+			button {
+				padding: 10px 15px 9px 15px;
+				font-size: 16px;
+				i {
+					font-size: 18px;
+					margin: 0px 12px;
+				}
+			}
+		}
+		& > input[type=submit] {
+			font-size: 1.1em;
+		}
+		select {
+			padding: 5px;
+			margin: 0px auto;
+			display: block;
+		}
+	}
+	.expand-container {
+		display: none;
 		background-color: rgba(0,0,0,.05);
 		border: 1px solid #AAAAAA;
 		padding: 10px 0px;
 		border-radius: 3px;
-		width: 80%;
-		padding: 10px 0px;
+		width: 100%;
+		padding: 10px 0px 15px 0px;
 		margin: 10px auto;
-	}
-	input[type=text], input[type=search] {
-		border-radius: 0px;
-		border: 1px solid #AAAAAA;
-		border-radius: 3px;
-	}
-	.days-container, .department-container {
-		border: 1px solid #AAAAAA;
-		border-radius: 3px;
-		max-height: 150px;
-		overflow-y: auto;
-		background-color: white;
-		table {
-			width: 100%;
-			margin: 0px;
-			padding: 0px;
-			tr {
-				.check-all, .uncheck-all {
-					padding: 5px 10px;
-					text-align: left;
-					width: 100%;
-					height: 100%;
-					display: block;
-					color: blue;
+		input[type=text], input[type=search] {
+			border-radius: 0px;
+			border: 1px solid #AAAAAA;
+			border-radius: 3px;
+		}
+		.days-container, .department-container {
+			border: 1px solid #AAAAAA;
+			border-radius: 3px;
+			background-color: white;
+			max-height: 150px;
+			overflow-y: auto;
+			table {
+				width: 100%;
+				margin: 0px;
+				padding: 0px;
+				tr {
 					cursor: pointer;
-				}
-				&:nth-child(even) {
-					background-color: #EEEEEE;
-				}
-				td {
-					&:first-child {
-						text-align: center;
-						width: 32px;
+					.check-all, .uncheck-all {
+						padding: 5px 10px;
+						text-align: left;
+						width: 100%;
+						height: 100%;
+						display: block;
+						color: blue;
+						cursor: pointer;
+					}
+					&:nth-child(even) {
+						background-color: #EEEEEE;
+					}
+					td {
+						input {
+							cursor: pointer;
+						}
+						label {
+							cursor: pointer;
+						}
+						&:first-child {
+							text-align: center;
+							width: 32px;
+						}
+					}
+					&:hover {
+						background-color: #CCCCCC;
 					}
 				}
 			}
+			label {
+				display: inline-block;
+				text-align: left;
+			}
+			input {
+				display: inline-block;
+				height: 16px;
+				width: 16px;
+				vertical-align: bottom;
+				margin: 0px 0px 2px 0px;
+			}
 		}
-		label {
-			display: inline-block;
-			text-align: left;
-		}
-		input {
-			display: inline-block;
-			height: 16px;
-			width: 16px;
-			vertical-align: bottom;
-			margin: 0px 0px 2px 0px;
-		}
-	}
-	select {
-		padding: 10px;
-		width: 100%;
-		-webkit-border-radius: 3px;
-		box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25) inset;
-		font-family: 'Oswald', sans-serif;
-	}
-	input[type=submit]  {
-		font-size: 1.1em;
-	}
-	.to {
-	  position: relative;
-	  text-align: center;
-	  color: #222222;
-		text-transform: uppercase;
-		width: 100%;
-		text-align: center;
-		font-weight: 900;
-		margin: 5px 0px;
-		font-family: 'Oswald', sans-serif;
-		span {
-			background-color: #F2F2F2;
-		  padding: 0 15px;
-		  position: relative;
-		  z-index: 1;
-		}
-		&:before {
-			background: #AAAAAA;
-		  content: "";
-		  display: block;
-		  height: 2px;
-		  position: absolute;
-		  top: 35%;
-		  width: 100%;
-		  left: 0;
-		}
-	}
-	.location-form {
-		button {
-			font-size: 14px;
+		select {
+			background-color: white;
+			padding: 10px;
 			width: 100%;
-			padding: 0px;
-			height: 32px;
-			margin: 0px auto;
-			padding: 0px 15px;
+			cursor: pointer;
+			-webkit-border-radius: 3px;
+			box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25) inset;
+			font-family: 'Oswald', sans-serif;
+		}
+		input[type=submit]  {
+			font-size: 1.1em;
+		}
+		.to {
+		  position: relative;
+		  text-align: center;
+		  color: #222222;
+			text-transform: uppercase;
+			width: 100%;
+			text-align: center;
+			font-weight: 900;
+			margin: 5px 0px;
+			font-family: 'Oswald', sans-serif;
+			span {
+				background-color: #F2F2F2;
+			  padding: 0 15px;
+			  position: relative;
+			  z-index: 1;
+			}
+			&:before {
+				background: #AAAAAA;
+			  content: "";
+			  display: block;
+			  height: 2px;
+			  position: absolute;
+			  top: 35%;
+			  width: 100%;
+			  left: 0;
+			}
+		}
+		.location-form {
+			input {
+				border: 1px solid #AAAAAA;
+				padding: 10px;
+				height: 43px;
+				border-top-right-radius: 0px;
+				border-bottom-right-radius: 0px;
+			}
+			button {
+				height: 43px;
+				padding: 0px 13px;
+				font-size: 14px;
+				i {
+					font-size: 18px;
+					margin-top: -2px;
+				}
+				img {
+					width: 20px;
+					margin-top: -2px;
+					//-webkit-filter: drop-shadow(1px 1px rgba(0,0,0,.75));
+					//-filter: drop-shadow(1px 1px rgba(0,0,0,.75));
+				}
+				&:active {
+					background-color: #FF5500;
+				}
+			}
+		}
+		.time-container {
+			padding-bottom: 30px;
 		}
 	}
 }
+
 .results-count {
 	text-align: center;
 	margin: 15px 0px;
 	font-weight: bold;
+	font-size: 1.5em;
 }
 ul.search-school {
   padding: 0px;
   margin: 10px 0px;
   list-style-type: none;
-  background-color: #FF5500;
+  background-color: #ff5500;
   color: white;
   border: 1px solid #AA0000;
   border-radius: 3px;
@@ -215,13 +291,110 @@ ul.search-school {
     height: 100%;
     cursor: pointer;
     padding: 10px;
-    text-shadow: 1px 1px black;
+    text-shadow: 1px 1px rgba(0,0,0,.75);
     strong {
-    	text-shadow: 2px 2px black;
+    	text-shadow: 2px 2px rgba(0,0,0,.75);
     }
     &:hover {
-      background: mix(#FF5500, black, 75%);
+      background: mix(#ff5500, black, 75%);
     }
+  }
+  table.search-courses {
+  	display: none;
+  	border-top: 1px solid #AA0000;
+  	width: 100%;
+  	tr {
+			color: black;
+			width: 100%;
+			display: block;
+			td, th{
+				padding: 5px 10px;
+				margin: 0px;
+			}
+			td {
+				display: inline-block;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				height: 100%;
+				&:nth-child(1) {
+					width: 35%;
+				}
+				&:nth-child(2) {
+					width: 10%;
+				}
+				&:nth-child(3) {
+					width: 8%;
+				}
+				&:nth-child(4) {
+					width: 8%;
+				}
+				&:nth-child(5) {
+					width: 20%;
+				}
+				&:nth-child(6) {
+					width: 18%;
+				}
+			}
+		}
+  	thead, tbody {
+  		display: block;
+  	}
+  	thead tr {
+  		background-color: #E5E5E5;
+			color: black;
+			border-bottom: 1px solid #cccccc;
+			th {
+				display: inline-block;
+				margin-right: 0px;
+			}
+  	}
+  	tbody {
+  		max-height: 500px;
+  		overflow-x: hidden;
+  		overflow-y: auto;
+  		tr {
+  			cursor: pointer;
+  			&:nth-child(even) {
+					background-color: #F2F2F2;
+				}
+				&:nth-child(odd) {
+					background-color: #FFFFFF;
+				}
+				&:hover {
+					background-color: #CCCCCC;
+				}
+  		}
+  		tr.inspect {
+				background-color: #f2f2f2;
+				padding: 8px 15px;
+				border-top: 2px solid #CCCCCC;
+				border-bottom: 2px solid #CCCCCC;
+				cursor: initial;
+				td {
+					padding: 0px;
+					width: 100%;
+					cursor: initial;
+				}
+				table {
+					width: 100%;
+					cursor: initial;
+					tr {
+						background-color: transparent;
+						display: table-row;
+						cursor: initial;
+						td {
+							display: table-cell;
+							white-space: normal;
+							vertical-align: text-top;
+							width: auto;
+							padding: 2px 10px;
+							cursor: initial;
+						}
+					}
+				}
+			}
+  	}
   }
   li {
     padding: 0px;
@@ -235,23 +408,14 @@ ul.search-school {
 			overflow-x: hidden;
       li {
         list-style-type: none;
-        a {
-					display: block;
-					width: 100%;
-					height: 100%;
-					padding: 10px;
-        	padding-left: 20px;
-        	&:hover {
-        		text-decoration: none;
-        		color: #0000FF;
-        		background-color: #CCCCCC;
-        	}
-				}
+        padding: 10px;
+      	padding-left: 20px;
+      	color: black;
         &:nth-child(even) {
-          background-color: #FFEECC;
+          background-color: #F2f2f2;
         }
         &:nth-child(odd) {
-          background-color: transparent;
+          background-color: #ffffff;
         }
       }
     }
@@ -267,4 +431,107 @@ ul.search-school {
 	.col-sm-4 {
 		-webkit-overflow-scrolling: touch;
 	}
+	.expand {
+		padding: 10px 15px;
+		width: 100%;
+	}
+	.open {
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+	form.search_form .expand-container {
+		width: 100%;
+		margin: 0px;
+		border-top-left-radius: 0px;
+		border-top-right-radius: 0px;
+		border-top: none;
+		.days-container {
+			max-height: none;
+		}
+		.time-container {
+			padding-bottom: 0px;
+		}
+	}
+	ul.search-school {
+		font-size: 12px;
+		table.search-courses {
+			width: 100%;
+			tbody {
+				max-height: initial;
+			}
+			tr {
+				td, th {
+					padding: 5px;
+					&:nth-child(1) {
+						width: 45%;
+					}
+					&:nth-child(2) {
+						display: none;
+					}
+					&:nth-child(3) {
+						display: none;
+					}
+					&:nth-child(4) {
+						width: 15%;
+					}
+					&:nth-child(5) {
+						width: 40%;
+					}
+					&:nth-child(6) {
+						display: none;
+					}
+				}
+				&:hover {
+					background-color: none;
+				}
+			}
+			tbody tr.inspect {
+				padding: 8px 5px;
+				table {
+					width: calc(100% - 10px);
+				}
+			}
+		}
+	}
+	ul.search-school li ul.search-courses {
+		max-height: none;
+	}
+	table.sessions {
+			width: 100%;
+			tbody {
+				max-height: initial;
+			}
+			tr {
+				td, th {
+					padding: 5px;
+					&:nth-child(1) {
+						width: 45%;
+					}
+					&:nth-child(2) {
+						display: none;
+					}
+					&:nth-child(3) {
+						display: none;
+					}
+					&:nth-child(4) {
+						width: 15%;
+					}
+					&:nth-child(5) {
+						width: 40%;
+					}
+					&:nth-child(6) {
+						display: none;
+					}
+				}
+				&:hover {
+					background-color: none;
+				}
+			}
+			tbody tr.inspect {
+				padding: 8px 5px;
+				table {
+					width: 100%;
+				}
+			}
+		}
 }

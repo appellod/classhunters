@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+  protect_from_forgery except: :location
+
   def new
     @user = User.new
   end
@@ -22,7 +24,7 @@ class SessionsController < ApplicationController
 
   def location
     if params[:latitude].present? || params[:longitude]
-      store_geolocation(params[:latitude], params[:longitude])
+      store_geolocation(params[:latitude], params[:longitude], params[:city], params[:state], params[:method])
       respond_to do |format|
         msg = { status: "ok", message: "Location saved!" }
         format.json  { render :json => msg }

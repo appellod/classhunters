@@ -1,5 +1,9 @@
 <div class="location-form">
 	<label>Specify a location:</label>
-	<%= text_field_tag :location, params[:location], placeholder: '12345, Chicago IL, etc...' %>
-	<button class="locate">Current Location</button>
+	<div class="input-group">
+    <%= text_field_tag :location, session[:location_name], class: 'form-control', placeholder: '12345, Chicago IL, etc...' %>
+    <span class="input-group-btn">
+      <button class="btn btn-default orange" type="button">My Location</button>
+    </span>
+  </div>
 </div>

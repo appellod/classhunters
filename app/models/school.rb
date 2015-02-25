@@ -18,7 +18,7 @@ class School < ActiveRecord::Base
 	    obj.zip = geo.postal_code
 	  end
 	end
-	after_validation :geocode
+	after_validation :geocode, :if => :address_changed? 
 
 	before_save { self.url = self.name.parameterize }
 
@@ -41,7 +41,7 @@ class School < ActiveRecord::Base
     input.to_i == 0 ? find_by_url(input) : super
   end
 
-	def self.import(file)
+	def self.import(file, category)
 	  spreadsheet = open_spreadsheet(file)
 	  header = spreadsheet.row(1)
 	  (2..spreadsheet.last_row).each do |i|
@@ -49,9 +49,9 @@ class School < ActiveRecord::Base
 	    school = School.where(name: row["name"].strip)
 
 	    if school.count == 1
-	      school.first.update_attributes(row)
+	    	school.first.update_attributes(name: row['name'], address: row['address'], phone: row['phone'], website: row['website'], category: category)
 	    else
-	      School.create!(row)
+	      school = School.create!(name: row['name'], address: row['address'], phone: row['phone'], website: row['website'], category: category)
 	    end
 	    sleep 0.2
 	  end

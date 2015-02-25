@@ -9,6 +9,11 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    if current_user.admin?
+      @schools = School.all.order(:name).paginate(page: params[:school_page])
+    else
+      @schools = @user.schools
+    end
   end
 
   def new
@@ -42,6 +47,40 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     flash[:success] = "User deleted."
     redirect_to users_url
+  end
+
+  def reset_password
+    if request.post?
+      if params[:hash].present?
+        @user = User.where(email: params[:email]).first
+        if @user.present?
+          if params[:hash] == @user.reset_password_hash
+            if params[:password].present? && params[:password_confirmation].present? && params[:password] == params[:password_confirmation]
+              if @user.update(password: params[:password], password_confirmation: params[:password_confirmation], reset_password_hash: nil)
+                flash.now[:success] = "Your new password has been set! You may now login with your new password."
+              end
+            else
+              flash.now[:error] = "The password and confirmation fields do not match."
+            end
+          else
+            flash.now[:error] = "The hash for a password reset associated with the given email address is incorrect."
+          end
+        else
+          flash.now[:error] = "The given email address does not have an account associated with Classhunters."
+        end
+      else
+        @user = User.where(email: params[:email]).first
+        if @user.present?
+          @user.reset_password_hash = SecureRandom.hex
+          if @user.save
+            flash.now[:success] = "A verification email has been sent to you."
+            Mailer.reset_password_email(@user.email, @user.reset_password_hash).deliver
+          end
+        else
+          flash.now[:error] = "The given email address does not have an account associated with Classhunters."
+        end
+      end
+    end
   end
 
   private

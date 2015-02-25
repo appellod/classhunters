@@ -13,6 +13,8 @@ Site::Application.routes.draw do
   match "/search", to: "search#index", via: "get"
   match "/location", to: "sessions#location", via: "post"
   match "/autocomplete", to: "site#autocomplete", via: "get"
+  match "/reset-password", to: 'users#reset_password', via: "get", as: "reset_password"
+  match "/reset-password", to: 'users#reset_password', via: "post"
 
   resources :users do
     match "/courses/add", to: "courses#add_to_user", via: "post", as: "add_course"
@@ -32,6 +34,8 @@ Site::Application.routes.draw do
   end
   resources :courses, only: [:index]
   match "/courses/sessions", to: "courses#sessions", via: "get", as: "course_sessions"
+  match "/courses/json", to: "courses#json", via: "get", as: "course_json"
+  match "/courses/search", to: "courses#get_results", via: "get"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

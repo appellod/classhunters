@@ -36,9 +36,9 @@
 <% if params[:sort].present? && params[:sort] == "distance" %>
   <div class="location-container">
     <h2>Please enter a city, zip code, or full address.</h2>
-    <%= form_tag schools_path, method: :get, id: "search_form" do %>
+    <%= form_tag schools_path, method: :get, id: "school-location-form" do %>
       <div class="input-group">
-        <%= text_field_tag :location, params[:location], class: 'form-control' %>
+        <%= text_field_tag :location, session[:location_name], class: 'form-control' %>
         <%= hidden_field_tag :sort, "distance" %>
         <span class="input-group-btn">
           <button class="btn btn-default orange" type="button" onclick="this.form.submit();">Locate</button>

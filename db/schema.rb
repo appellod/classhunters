@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108195321) do
+ActiveRecord::Schema.define(version: 20150220203625) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20150108195321) do
 
   create_table "courses", force: true do |t|
     t.string   "name"
-    t.string   "description"
+    t.text     "description"
     t.string   "department"
     t.integer  "number"
     t.datetime "created_at"
@@ -71,6 +71,9 @@ ActiveRecord::Schema.define(version: 20150108195321) do
     t.string   "state"
     t.string   "zip"
     t.string   "url"
+    t.string   "category"
+    t.date     "start_date"
+    t.date     "end_date"
   end
 
   add_index "schools", ["name"], name: "index_schools_on_name", unique: true, using: :btree
@@ -108,6 +111,7 @@ ActiveRecord::Schema.define(version: 20150108195321) do
     t.integer  "crn"
     t.decimal  "credits",       precision: 4, scale: 2
     t.string   "semester"
+    t.boolean  "online"
   end
 
   add_index "sessions", ["course_id"], name: "index_sessions_on_course_id", using: :btree
@@ -120,7 +124,8 @@ ActiveRecord::Schema.define(version: 20150108195321) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",           default: false
+    t.boolean  "admin",               default: false
+    t.string   "reset_password_hash"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

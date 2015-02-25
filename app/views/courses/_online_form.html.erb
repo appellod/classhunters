@@ -1,0 +1,11 @@
+<label>Meeting Place:</label>
+<div class="department-container scrollable">
+	<table>
+		<tr>
+			<td><%= check_box_tag 'meeting[]', 'classroom', params[:meeting].present? && params[:meeting].include?('classroom') %></td><td><label>Classroom</label></td>
+		</tr>
+		<tr>
+			<td><%= check_box_tag 'meeting[]', 'online', params[:meeting].present? && params[:meeting].include?('online') %></td><td><label>Online</label></td>
+		</tr>
+	</table>
+</div>

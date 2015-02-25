@@ -1,5 +1,5 @@
 <% provide(:title, "Edit School") %>
-<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>'', @school=>school_path(@school), 'Edit'=>'' }) %>
+<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Edit'=>'' }) %>
 <h1>Edit School</h1>
 
 <%= form_for(@school) do |f| %>

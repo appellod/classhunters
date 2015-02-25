@@ -14,64 +14,70 @@
 <div class="sort">
 	<strong>Courses</strong>
 	 | 
-	<% if @school.present? %>
-		<%= link_to "Sessions", school_sessions_path(@school) %>
+	<% if params[:search].present? %>
+		<% if @school.present? %>
+			<%= link_to "Sessions", school_sessions_path(@school, search: params[:search]) %>
+		<% else %>
+			<%= link_to "Sessions", course_sessions_path(search: params[:search]) %>
+		<% end %>
 	<% else %>
-		<%= link_to "Sessions", course_sessions_path %>
+		<% if @school.present? %>
+			<%= link_to "Sessions", school_sessions_path(@school) %>
+		<% else %>
+			<%= link_to "Sessions", course_sessions_path %>
+		<% end %>
 	<% end %>
 </div>
 
-<% if @school.nil? && params[:search].nil? %>
-	<%= form_tag (@school.present? ? school_courses_path(@school) : courses_path), method: :get, class: "course_search" do %>
-      <label>Search:</label>
-      <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-    <%= submit_tag 'Search', id: 'submit', class: "btn btn-large btn-primary" %>
-  <% end %>
-<% else %>
-	<div class="expand button">+ Advanced Search Options</div>
-	<div class="expand-container">
-	  <%= form_tag (@school.present? ? school_courses_path(@school) : courses_path), method: :get, id: "search_form" do %>
-	    <div class="col-sm-6">
-	      <label>Search:</label>
-	      <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+<%= form_tag (@school.present? ? school_courses_path(@school) : courses_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
+	<% if @school.nil? %>
+		<% if !location_set? || session[:location_method] == 'ip' %>
+			<div class="outside">
+				<label>Search:</label>
+				<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+				<label>Location:</label>
+			  <div class="input-group location-form">
+	      	<%= text_field_tag :location, session[:location_name], placeholder: '12345, Chicago IL, etc...' %>
+	      	<span class="input-group-btn">
+			      <button class="btn btn-default orange submit" type="button">My Location</button>
+			    </span>
+	      </div>
+	      <%= submit_tag 'Search', id: 'submit_button', class: "btn btn-large btn-primary" %>
+			</div>
+		<% else %>
+			<div class="outside">
+				<label>Search:</label>
+				<div class="input-group">
+	      	<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+	      	<span class="input-group-btn">
+	          <button class="btn btn-default orange submit" type="button">Search</button>
+	        </span>
+	      </div>
+			</div>
+			<div class="expand button">+ Optional Search Filters</div>
+			<div class="expand-container">
+				<div class="col-sm-4">
+		     	<%= render 'location_form' %>
+		    </div>
+		    <div style="clear: both;"></div>
+		    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
+		  </div>
+		<% end %>
+	<% else %>
+		<div class="expand button">+ Optional Search Filters</div>
+		<div class="expand-container">
+			<div class="col-sm-4">
+	     	<%= render 'location_form' %>
 	    </div>
-	    <% if @school.nil? %>
-		    <div class="col-sm-6">
-		      <%= render 'location_form' %>
-		    </div>
-		  <% end %>
-		  <% if @school.present? %>
-		    <div class="col-sm-6">
-		    	<%= render 'departments_form' %>
-		    </div>
-		  <% end %>
-	    <%= hidden_field_tag :semester, params[:semester] %>
-	    <%= hidden_field_tag :sort, params[:sort] %>
-	    <%= hidden_field_tag :order, params[:order] %>
-	    <div style="clear: both"></div>
-	    <%= submit_tag 'Search', id: 'submit', class: "btn btn-large btn-primary" %>
-	  <% end %>
-	</div>
+	    <div class="col-sm-4">
+	    	<%= render 'departments_form' %>
+	    </div>
+	    <div style="clear: both;"></div>
+	    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
+	  </div>
+	<% end %>
 <% end %>
 
-<% if @school.present? %>
-	<% if @courses.present? && @courses.count > 0 %>
-		<%= will_paginate @courses %>
-			<table class="courses">
-				<tr><th>Name</th><th>Department</th></tr>
-			  <%= render @courses %>
-			</table>
-		<%= will_paginate @courses %>
-	<% else %>
-		<div class="empty">There are currently no course listings for this school.</div>
-	<% end %>
-<% else %>
-	<% if @courses.present? && @courses.count > 0 %>
-		<div class="results-count"><%= @course_count %> Courses Found!</div>
-		<% @courses.each do |school| %>
-			<%= render 'school', school: school[0], courses: school[1] %>
-		<% end %>
-	<% elsif params[:search].present? %>
-		<div class="empty">There are no courses matching your search terms.</div>
-	<% end %>
-<% end %>
+<div class="results">
+	<%= render(partial: 'results') %>
+</div>

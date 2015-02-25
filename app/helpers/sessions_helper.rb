@@ -63,13 +63,29 @@ module SessionsHelper
   # Takes latitude and longitude and stores them as session variables.
   # @param latitude The latitude
   # @param longitude The longitude
-  def store_geolocation(latitude, longitude)
-    session[:latitude] = latitude
-    session[:longitude] = longitude
+  def store_geolocation(latitude, longitude, city, state, method)
+    session[:latitude] = latitude.to_f
+    session[:longitude] = longitude.to_f
+    session[:location_name] = "#{city}, #{state}"
+    session[:location_time] = Time.now
+    session[:location_method] = method
   end
 
   # Redirects to the root url unless the current user is an admin.
   def admin_user
     (current_user.present? && current_user.admin?)
+  end
+
+  def get_location_by_ip
+    require 'open-uri'
+    ip = open('http://whatismyip.akamai.com').read
+    geo = Geocoder.search(ip)
+    if geo.present? && geo[0].city.present? && geo[0].state_code.present?
+      store_geolocation(geo[0].latitude, geo[0].longitude, geo[0].city, geo[0].state_code, 'ip')
+    end
+  end
+
+  def location_set?
+    return session[:latitude].present? && session[:longitude].present?
   end
 end

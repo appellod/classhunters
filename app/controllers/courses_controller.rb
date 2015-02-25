@@ -29,68 +29,78 @@ class CoursesController < ApplicationController
 	end
 
   def sessions
+    params[:semester] ||= semesters[0]
     if params[:user_id].present?
       @user = User.find(params[:user_id])
       @courses = current_user.courses.order(:name)
     elsif params[:school_id].present?
       @school = School.find(params[:school_id])
-      @courses = @school.courses.order(:name)
-    else
-      @courses = Course.order(:name)
-    end
-    if @courses.count > 0
-      if params[:semester].present?
-        @sessions = Session.includes(:course).where(semester: params[:semester], course_id: @courses.pluck(:id)).order('courses.name')
-      else
-        i = 0
-        while @sessions.nil? || @sessions.count == 0
-          @sessions = Session.includes(:course).where(semester: semesters[i], course_id: @courses.pluck(:id)).order('courses.name')
-          params[:semester] = semesters[i]
-          i+=1
-        end
-      end
       if params[:search].present?
-        @sessions = @sessions.where(['courses.name LIKE ?', "%#{params[:search]}%"])
+        search
+        ids = Array.new
+        @courses_query.each do |course|
+          ids << course.id
+        end
+        if @courses.present?
+          @courses = @school.courses.where(id: ids).order("FIELD(id, #{ids.join(',')})")
+        end
+      else
+        @courses = @school.courses.order(:name)
       end
-      if params[:days].present?
-        days = ""
-        days_off = ""
-        params[:days].each_with_index do |day, i|
-          if Session.column_names.include?(day)
-            days << "#{day} = 1"
-            if i < params[:days].count - 1
-              days << " OR "
-            end
-          end
+    elsif params[:search].present?
+      search
+      if session[:latitude].present? && session[:longitude].present?
+        ids = Array.new
+        @courses_query.each do |course|
+          ids << course.id
         end
-        Date::DAYNAMES.each_with_index do |day, i|
-          day = day.downcase
-          if !params[:days].include?(day) && Session.column_names.include?(day)
-            days_off << "#{day} IS NULL"
-            if i < (8 - params[:days].count)
-              days_off << " AND "
-            end
-          end
+        if @courses.present?
+          @courses = Course.where(id: ids).order("FIELD(id, #{ids.join(',')})")
         end
-        if days_off.present?
-          @sessions = @sessions.where("(#{days}) AND (#{days_off})")
+      end
+    end
+    if @courses.present? && @courses.count > 0
+      if @school.present?
+        if params[:search].present?
+          @sessions = Session.includes(:course).where(semester: params[:semester], course_id: @courses.pluck(:id)).order("FIELD(course_id, #{@courses.pluck(:id).join(',')})")
         else
-          @sessions = @sessions.where("#{days}")
+          @sessions = Session.includes(:course).where(semester: params[:semester], course_id: @courses.pluck(:id)).order("courses.name")
+        end
+      else
+        @sessions = Session.includes(:course).where(semester: params[:semester], course_id: @courses.pluck(:id)).order("FIELD(course_id, #{@courses.pluck(:id).join(',')})")
+      end
+      if params[:meeting].nil? || (params[:meeting].present? && !params[:meeting].include?('online'))
+        if params[:days].present?
+          @sessions = filter_sessions_days(@sessions)
+        end
+        if params[:start_time].present?
+          @sessions = @sessions.where("start_time >= ?", Time.parse(params[:start_time]).strftime("%H:%M:%S"))
+        end
+        if params[:end_time].present?
+          @sessions = @sessions.where("end_time <= ?", Time.parse(params[:end_time]).strftime("%H:%M:%S"))
         end
       end
       if params[:departments].present?
         @sessions = @sessions.where(['courses.department IN (?)', params[:departments]])
       end
-      if params[:start_time].present?
-        @sessions = @sessions.where("start_time >= ?", Time.parse(params[:start_time]).strftime("%H:%M:%S"))
+      if params[:meeting].present?
+        meeting = params[:meeting]
+        if meeting.include?('classroom') && !meeting.include?('online')
+          @sessions = @sessions.where("online IS NULL")
+        elsif !meeting.include?('classroom') && meeting.include?('online')
+          @sessions = @sessions.where("online = 1")
+        end
       end
-      if params[:end_time].present?
-        @sessions = @sessions.where("end_time <= ?", Time.parse(params[:end_time]).strftime("%H:%M:%S"))
+      if @school.nil?
+        @session_count = @sessions.count
+        @sessions = @sessions.group_by { |session| session.course.school }
+        @sessions = @sessions.sort_by { |school, sessions| school.distance_from([session[:latitude], session[:longitude]]) }
+      else
+        @departments = @school.courses.pluck(:department).uniq.sort
+        @courses = @courses.paginate(page: params[:page])
+        @sessions = @sessions.paginate(page: params[:page])
       end
     end
-    @departments = @courses.pluck(:department).uniq.sort
-    @courses = @courses.paginate(page: params[:page])
-    @sessions = @sessions.paginate(page: params[:page])
     params[:sort] ||= 'name'
   end
 
@@ -139,7 +149,7 @@ class CoursesController < ApplicationController
       file = params[:file]
       file.tempfile.binmode
       file.tempfile = Base64.encode64(file.tempfile.read)
-      Resque.enqueue(CourseImporter, file, @school.id, params[:semester])
+      Resque.enqueue(CourseImporter, file, @school.id, params[:semester], params[:type])
       redirect_to school_courses_path(@school), notice: "Courses are being imported."
     end
   end
@@ -168,6 +178,40 @@ class CoursesController < ApplicationController
     end
   end
 
+  def json
+    if params[:course_id].present?
+      session = nil
+      course = Course.find(params[:course_id])
+      html = render_to_string(partial: 'dropdown_info', locals: { course: course, session: session })
+    elsif params[:session_id].present?
+      session = Session.find(params[:session_id])
+      course = session.course
+      html = render_to_string(partial: 'dropdown_info', locals: { course: course, session: session })
+    end
+    respond_to do |format|
+      msg = { html: html }
+      format.json  { render :json => msg }
+    end
+  end
+
+  def get_results
+    if params[:semester].present?
+      sessions
+      html = render_to_string(partial: 'results')
+    else
+      index
+      html = render_to_string(partial: 'results')
+    end
+    if request.xhr?
+      respond_to do |format|
+        msg = { html: html }
+        format.json  { render :json => msg }
+      end
+    else
+      render(partial: 'results')
+    end
+  end
+
   private
 
     def course_params
@@ -187,24 +231,58 @@ class CoursesController < ApplicationController
 
     def search
       if params[:location].present?
-        coords = Geocoder.coordinates(params[:location])
-        if coords.present?
-          session[:latitude] = coords[0];
-          session[:longitude] = coords[1];
+        if params[:location] == session[:location_name]
+          session[:location_method] = 'geocoder'
+        else
+          geo = Geocoder.search(params[:location])
+          store_geolocation(geo[0].coordinates[0], geo[0].coordinates[1], geo[0].city, geo[0].state_code, 'geocoder')
         end
       end
 
       if session[:latitude].present? && session[:longitude].present? && params[:search].present?
         latitude = session[:latitude]
         longitude = session[:longitude]
+        search_term = ""
+        params[:search].split(" ").each do |word|
+          search_term << "#{word.singularize} "
+        end
+        search_term = search_term.strip
         search = Course.search do
-          fulltext params[:search]
+          fulltext search_term
           paginate page: params[:page], per_page: 9999999
         end
-        @courses = search.results
-        @course_count = @courses.count
-        @courses = @courses.group_by { |course| course.school }
+        @courses_query = search.results
+        @course_count = @courses_query.count
+        @courses = @courses_query.group_by { |course| course.school }
         @courses = @courses.sort_by { |school, courses| school.distance_from([latitude, longitude]) }
       end
+    end
+
+    def filter_sessions_days(sessions)
+      days = ""
+      days_off = ""
+      params[:days].each_with_index do |day, i|
+        if Session.column_names.include?(day)
+          days << "#{day} = 1"
+          if i < params[:days].count - 1
+            days << " OR "
+          end
+        end
+      end
+      Date::DAYNAMES.each_with_index do |day, i|
+        day = day.downcase
+        if !params[:days].include?(day) && Session.column_names.include?(day)
+          days_off << "#{day} IS NULL"
+          if i < (8 - params[:days].count)
+            days_off << " AND "
+          end
+        end
+      end
+      if days_off.present?
+        sessions = sessions.where("(#{days}) AND (#{days_off})")
+      else
+        sessions = sessions.where("#{days}")
+      end
+      return sessions
     end
 end

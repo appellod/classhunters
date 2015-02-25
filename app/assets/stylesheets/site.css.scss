@@ -86,8 +86,7 @@ button, input[type=submit], .orange, a.button, .button {
   padding: 10px 25px;
   font-size: 1.5em;
   border-radius: 3px;
-  text-shadow: 2px 2px #000;
-  //box-shadow: inset 0px 0px 8px rgba(0,0,0,.75);
+  text-shadow: 2px 2px rgba(0,0,0,.75);
   &:hover {
     border-color: #CC2200;
     background: mix($menu-color, black, 80%);
@@ -309,7 +308,7 @@ hr {
 }
 
 .home-form {
-  background-image: image-url('classroom.jpg');
+  background-image: image-url('classroom-bright.jpg');
   background-size: 100% 225%;
   background-position: center;
   text-transform: uppercase;
@@ -318,9 +317,6 @@ hr {
   box-shadow: 0px 5px 10px 0px rgba(0,0,0,.4);
   z-index: 5;
   position: relative;
-  .container-fluid {
-    background: rgba(255,255,255,0.05);
-  }
   h1 {
     font-size: 4em;
     color: #FFFF00;
@@ -330,6 +326,9 @@ hr {
     font-family: 'Permanent Marker', sans-serif;
     text-transform: none;
     text-shadow: 3px 3px 1px black;
+  }
+  .container-fluid {
+    background-color: rgba(255,255,255,0);
   }
   form {
     display: block;
@@ -407,7 +406,7 @@ hr {
 }
 .home-perks, .home-contact {
   color: white;
-  padding: 10px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
   h1 {
     font-size: 3.5em;
     color: #FFFF00;
@@ -540,9 +539,15 @@ footer {
 .alert {
   font-size: 1.2em;
   letter-spacing: -1px;
-  margin-bottom: 30px;
+  margin: 20px 0px;
   text-align: center;
   font-weight: normal;
+}
+
+.alert-error {
+  color: #550000;
+  background-color: #ffddcc;
+  border-color: #770000;
 }
 
 ul.account, ul.schools, ul.courses, ul.users, ul.searches {
@@ -652,7 +657,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 
 .mobile-menu {
   .header {
-    background: #FF5500;
+    //background: #FF5500;
     font-size: 16px;
     font-weight: bold;
     color: #FFFF00;
@@ -682,7 +687,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       letter-spacing: -6px;
       font-weight: bold;
       text-shadow: 2px 2px black, -1px 0px 0px rgba(100, 50, 0, 1), 0px -1px 0px rgba(100, 50, 0, 1);
-      line-height: 1.45em;
+      line-height: 1.5em;
       //text-shadow: 0px 1px rgba(0,0,0,.5), 1px 0px rgba(0,0,0,.5), 0px -1px rgba(0,0,0,.5), -1px 0px rgba(0,0,0,.5);
     }
     a.toggle {
@@ -709,7 +714,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 .mm-menu {
   display: none;
   background: none;
-  background-color: #FF5500;
+  background: #282828;
   color: #000000;
   font-weight: bold;
   .mm-list {
@@ -722,11 +727,11 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
     text-align: left;
     text-transform: uppercase;
     font-size: 1.25em;
-    border-bottom: 2px solid #000000;
+    border-bottom: 2px solid #555555;
     padding: 0px;
     a {
       display: inline-block;
-      color: white;
+      color: #FFFFFF;
       width: 100%;
     }
     a:hover, a:active {
@@ -758,6 +763,9 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
     input {
       border-radius: 0px;
       font-size: .75em;
+      box-shadow: none;
+      border: none;
+      border-right: 1px solid #EEEEEE;
     }
     button {
       border-radius: 0px;
@@ -811,12 +819,16 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
   }
   .menu {
     box-shadow: none;
+    //background-image: image-url('chalkboard-mobile.jpg');
+    background-color: #282828;
+    border-bottom: 3px solid #FF5500;
   }
   h1 {
     font-size: 2em;
   }
   .content {
     padding: 0px;
+    padding-bottom: 50px;
   }
   body {
     padding-top: 0px;
@@ -832,16 +844,32 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
     width: 80%;
     input[type=text], input[type=search], input[type=email] {
       -webkit-appearance: none;
+      box-shadow: none;
+    }
+    .input-group {
+      input {
+        border-right: none;
+      }
+      button {
+        border-left-width: 1px;
+      }
+    }
+    .col-sm-6 {
+      padding: 0px;
     }
   }
   .home-form {
     overflow-y: hidden;
     .container-fluid {
-      background: rgba(0,0,0,.65);
+      background: rgba(50,50,50,0);
       overflow-y: hidden;
     }
     form {
-    overflow-y: hidden;
+      border-top: 2px solid #FF5500;
+      border-bottom: 2px solid #FF5500;
+      background-color: rgba(0,0,0,.75);
+      padding: 5px 0px 25px 0px;
+      overflow-y: hidden;
       top: 45%;
       h1 {
         font-size: 3.75em;
@@ -853,7 +881,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       input {
         width: 90%;
         font-family: 'Oswald', sans-serif;
-        padding: 0px;
+        padding: 0px 15px;
         text-align: center;
         height: 50px;
         border-radius: 3px;
@@ -952,24 +980,6 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       &.active,&.prev,&.next {
         display: inline;
       }
-    }
-  }
-
-  button, input[type=submit], .orange, a.button {
-    color: #FFF;
-    background: $button-color;
-    border: 2px solid #AA0000;
-    box-shadow: none;
-    font-weight: bold;
-    font-family: 'Oswald', sans-serif;
-    padding: 10px 25px;
-    font-size: 1.5em;
-    border-radius: 0px;
-    text-shadow: 1px 1px 3px black;
-    &:hover {
-      border-color: #AA0000;
-      background: linear-gradient(mix($menu-color, white, 80%),mix($menu-color, white, 90%), mix($menu-color, white, 80%));
-      color: white;
     }
   }
 }

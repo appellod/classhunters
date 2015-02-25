@@ -1,5 +1,5 @@
 <label>Days:</label>
-<div class="days-container">
+<div class="days-container scrollable">
 	<table>
 		<tr>
 			<td colspan="2"><div class="check-all">Check All</div></td>
@@ -9,7 +9,7 @@
 		</tr>
 		<% Date::DAYNAMES.each do |day| %>
 		<tr>
-			<td><%= check_box_tag 'days[]', day.downcase, params[:days].nil? || (params[:days].present? && params[:days].include?(day.downcase)) %></td><td><label><%= day %></label></td>
+			<td><%= check_box_tag 'days[]', day.downcase, params[:days].present? && params[:days].include?(day.downcase) %></td><td><label><%= day %></label></td>
 		</tr>
 		<% end %>
 	</table>

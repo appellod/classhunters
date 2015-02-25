@@ -7,6 +7,9 @@
 		<%= label_tag :semester %>
 		<%= select_tag :semester, options_for_select(semesters, params[:semester]) %>
 
+		<%= label_tag :type %>
+		<%= select_tag :type, options_for_select(['Schedule', 'Descriptions']) %>
+
 		<%= label_tag 'Upload classes from CSV file' %>
 		<%= file_field_tag :file %>
 

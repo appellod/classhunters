@@ -1,0 +1,60 @@
+<% if params[:semester].nil? %>
+	<% if @school.present? %>
+		<% if @courses.present? && @courses.count > 0 %>
+			<%= will_paginate @courses %>
+				<table class="courses">
+					<tr><th>Name</th><th>Department</th></tr>
+				  <%= render @courses %>
+				</table>
+			<%= will_paginate @courses %>
+		<% else %>
+			<div class="empty">There are currently no course listings for this school.</div>
+		<% end %>
+	<% else %>
+		<% if @courses.present? && @courses.count > 0 %>
+			<div class="results-count"><%= @course_count %> Courses Found!</div>
+			<% @courses.each do |school| %>
+				<%= render 'school', school: school[0], courses: school[1] %>
+			<% end %>
+		<% elsif params[:search].present? %>
+			<% if session[:latitude].present? && session[:longitude].present? %>
+				<div class="empty">There are no courses matching your search terms.</div>
+			<% else %>
+				<div class="empty">Please specify a location.</div>
+			<% end %>
+		<% end %>
+	<% end %>
+<% else %>
+	<% if @school.present? %>
+		<% if @sessions.present? && @sessions.count > 0 %>
+			<%= will_paginate @sessions %>
+				<table class="courses sessions">
+					<tr>
+						<th>Name</th>
+						<th>CRN</th>
+						<th>Credits</th>
+						<th>Days</th>
+						<th>Time</th>
+						<th>Instructor</th>
+					</tr>
+				  <%= render partial: 'session', collection: @sessions, as: :session %>
+				</table>
+			<%= will_paginate @sessions %>
+		<% else %>
+				<div class="empty">There are currently no course listings for this semester.</div>
+		<% end %>
+	<% else %>
+		<% if @sessions.present? && @sessions.count > 0 %>
+			<div class="results-count"><%= @session_count %> Course Sessions Found!</div>
+			<% @sessions.each do |school| %>
+				<%= render 'school', school: school[0], sessions: school[1] %>
+			<% end %>
+		<% elsif params[:search].present? %>
+			<% if session[:latitude].present? && session[:longitude].present? %>
+				<div class="empty">There are no courses matching your search terms.</div>
+			<% else %>
+				<div class="empty">Please specify a location.</div>
+			<% end %>
+		<% end %>
+	<% end %>
+<% end %>
