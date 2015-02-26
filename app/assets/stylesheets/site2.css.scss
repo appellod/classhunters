@@ -1,0 +1,30 @@
+/*
+$background: #000033;;
+$header-color: #FFFF00;
+$menu-color: #FF5500;
+
+body {
+	background: $background;
+}
+.home-form form .group {
+	background: $background;
+	border-color: $menu-color;
+}
+
+.menu {
+	background: $menu-color;
+}
+
+.top-banner .container .bottom-right img {
+	background: $menu-color;
+}
+
+.top-banner .container h1 a, .home-form h1, .home-perks h1 {
+	color: $header-color;
+	//text-shadow: none;
+}
+
+.home-form {
+	border-color: $menu-color;
+}
+*/

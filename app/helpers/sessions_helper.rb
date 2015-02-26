@@ -78,7 +78,11 @@ module SessionsHelper
 
   def get_location_by_ip
     require 'open-uri'
-    ip = open('http://whatismyip.akamai.com').read
+    if Rails.env == 'development'
+      ip = open('http://whatismyip.akamai.com').read
+    else
+      ip = request.remote_ip
+    end
     geo = Geocoder.search(ip)
     if geo.present? && geo[0].city.present? && geo[0].state_code.present?
       store_geolocation(geo[0].latitude, geo[0].longitude, geo[0].city, geo[0].state_code, 'ip')
