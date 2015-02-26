@@ -926,7 +926,11 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       width: 90%;
     }
   }
-
+  .contact-form {
+    form {
+      width: 90%;
+    }
+  }
   .mobile-top-search {
     display: none;
   }

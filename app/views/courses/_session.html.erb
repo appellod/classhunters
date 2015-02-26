@@ -12,8 +12,12 @@
   		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
   	<% end %>
   <% if session.start_time.nil? && session.end_time.nil? && days_to_string(session).length == 0 && session.online %>
-    </td><td colspan="2" class="online">
-      <span>Online</span>
+    <% if @school.present? %>
+      </td><td colspan="2" class="online">
+        <span>Online</span>
+    <% else %>
+      <td class="online"></td><td class="online"><span>Online</span>
+    <% end %>
   <% else %>
     </td><td>
     <%= days_to_string(session) %>

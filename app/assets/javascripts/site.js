@@ -317,7 +317,13 @@ function submitSearchForm(element, e) {
       bindActionsToSearchResults();
     },
     error: function(e) {
-      element.submit();
+      params = $('form.search_form').serialize();
+      if(params.indexOf('semester=') > -1) {
+        url_path = '/courses/sessions';
+      } else {
+        url_path = '/courses';
+      }
+      window.location.href = url_path + '?' + params;
     }
   });
 }

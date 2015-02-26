@@ -463,7 +463,7 @@ ul.search-school {
 				td, th {
 					padding: 5px;
 					&:nth-child(1) {
-						width: 100%;
+						//width: 100%;
 					}
 				}
 				&:hover {
@@ -481,42 +481,67 @@ ul.search-school {
 	ul.search-school li ul.search-courses {
 		max-height: none;
 	}
-	table.sessions {
-			width: 100%;
-			tbody {
-				max-height: initial;
-			}
-			tr {
-				td, th {
-					padding: 5px;
-					&:nth-child(1) {
-						width: 45%;
-					}
-					&:nth-child(2) {
-						display: none;
-					}
-					&:nth-child(3) {
-						display: none;
-					}
-					&:nth-child(4) {
-						width: 15%;
-					}
-					&:nth-child(5) {
-						width: 40%;
-					}
-					&:nth-child(6) {
-						display: none;
-					}
+	table.sessions, ul.search-school table.search-sessions {
+		width: 100%;
+		tbody {
+			max-height: initial;
+		}
+		tr {
+			td, th {
+				padding: 5px;
+				&:nth-child(1) {
+					width: 45%;
 				}
-				&:hover {
-					background-color: none;
+				&:nth-child(2) {
+					display: none;
+				}
+				&:nth-child(3) {
+					display: none;
+				}
+				&:nth-child(4) {
+					width: 15%;
+				}
+				&:nth-child(5) {
+					width: 40%;
+				}
+				&:nth-child(6) {
+					display: none;
 				}
 			}
-			tbody tr.inspect {
-				padding: 8px 5px;
-				table {
-					width: 100%;
+			td.online {
+				background: transparent image-url('strikeout.png') 0 50% repeat-x;
+				span {
+					position: absolute;
+					margin-top: -8px;
+				}
+			}
+			&:nth-child(even) {
+				background-color: #f2f2f2;
+				td span{
+					background-color: #f2f2f2;
+					padding: 0px 10px;
+				}
+			}
+			&:nth-child(odd) {
+				td span{
+					background-color: #ffffff;
+					padding: 0px 10px;
 				}
 			}
 		}
+		tbody tr.inspect {
+			padding: 8px 5px;
+			table {
+				width: 100%;
+			}
+		}
+	}
+	ul.search-school table.search-courses tbody tr {
+		&:nth-child(even):hover {
+			background-color: #f2f2f2;
+		}
+		&:nth-child(odd):hover {
+			background-color: #ffffff;
+		}
+	}
 }

@@ -21,3 +21,17 @@
   	border: 1px solid #CCCCCC;
   }
 }
+
+@media (max-width: 768px) {
+  .home-contact {
+    form {
+      width: 90%;
+    }
+    h1 {
+      padding: 0px;
+    }
+    h2 {
+      padding: 0px;
+    }
+  }
+}
