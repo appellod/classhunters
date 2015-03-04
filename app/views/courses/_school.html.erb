@@ -2,7 +2,7 @@
   <li>
     <div class="info">
       <% if mobile? %>
-        <strong>+&nbsp&nbsp<%= school.name.truncate(30) %> (<%= @sessions.nil? ? courses.count : sessions.count %>)</strong>
+        <strong>+&nbsp&nbsp<%= school.name.truncate(32) %> <div style="float: right; display: inline-block;">(<%= @sessions.nil? ? courses.count : sessions.count %>)</div></strong>
       <% else %>
         <strong>+&nbsp&nbsp<%= school.name %></strong> - <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles</i> - 
         <% if @sessions.nil? %>
