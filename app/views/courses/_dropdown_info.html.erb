@@ -34,12 +34,21 @@
 				<tr>
 					<td><strong>Credits:</strong></td><td><%= session.credits %></td>
 				</tr>
-				<tr>
-					<td><strong>Days:</strong></td><td><%= days_to_string(session) %></td>
-				</tr>
-				<tr>
-					<td><strong>Time:</strong></td><td><% if session.start_time.present? && session.end_time.present? %><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %>-<%= session.end_time.present? ? session.end_time.strftime('%l:%M%p').strip : '' %><% end %></td>
-				</tr>
+				<% if session.online %>
+					<tr>
+						<td><strong>Days:</strong></td><td>Online</td>
+					</tr>
+					<tr>
+						<td><strong>Time:</strong></td><td>Online</td>
+					</tr>
+				<% else %>
+					<tr>
+						<td><strong>Days:</strong></td><td><%= days_to_string(session) %></td>
+					</tr>
+					<tr>
+						<td><strong>Time:</strong></td><td><% if session.start_time.present? && session.end_time.present? %><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %>-<%= session.end_time.present? ? session.end_time.strftime('%l:%M%p').strip : '' %><% end %></td>
+					</tr>
+				<% end %>
 				<tr>
 					<td><strong>Instructor:</strong></td><td><%= session.instructor.present? ? session.instructor.name : "" %></td>
 				</tr>

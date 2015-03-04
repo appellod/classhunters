@@ -11,19 +11,12 @@
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
-<body>
-  <div class="container-fluid top-banner">
-    <div class="container">
-      <%= render 'layouts/top_banner' %>
-    </div>
-  </div>
-  <div class="container-fluid menu">
-    <div class="container">
-      <%= render 'layouts/menu' %>
-    </div>
-  </div>
-	<%= yield %>
-  <%#= debug(params) if Rails.env.development? %>
-	<%= render 'layouts/footer' %>
+<body class="plugins" style="height: 100%; overflow-y: hidden;">
+	<ul class="sort">
+		<li class="active">Courses</li>
+		<li>Sessions</li>
+	</ul>
+	<div style="clear: both"></div>
+  <%= yield %>
 </body>
 </html>

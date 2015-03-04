@@ -37,6 +37,9 @@ Site::Application.routes.draw do
   match "/courses/json", to: "courses#json", via: "get", as: "course_json"
   match "/courses/search", to: "courses#get_results", via: "get"
 
+  match "/plugin-test", to: "site#plugin", via: "get"
+  match "/plugin", to: "plugins#index", via: "get"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

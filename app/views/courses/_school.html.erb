@@ -1,29 +1,39 @@
 <ul class="search-school">
-  <li><div class="info"><strong>+&nbsp&nbsp<%= school.name %></strong> - <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles</i> - 
-  <% if @sessions.nil? %>
-  	<%= pluralize(courses.count, 'course') %>
-  <% else %>
-  	<%= pluralize(sessions.count, 'session') %>
-  <% end %>
-  </div>
+  <li>
+    <div class="info">
+      <% if mobile? %>
+        <strong>+&nbsp&nbsp<%= school.name.truncate(30) %> (<%= @sessions.nil? ? courses.count : sessions.count %>)</strong>
+      <% else %>
+        <strong>+&nbsp&nbsp<%= school.name %></strong> - <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles</i> - 
+        <% if @sessions.nil? %>
+          <%= pluralize(courses.count, 'course') %>
+        <% else %>
+          <%= pluralize(sessions.count, 'session') %>
+        <% end %>
+      <% end %>
+    </div>
 
 	<% if @sessions.nil? %>
-		<table class="search-courses">
-      <tbody class="scrollable">
-  		  <%= render partial: 'search', collection: courses, as: :course, locals: {school: school} %>
-      </tbody>
-  	</table>
+    <div class="collapse">
+  		<table class="search-courses">
+        <tbody class="scrollable">
+    		  <%= render partial: 'search', collection: courses, as: :course, locals: {school: school} %>
+        </tbody>
+    	</table>
+    </div>
   <% else %>
-  	<table class="search-courses search-sessions">
-  		<thead>
-				<tr>
-					<th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th>
-				</tr>
-			</thead>
-			<tbody class="scrollable">
-  			<%= render partial: 'search', collection: sessions, as: :session, locals: {school: school} %>
-  		</tbody>
-  	</table>
+    <div class="collapse">
+    	<table class="search-courses search-sessions">
+    		<thead>
+  				<tr>
+  					<th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th>
+  				</tr>
+  			</thead>
+  			<tbody class="scrollable">
+    			<%= render partial: 'search', collection: sessions, as: :session, locals: {school: school} %>
+    		</tbody>
+    	</table>
+    </div>
   <% end %>
 
   </li>

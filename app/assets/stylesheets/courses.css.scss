@@ -282,29 +282,33 @@ ul.search-school {
   padding: 0px;
   margin: 10px 0px;
   list-style-type: none;
-  background-color: #ff5500;
-  color: white;
-  border: 1px solid #AA0000;
+  background-color: #dadada;
+  color: black;
+  border: 1px solid #999999;
   border-radius: 3px;
   .info {
     width: 100%;
     height: 100%;
     cursor: pointer;
     padding: 10px;
-    text-shadow: 1px 1px rgba(0,0,0,.75);
+    //text-shadow: 1px 1px rgba(0,0,0,.75);
+    padding-left: 25px;
+    text-indent: -15px;
     strong {
-    	text-shadow: 2px 2px rgba(0,0,0,.75);
+    	//text-shadow: 2px 2px rgba(0,0,0,.75);
     }
     &:hover {
-      background: mix(#ff5500, black, 75%);
+      background: mix(#dadada, black, 75%);
     }
   }
-  table.search-courses {
+  .collapse {
   	display: none;
-  	border-top: 1px solid #AA0000;
+  }
+  table.search-courses {
+  	border-top: 1px solid #999999;
   	width: 100%;
   	tr {
-			color: black;
+			color: #111111;
 			width: 100%;
 			display: block;
 			td, th{
@@ -341,7 +345,7 @@ ul.search-school {
   		display: block;
   	}
   	thead tr {
-  		background-color: #E5E5E5;
+  		background-color: #EEEEEE;
 			color: black;
 			border-bottom: 1px solid #cccccc;
 			th {
@@ -453,7 +457,7 @@ ul.search-school {
 		}
 	}
 	ul.search-school {
-		font-size: 12px;
+		font-size: 14px;
 		table.search-courses {
 			width: 100%;
 			tbody {
@@ -463,7 +467,8 @@ ul.search-school {
 				td, th {
 					padding: 5px;
 					&:nth-child(1) {
-						//width: 100%;
+						width: 100%;
+						overflow-x: hidden;
 					}
 				}
 				&:hover {

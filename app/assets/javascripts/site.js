@@ -286,7 +286,7 @@ function resizeSearchHeaders() {
 
 function displayCourseInfo(element, id, data_type) {
   if(element.next().attr('class') == "inspect") {
-    element.next().slideToggle(function() {
+    element.next().slideToggle(200, function() {
       element.next().remove();
     });
   } else {
@@ -297,7 +297,7 @@ function displayCourseInfo(element, id, data_type) {
       success: function(data) {
         element.after(data.html);
         element.next().toggle();
-        element.next().slideToggle();
+        element.next().slideToggle(200);
       }
     });
   }
@@ -305,6 +305,7 @@ function displayCourseInfo(element, id, data_type) {
 
 function submitSearchForm(element, e) {
   e.preventDefault();
+  $('form.search_form input').blur();
   school = '&school_id=' + $('form.search_form').data("id");
   $.ajax({
     url: '/courses/search', 
@@ -335,8 +336,8 @@ function bindActionsToSearchResults() {
     } else {
       $(this).html($(this).html().replace('-', '+'));
     }
-    $("table", $(this).parent()).toggle();
-    $("ul", $(this).parent()).toggle();
+    $(".collapse", $(this).parent()).slideToggle(200);
+    $("ul", $(this).parent()).slideToggle(200);
     resizeSearchHeaders();
   });
   $('table.search-courses tr').click(function() {
