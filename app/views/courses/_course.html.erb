@@ -1,4 +1,4 @@
 <tr>
-	<td><%= link_to course.name, school_course_path(course.school, course) %></td>
+	<td><%= link_to course.name.html_safe, school_course_path(course.school, course) %></td>
 	<td><%= course.number.present? ? "#{course.department} #{course.number}" : course.department %></td>
 </tr>

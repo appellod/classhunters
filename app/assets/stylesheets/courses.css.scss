@@ -282,9 +282,9 @@ ul.search-school {
   padding: 0px;
   margin: 10px 0px;
   list-style-type: none;
-  background-color: #dadada;
+  background-color: #dadaff;
   color: black;
-  border: 1px solid #999999;
+  border: 1px solid #9999bb;
   border-radius: 3px;
   .info {
     width: 100%;
@@ -305,7 +305,7 @@ ul.search-school {
   	display: none;
   }
   table.search-courses {
-  	border-top: 1px solid #999999;
+  	border-top: 1px solid #9999bb;
   	width: 100%;
   	tr {
 			color: #111111;
@@ -458,6 +458,11 @@ ul.search-school {
 	}
 	ul.search-school {
 		font-size: 14px;
+		.info {
+			&:hover {
+				background-color: initial;
+			}
+		}
 		table.search-courses {
 			width: 100%;
 			tbody {
