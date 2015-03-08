@@ -197,14 +197,16 @@ class CoursesController < ApplicationController
   def get_results
     if params[:semester].present?
       sessions
-      html = render_to_string(partial: 'results')
+      form_html = render_to_string(partial: 'search_form')
+      results_html = render_to_string(partial: 'results')
     else
       index
-      html = render_to_string(partial: 'results')
+      form_html = render_to_string(partial: 'search_form')
+      results_html = render_to_string(partial: 'results')
     end
     if request.xhr?
       respond_to do |format|
-        msg = { html: html }
+        msg = { results_html: results_html, form_html: form_html }
         format.json  { render :json => msg }
       end
     else

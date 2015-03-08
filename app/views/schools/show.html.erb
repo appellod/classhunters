@@ -1,4 +1,5 @@
 <% provide(:title, @school.name) %>
+<% provide(:meta, "Important information for #{@school.name}") %>
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>'' }) %>
 
 <div class="school">

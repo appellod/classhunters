@@ -1,0 +1,20 @@
+<% provide(:meta, 'Find schools and classes near you.') %>
+<div class="container-fluid home-form-mobile">
+  <div class="container-fluid">
+    <%= form_tag courses_path, method: 'get' do %>
+      <h1>
+        Find A Class<br>Near You
+      </h1>
+      <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, etc...', id: 'home-search' %>
+      <button class="btn btn-default" type="button" onclick="this.form.submit();">Search Classes</button>
+    <% end %>
+  </div>
+</div>
+<div class="container-fluid home-menu">
+  <ul>
+    <li><%= link_to 'Find Schools', schools_path %></li>
+    <li><%= link_to 'Find Classes', courses_path %></li>
+    <li><%= link_to 'About Us', about_path %></li>
+    <li><%= link_to 'Contact Us', contact_path %></li>
+  </ul>
+</div>

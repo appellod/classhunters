@@ -1,9 +1,9 @@
 <tr data-session-id="<%= session.id %>">
 	<td>
     <% if @school.present? %>
-      <%= link_to session.course.name, school_course_path(@school, session.course) %>
+      <%= link_to session.course.name.html_safe, school_course_path(@school, session.course) %>
     <% else %>
-      <strong><%= session.course.name %></strong>
+      <strong><%= session.course.name.html_safe %></strong>
     <% end %>
   </td><td>
     <%= session.crn %>

@@ -3,10 +3,12 @@
   <h1>My Courses</h1>
 <% elsif @school.present? %>
 	<% provide(:title, "Courses at #{@school.name}".html_safe) %>
+	<% provide(:meta, "Browse all courses offered at #{@school.name}") %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>'' }) %>
   <h1>Courses at <%= @school.name %></h1>
 <% else %>
 	<% provide(:title, 'Search Courses') %>
+	<% provide(:meta, 'Find classes near you by keyword, department, time and many other criteria') %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Courses'=>"" }) %>
   <h1>Search Courses</h1>
 <% end %>
@@ -29,54 +31,7 @@
 	<% end %>
 </div>
 
-<%= form_tag (@school.present? ? school_courses_path(@school) : courses_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
-	<% if @school.nil? %>
-		<% if !location_set? || session[:location_method] == 'ip' %>
-			<div class="outside">
-				<label>Search:</label>
-				<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-				<label>Location:</label>
-			  <div class="input-group location-form">
-	      	<%= text_field_tag :location, session[:location_name], placeholder: '12345, Chicago IL, etc...' %>
-	      	<span class="input-group-btn">
-			      <button class="btn btn-default orange submit" type="button">My Location</button>
-			    </span>
-	      </div>
-	      <%= submit_tag 'Search', id: 'submit_button', class: "btn btn-large btn-primary" %>
-			</div>
-		<% else %>
-			<div class="outside">
-				<label>Search:</label>
-				<div class="input-group">
-	      	<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-	      	<span class="input-group-btn">
-	          <button class="btn btn-default orange submit" type="button">Search</button>
-	        </span>
-	      </div>
-			</div>
-			<div class="expand button">+ Optional Search Filters</div>
-			<div class="expand-container">
-				<div class="col-sm-4">
-		     	<%= render 'location_form' %>
-		    </div>
-		    <div style="clear: both;"></div>
-		    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
-		  </div>
-		<% end %>
-	<% else %>
-		<div class="expand button">+ Optional Search Filters</div>
-		<div class="expand-container">
-			<div class="col-sm-4">
-	     	<%= render 'location_form' %>
-	    </div>
-	    <div class="col-sm-4">
-	    	<%= render 'departments_form' %>
-	    </div>
-	    <div style="clear: both;"></div>
-	    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
-	  </div>
-	<% end %>
-<% end %>
+<%= render 'search_form' %>
 
 <div class="results">
 	<%= render(partial: 'results') %>

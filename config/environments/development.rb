@@ -38,4 +38,6 @@ Site::Application.configure do
     authentication: 'plain',
     enable_starttls_auto: true
   }
+
+  #config.consider_all_requests_local = false
 end

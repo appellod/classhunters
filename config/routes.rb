@@ -1,11 +1,16 @@
 require 'resque/server'
 
 Site::Application.routes.draw do
+  get "errors/file_not_found"
+  get "errors/unprocessable"
+  get "errors/internal_server_error"
   root "site#home"
   mount Resque::Server.new, at: "/resque"
   match "/about", to: "site#about", via: "get"
   match "/contact", to: "site#contact", via: "get"
   match "/contact", to: "site#contact", via: "post"
+  match "/terms", to: "site#terms", via: "get"
+  match "/privacy", to: 'site#privacy', via: 'get'
   match "/signup", to: "users#new", via: "get"
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'get'
@@ -39,6 +44,10 @@ Site::Application.routes.draw do
 
   match "/plugin-test", to: "site#plugin", via: "get"
   match "/plugin", to: "plugins#index", via: "get"
+
+  match '/404', to: 'errors#file_not_found', via: :all
+  match '/422', to: 'errors#unprocessable', via: :all
+  match '/500', to: 'errors#internal_server_error', via: :all
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

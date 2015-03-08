@@ -1,0 +1,22 @@
+.clearable{
+  background: #fff image-url('x.png') no-repeat right -15px center;
+  background-size: 12px 12px;
+  border: 1px solid #999;
+  padding: 3px 18px 3px 4px; /* Use the same right padding (18) in jQ! */
+  border-radius: 3px;
+  transition: background 0.4s;
+}
+.clearable.x  { background-position: right 7px center; }
+.clearable.onX{ cursor: pointer; z-index: 20; }
+input::-ms-clear {
+    display: none;
+}
+
+@media (max-width: 767px) {
+	.clearable{
+	  background: #fff image-url('x.png') no-repeat right -20px center;
+	  background-size: 12px 12px;
+	}
+	.clearable.x  { background-position: right 10px center; }
+	.clearable.onX{ cursor: pointer; }
+}

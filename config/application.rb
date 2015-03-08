@@ -21,5 +21,6 @@ module Site
     # config.i18n.default_locale = :de
 
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.exceptions_app = self.routes
   end
 end

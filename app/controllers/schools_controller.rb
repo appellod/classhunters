@@ -58,7 +58,9 @@ class SchoolsController < ApplicationController
         @schools = @schools.paginate(page: params[:page])
       end
     end
-    if params[:sort] != "map"
+    if params[:sort].nil? && params[:search].nil?
+      @schools = School.where('name LIKE ?', "#{params[:page_alpha]}%").order(:name).paginate(page: params[:page])
+    elsif params[:sort] != "map"
       @schools = @schools.paginate(page: params[:page])
     end
 	end

@@ -8,10 +8,11 @@ function resizeHomePage() {
 		topHeight = document.querySelector('.top-banner').clientHeight;
   	elementHeight = screenHeight - menuHeight - topHeight;
     
-    caption_size = screenWidth / 20;
-    input_size = screenWidth / 50;
+    caption_size = screenWidth / 22;
+    input_size = screenWidth / 52;
     input_width = screenWidth / 2;
-    input_height = screenWidth / 16;
+    input_height = screenWidth / 18;
+    group_padding = screenHeight / 20;
     if (caption_size > 70) {
     	caption_size = 70;
     }
@@ -37,6 +38,7 @@ function resizeHomePage() {
     $('.home-form .container-fluid').css('height', elementHeight - perks_height - 5 + 'px');
     $('.home-form h1').css('font-size', caption_size + 'px');
     $('.home-form .group').css('width', input_width + 100 + 'px');
+    $('.home-form .group').css('padding', group_padding + 'px 0px');
     $('.home-form .input-group').css('width', input_width + 'px');
     $('.home-form .input-group input').css('height', input_height + 'px');
     $('.home-form .input-group button').css('height', input_height+ 'px');
@@ -66,16 +68,16 @@ function resizeHomePage() {
         $('.home-form form').css('margin-top', '0px');
       } else {
         //tall
-        $('.home-form').css('height', elementHeight + 'px');
-        $('.home-form .container-fluid').css('height', elementHeight + 'px');
+        $('.home-form').css('height', elementHeight * .75 + 'px');
+        $('.home-form .container-fluid').css('height', elementHeight * .75 + 'px');
         $('.home-form .container-fluid').css('background', 'rgba(0,0,0,0)');
-        $('.home-form').css('backgroundSize', 'auto 100%');
-        $('.home-form').css('backgroundPosition', '50% 0px');
+        $('.home-form-mobile').css('backgroundSize', 'auto 100%');
+        $('.home-form-mobile').css('backgroundPosition', '50% 0px');
         $('.home-form h1').css('font-size', '3.75em');
         $('.home-form h1').html('Find a Class<br>Near You');
-        $('.home-form form').css('padding', '10px 0px 35px 0px');
+        $('.home-form form').css('height', elementHeight * .75 + 'px');
+        $('.home-form form').css('padding', elementHeight / 11 + 'px 0px 35px 0px');
         $('.home-form form').css('border-top', '2px solid #FF5500');
-        $('.home-form form').css('margin-top', '15px');
         $('.home-form form').css('border-bottom', '2px solid #FF5500');
         $('.home-form form').css('background-color', 'rgba(0,0,0,.8)');
       }
@@ -198,34 +200,25 @@ $(document).ready(function() {
   $(window).on('resize', function() {
     resizeBackground()
   });
-	if(document.title == 'Classhunters | Find A Class Near You') {
+	if(document.title == 'Find A Class Near You | Classhunters') {
 	  resizeHomePage();
 	  $(window).on('resize', function() {
 	  	resizeHomePage();
 	  });
 	}
-  $('input').focus(function() {
+  $('.home-form input').focus(function() {
   	placeholder = $(this).attr('placeholder');
-    alignment = $(this).css('text-align');
   	$(this).attr('placeholder', '');
     $(this).css('textAlign', 'left');
   });
-  $('input').focusout(function() {
+  $('.home-form input').focusout(function() {
   	$(this).attr('placeholder', placeholder);
-    $(this).css('textAlign', alignment);
+    if($(this).val() == '') {
+      $(this).css('textAlign', 'center');
+    }
   });
   $( ".search-container #search" ).autocomplete({
     source: 'schools/autocomplete'
-  });
-  $('.expand').click(function() {
-    $('.expand-container').toggle();
-    if ($('.expand').html().indexOf('+') >= 0) {
-      $('.expand').html($('.expand').html().replace('+', '-'));
-      $(this).addClass('open');
-    } else {
-      $('.expand').html($('.expand').html().replace('-', '+'));
-      $(this).removeClass('open');
-    }
   });
   $('.check-all').click(function() {
     $(this).closest('table').find(':checkbox').prop('checked', true);
@@ -259,6 +252,16 @@ $(document).ready(function() {
   });
   $('form.search_form').submit(function(e) {
     submitSearchForm($(this), e);
+  });
+  $('.expand').click(function() {
+    $('.expand-container').toggle();
+    if ($('.expand').html().indexOf('+') >= 0) {
+      $('.expand').html($('.expand').html().replace('+', '-'));
+      $(this).addClass('open');
+    } else {
+      $('.expand').html($('.expand').html().replace('-', '+'));
+      $(this).removeClass('open');
+    }
   });
 });
 
@@ -312,7 +315,20 @@ function submitSearchForm(element, e) {
     type: 'GET', 
     data: $('form.search_form').serialize() + school, 
     success: function(results) {
-      $('.results').html(results.html);
+      $('.results').html(results.results_html);
+      if(!$('.expand').length) {
+        $('form.search_form').html(results.form_html);
+        $('.expand').click(function() {
+          $('.expand-container').toggle();
+          if ($('.expand').html().indexOf('+') >= 0) {
+            $('.expand').html($('.expand').html().replace('+', '-'));
+            $(this).addClass('open');
+          } else {
+            $('.expand').html($('.expand').html().replace('-', '+'));
+            $(this).removeClass('open');
+          }
+        });
+      }
       var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + $('form.search_form').serialize() };
       history.pushState(obj, obj.Title, obj.Url);
       bindActionsToSearchResults();
@@ -382,3 +398,21 @@ $(document).on('DOMMouseScroll mousewheel', '.scrollable', function(ev) {
       }
     }
 });
+
+//Clearable
+$(function($) {
+  function tog(v){return v?'addClass':'removeClass';} 
+  $(document).on('input', '.clearable', function(){
+    $(this)[tog(this.value)]('x');
+  }).on('mousemove', '.x', function( e ){
+    $(this)[tog(this.offsetWidth-30 < e.clientX-this.getBoundingClientRect().left)]('onX');   
+  }).on('click', '.onX', function(){
+    $(this).removeClass('x onX').val('').change(); 
+  });
+  $(".clearable").each(function() {
+    if($(this).val().length > 0) {
+      $(this).addClass('x');
+    }
+  });
+});
+

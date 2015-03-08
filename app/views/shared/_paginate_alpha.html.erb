@@ -1,0 +1,31 @@
+<% if mobile? %>
+	<div class="pagination-alpha">
+		<%= form_tag nil, method: :get do %>
+			<% params.each do |key, value| %>
+				<% if key != 'action' && key != 'controller' && key != 'page' %>
+					<%= hidden_field_tag key, value %>
+				<% end %>
+			<% end %>
+			<%= label_tag :page_alpha, "Jump to:" %>
+			<%= select_tag :page_alpha, options_for_select("A".."Z", params[:page_alpha]), onchange: "this.form.submit();" %>
+		<% end %>
+	</div>
+<% else %>
+	<%= label_tag :page_alpha, "Jump to:", class: "paginate-label" %>
+	<div class="pagination">
+		<ul>
+			<% if params[:page_alpha].nil? %>
+				<li class="active"><a href="#">All</a></li>
+			<% else %>
+				<li><%= link_to "All", nil %></li>
+			<% end %>
+			<% for i in "A".."Z" do %>
+				<% if params[:page_alpha] == i %>
+					<li class="active"><a href="#"><%= i %></a></li>
+				<% else %>
+					<li><%= link_to i, params.except(:page).merge(page_alpha: i) %></li>
+				<% end %>
+			<% end %>
+		</ul>
+	</div>
+<% end %>

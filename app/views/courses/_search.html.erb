@@ -1,7 +1,7 @@
 <% if @sessions.nil? %>
 	<% if course.school == school %>
 	<tr data-course-id="<%= course.id %>">
-	  <td><strong><%= course.name %></strong></td>
+	  <td><strong><%= course.name.html_safe %></strong></td>
 	</tr>
 	<% end %>
 <% else %>

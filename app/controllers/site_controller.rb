@@ -1,7 +1,11 @@
 class SiteController < ApplicationController
+  include ApplicationHelper
 
   def home
   	@contact = Contact.new
+    if mobile?
+      render 'home_mobile'
+    end
   end
 
   def about
@@ -46,6 +50,6 @@ class SiteController < ApplicationController
 
     def contact_params
       params.require(:contact).permit(:name, :email,
-        :school)
+        :school, :message)
     end
 end

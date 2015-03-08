@@ -5,9 +5,9 @@ module ApplicationHelper
 	def full_title(page_title)
 		base_title = 'Classhunters'
 		if page_title.empty?
-			"#{base_title} | Find A Class Near You"
+			"Find A Class Near You | #{base_title}"
 		else
-			"#{base_title} | #{page_title}"
+			"#{page_title} | #{base_title}"
 		end
 	end
 

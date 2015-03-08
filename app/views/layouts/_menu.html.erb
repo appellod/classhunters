@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <%= link_to 'Classhunters', root_path, class: 'title' %>
+      <%= link_to (image_tag 'logo.png'), root_path, class: 'title' %>
     </div>
     <nav id="menu">
       <ul class="nav">
@@ -65,7 +65,7 @@
         <li>
           <%= form_tag courses_path, method: 'get' do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search for Classes' %>
+            <%= text_field_tag :search, params[:search], class: 'form-control clearable', placeholder: 'Search for Classes' %>
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" onclick="this.form.submit();"><i class="glyphicon glyphicon-search"></i></button>
             </span>
