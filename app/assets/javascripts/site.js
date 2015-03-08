@@ -55,31 +55,11 @@ function resizeHomePage() {
     if(Math.abs(elementHeight - lastHeight) > 100) {
       if(screenWidth / elementHeight > 1.727910238429173) {
         //wide
-        $('.home-form').css('height', elementHeight + 'px');
-        $('.home-form .container-fluid').css('height', elementHeight + 'px');
-        $('.home-form .container-fluid').css('background', 'rgba(0,0,0,.8)');
-        $('.home-form').css('backgroundSize', '100% auto');
-        $('.home-form').css('backgroundPosition', '0px 0px');
-        $('.home-form h1').css('font-size', '3.2em');
-        $('.home-form h1').html('Find a Class Near You');
-        $('.home-form form').css('padding', '0px');
-        $('.home-form form').css('border', 'none');
-        $('.home-form form').css('background-color', 'transparent');
-        $('.home-form form').css('margin-top', '0px');
+        $('.home-form-mobile').css('backgroundSize', '100% auto');
+        $('.home-form-mobile').css('backgroundPosition', '0px 0px');
       } else {
-        //tall
-        $('.home-form').css('height', elementHeight * .75 + 'px');
-        $('.home-form .container-fluid').css('height', elementHeight * .75 + 'px');
-        $('.home-form .container-fluid').css('background', 'rgba(0,0,0,0)');
         $('.home-form-mobile').css('backgroundSize', 'auto 100%');
         $('.home-form-mobile').css('backgroundPosition', '50% 0px');
-        $('.home-form h1').css('font-size', '3.75em');
-        $('.home-form h1').html('Find a Class<br>Near You');
-        $('.home-form form').css('height', elementHeight * .75 + 'px');
-        $('.home-form form').css('padding', elementHeight / 11 + 'px 0px 35px 0px');
-        $('.home-form form').css('border-top', '2px solid #FF5500');
-        $('.home-form form').css('border-bottom', '2px solid #FF5500');
-        $('.home-form form').css('background-color', 'rgba(0,0,0,.8)');
       }
     }
   	lastHeight = elementHeight;
@@ -156,9 +136,11 @@ function fixMenuOnScroll() {
     fixed = false;
     if(scroll_y >= banner_height && !fixed) {
       $('.menu').css('position', 'fixed');
+      $('.mobile-menu-space').css('display', 'block');
       fixed = true;
     } else {
       $('.menu').css('position', 'relative');
+      $('.mobile-menu-space').css('display', 'none');
       fixed = false;
     }
   }
@@ -197,6 +179,9 @@ $(document).ready(function() {
   });
 	setActiveMenuItem();
   resizeBackground();
+  $(window).on('scroll', function() {
+    fixMenuOnScroll();
+  });
   $(window).on('resize', function() {
     resizeBackground()
   });

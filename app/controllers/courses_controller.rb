@@ -13,13 +13,21 @@ class CoursesController < ApplicationController
 		  @courses = current_user.courses.order(:name)
     elsif params[:school_id].present?
       @school = School.find(params[:school_id])
-      @courses = @school.courses.order(:name)
+      if params[:search].present?
+        search
+        ids = Array.new
+        @courses_query.each do |course|
+          ids << course.id
+        end
+        if @courses.present?
+          @courses = @school.courses.where(id: ids).order("FIELD(id, #{ids.join(',')})")
+        end
+      else
+        @courses = @school.courses.order(:name)
+      end
       @departments = @courses.pluck(:department).uniq.sort
       if params[:departments].present?
         @courses = @courses.where(department: params[:departments])
-      end
-      if params[:search].present?
-        @courses = @courses.where(['name LIKE ?', "%#{params[:search]}%"])
       end
       @courses = @courses.paginate(page: params[:page])
       params[:sort] ||= 'name'

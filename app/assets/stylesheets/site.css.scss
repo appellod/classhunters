@@ -173,6 +173,7 @@ hr {
       font-size: 3em;
       font-weight: normal;
       margin: -10px 0px 5px 0px;
+      text-transform: lowercase;
       a {
         color: #FFFF00;
         &:hover {
@@ -224,6 +225,7 @@ hr {
   margin-bottom: 0px;
   font-size: 1.1em;
   font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
   font-weight: bold;
   .navbar-brand {
     font-size: 2.5em;
@@ -681,7 +683,10 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 
 .mobile-menu {
   .header {
-    //background: #FF5500;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 999999;
     font-size: 16px;
     font-weight: bold;
     color: #FFFF00;
@@ -693,6 +698,8 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
     padding: 0px;
     margin: 0px;
     width: 100%;
+    background-color: #282828;
+    border-bottom: 3px solid #FF5500;
     .title {
       img {
         height: 52px;
@@ -738,7 +745,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 .mm-menu {
   display: none;
   background: none;
-  background: #282828;
+  background: #181818;
   color: #000000;
   font-weight: bold;
   .mm-list {
@@ -749,9 +756,8 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
   }
   li {
     text-align: left;
-    text-transform: uppercase;
     font-size: 1.25em;
-    border-bottom: 2px solid #555555;
+    border-bottom: 2px solid #333333;
     padding: 0px;
     a {
       display: inline-block;
@@ -759,13 +765,13 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       width: 100%;
     }
     a:hover, a:active {
-      color: #000000;
-      background-color: white;
+      color: white;
+      background-color: #585858;
     }
     &:hover {
-      background-color: white;
+      background-color: #585858;
       a {
-        color: black;
+        color: white;
       }
     }
     &:after {
@@ -799,6 +805,10 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 }
 .mm-menu .mm-list > li:after {
   border-color: transparent;
+}
+.mobile-menu-space {
+  display: none;
+  height: 44px;
 }
 
 .ui-autocomplete {
@@ -840,12 +850,6 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       margin: 0px 0px;
       padding: 0px 15px;
     }
-  }
-  .menu {
-    box-shadow: none;
-    //background-image: image-url('chalkboard-mobile.jpg');
-    background-color: #282828;
-    border-bottom: 3px solid #FF5500;
   }
   h1 {
     font-size: 2em;
@@ -962,6 +966,9 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
         }
       }
     }
+  }
+  .mobile-menu-space {
+    height: 52px;
   }
   .home-perks, .home-contact {
     font-size: .8em;

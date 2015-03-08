@@ -3,7 +3,7 @@
 		<%= link_to image_tag('facebook-clear.png'), 'http://www.facebook.com/classhunters', target: '_blank' %>
 	  <%= link_to image_tag('twitter-clear.png'), 'http://www.twitter.com/classhunters', target: '_blank' %>
 	  <%= link_to image_tag('google-plus-clear.png'), 'https://www.google.com/+classhunters', target: '_blank' %><br>
-		<%= link_to "Terms & Conditions", terms_path %> | <%= link_to "Privacy Policy", privacy_path %><br>
+		<%= link_to "Terms & Conditions", terms_path %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to "Privacy Policy", privacy_path %><br>
 	  &copy; <%= Time.now.year %> Classhunters. All rights reserved.
 	</footer>
 <% else %>
@@ -12,7 +12,7 @@
 			<table>
 				<tr>
 					<td>
-						<%= link_to "Terms & Conditions", terms_path %> | <%= link_to "Privacy Policy", privacy_path %><br>
+						<%= link_to "Terms & Conditions", terms_path %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to "Privacy Policy", privacy_path %><br>
 						&copy; <%= Time.now.year %> Classhunters. All rights reserved.
 					</td>
 					<td>
@@ -22,7 +22,7 @@
 					  <%= link_to image_tag('google-plus-clear.png'), 'https://www.google.com/+classhunters', target: '_blank' %>
 					</td>
 					<td>
-						<strong>Contact Us: </strong><%= link_to 'info@classhunters.com', 'mailto:info@classhunters.com' %>
+						<strong>Contact Us: </strong><%= link_to "&#105;&#110;&#102;&#111;&#64;&#99;&#108;&#97;&#115;&#115;&#104;&#117;&#110;&#116;&#101;&#114;&#115;&#46;&#99;&#111;&#109;".html_safe, "mailto:&#105;&#110;&#102;&#111;&#64;&#99;&#108;&#97;&#115;&#115;&#104;&#117;&#110;&#116;&#101;&#114;&#115;&#46;&#99;&#111;&#109;".html_safe %>
 					</td>
 				</tr>
 			</table>

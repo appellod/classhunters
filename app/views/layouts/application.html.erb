@@ -11,25 +11,27 @@
   <%= render 'layouts/google_analytics' %>
 </head>
 <body>
-  <div class="container-fluid top-banner">
-    <div class="container">
-      <%= render 'layouts/top_banner' %>
-    </div>
-  </div>
-  <div class="container-fluid menu">
-    <div class="container">
-      <%= render 'layouts/menu' %>
-    </div>
-  </div>
-  <div class="container-fluid content">
-    <div class="container">
-      <div class="breadcrumbs">
-        <%= yield(:crumbs) %>
+  <div class="mmenu-wrapper">
+    <div class="container-fluid top-banner">
+      <div class="container">
+        <%= render 'layouts/top_banner' %>
       </div>
-    	<%= yield %>
-    	<%#= debug(params) if Rails.env.development? %>
     </div>
+    <div class="container-fluid menu">
+      <div class="container">
+        <%= render 'layouts/menu' %>
+      </div>
+    </div><div class="mobile-menu-space"></div>
+    <div class="container-fluid content">
+      <div class="container">
+        <div class="breadcrumbs">
+          <%= yield(:crumbs) %>
+        </div>
+      	<%= yield %>
+      	<%#= debug(params) if Rails.env.development? %>
+      </div>
+    </div>
+    <%= render 'layouts/footer' %>
   </div>
-  <%= render 'layouts/footer' %>
 </body>
 </html>
