@@ -146,27 +146,6 @@ function fixMenuOnScroll() {
   }
 }
 
-function isDescendant(p, c) {
-  if(p.indexOf('.')) {
-    p = document.getElementsByClassName(p)[0];
-  } else {
-    p = document.getElementById(p);
-  }
-  if(c.indexOf('.')) {
-    c = document.getElementsByClassName(c)[0];
-  } else {
-    c = document.getElementById(c);
-  }
-  var node = c.parentNode;
-  while (node != null) {
-    if (node == p) {
-      return true;
-    }
-    node = node.parentNode;
-  }
-  return false;
-}
-
 $(document).ready(function() {
   $(function() {
     $("#menu").mmenu();
@@ -223,8 +202,8 @@ $(document).ready(function() {
     locate.byGeocoder($('#school-location-form input#location').val(), true);
   });
   $(window).resize(function() {
-    resizeSearchHeaders();
     fitTablesToContainer();
+    resizeSearchHeaders();
   }).resize(); // Trigger resize handler
   $('.days-container tr, .department-container tr').click(function(e) {
     if(!$(e.target).is(':checkbox')){
@@ -251,9 +230,15 @@ $(document).ready(function() {
 });
 
 function fitTablesToContainer() {
-  $('table.search-courses').css('width', $('ul.search-school').width());
-  $('table.search-courses thead').css('width', $('ul.search-school').width());
-  $('table.search-courses tbody').css('width', $('ul.search-school').width());
+  if($('ul.search-school').length > 0) {
+    $('table.search-courses').css('width', $('ul.search-school').width());
+    $('table.search-courses thead').css('width', $('ul.search-school').width());
+    $('table.search-courses tbody').css('width', $('ul.search-school').width());
+  } else if(document.documentElement.clientWidth < 768) {
+    $('table.search-courses').css('width', document.documentElement.clientWidth - 30 + 'px');
+    $('table.search-courses thead').css('width', document.documentElement.clientWidth - 30 + 'px');
+    $('table.search-courses tbody').css('width', document.documentElement.clientWidth - 30 + 'px');
+  }
 }
 
 function resizeSearchHeaders() {
@@ -295,6 +280,7 @@ function submitSearchForm(element, e) {
   e.preventDefault();
   $('form.search_form input').blur();
   school = '&school_id=' + $('form.search_form').data("id");
+  $('.results').html('<div class="loading"><img src="<%= image_path('loading.gif') %>">Searching for Courses</div>')
   $.ajax({
     url: '/courses/search', 
     type: 'GET', 
@@ -317,6 +303,8 @@ function submitSearchForm(element, e) {
       var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + $('form.search_form').serialize() };
       history.pushState(obj, obj.Title, obj.Url);
       bindActionsToSearchResults();
+      fitTablesToContainer();
+      resizeSearchHeaders();
     },
     error: function(e) {
       params = $('form.search_form').serialize();

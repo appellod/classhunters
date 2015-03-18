@@ -10,7 +10,6 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require google_maps
 //= require jquery
 //= require bootstrap
 //= require_tree .

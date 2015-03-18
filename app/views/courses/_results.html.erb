@@ -28,17 +28,14 @@
 	<% if @school.present? %>
 		<% if @sessions.present? && @sessions.count > 0 %>
 			<%= will_paginate @sessions %>
-				<table class="courses sessions">
-					<tr>
-						<th>Name</th>
-						<th>CRN</th>
-						<th>Credits</th>
-						<th>Days</th>
-						<th>Time</th>
-						<th>Instructor</th>
-					</tr>
-				  <%= render partial: 'session', collection: @sessions, as: :session %>
-				</table>
+				<table class="search-courses search-sessions sessions" style="border-top: none;">
+	    		<thead>
+	  				<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
+	  			</thead>
+	  			<tbody style="max-height: none;">
+	    			<%= render partial: 'search', collection: @sessions, as: :session, locals: {school: @school} %>
+	    		</tbody>
+	    	</table>
 			<%= will_paginate @sessions %>
 		<% else %>
 				<div class="empty">There are currently no course listings for this semester.</div>

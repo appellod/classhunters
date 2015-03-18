@@ -10,25 +10,15 @@
   	<% if @sessions.include?(semester) %>
   	<br>
 	  <strong><%= semester %> Sessions:</strong><br>
-	  <table>
-		  <tr><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th><th>Building</th><th>Room</th></tr>
+	  <table class="search-courses search-sessions sessions" style="border-top: none;">
+	  	<thead>
+		  	<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
+		  </thead>
+		  <tbody>
 			<% @sessions[semester].each do |session| %>
-		  	<tr>
-		  		<td><%= session.crn %></td>
-		  		<td>
-		  			<% if session.credits.present? %>
-				  		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
-				  	<% end %>
-		  		</td>
-		  		<td><%= days_to_string(session) %></td>
-		  		<td><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %> - <%= session.end_time.present? ? session.end_time.strftime('%l:%M%p') : '' %></td>
-		  		<td><%= session.instructor.present? ? session.instructor.name : "" %></td>
-		  		<td><%= session.location %></td>
-		  		<td>
-		  			<%= session.room != 'TBA' && session.room.to_f != 0 ? session.room.to_f.round(0) : session.room %>
-		  		</td>
-		  	</tr>
+		  	<%= render 'courses/session', session: session %>
 			<% end %>
+			</tbody>
   	</table>
   	<% end %>
 	<% end %>

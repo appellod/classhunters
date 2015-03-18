@@ -34,7 +34,6 @@
       </ul>
     </nav>
   </div>
-  <div class="mobile-menu-space"></div>
 <% else %>
   <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
@@ -66,7 +65,7 @@
         <li>
           <%= form_tag courses_path, method: 'get' do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: 'form-control clearable', placeholder: 'Search for Classes' %>
+            <%= text_field_tag :search, params[:search], id: "top-search", class: 'form-control clearable', placeholder: 'Search for Classes' %>
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" onclick="this.form.submit();"><i class="glyphicon glyphicon-search"></i></button>
             </span>

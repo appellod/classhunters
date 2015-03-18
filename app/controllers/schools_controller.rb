@@ -15,7 +15,7 @@ class SchoolsController < ApplicationController
     end
     if params[:sort].present?
       if params[:sort] == "distance"
-        if !session[:latitude].nil? && !session[:longitude].nil?
+        if location_set?
           latitude = session[:latitude]
           longitude = session[:longitude]
           @schools = @schools.sort_by { |school| school.distance_from([latitude, longitude])}
@@ -27,7 +27,7 @@ class SchoolsController < ApplicationController
         end
       elsif params[:sort] == "map"
         @schools = School.all
-        if session[:latitude].present? && session[:longitude].present?
+        if location_set?
           @min_lat = session[:latitude] - 0.1
           @min_lon = session[:longitude] - 0.1
           @max_lat = session[:latitude] + 0.1

@@ -10,7 +10,8 @@ class Course < ActiveRecord::Base
 	validates :name, presence: true
 
 	searchable do
-		text :name, :description, :department
+		text :name, boost: 2.0
+		text :description, :department
 		string(:school_id_str) { |p| p.school_id.to_s }
 	end
 

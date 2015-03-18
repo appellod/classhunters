@@ -59,7 +59,7 @@ h1, h2 {
 }
 h1 {
   font-size: 2.5em;
-  letter-spacing: -2px;
+  letter-spacing: 0px;
   text-align: center;
   color: $header-color;
 }
@@ -87,6 +87,7 @@ button, input[type=submit], .orange, a.button, .button {
   font-size: 1.5em;
   border-radius: 3px;
   text-shadow: 2px 2px rgba(0,0,0,.75);
+  letter-spacing: 1px;
   &:hover {
     border-color: #CC2200;
     background: mix($menu-color, black, 80%);
@@ -324,7 +325,7 @@ hr {
     font-size: 4em;
     color: #FFFF00;
     margin-bottom: 25px;
-    letter-spacing: -5px;
+    letter-spacing: -3px;
     margin-top: 0px;
     font-family: 'Permanent Marker', sans-serif;
     text-transform: none;
@@ -898,16 +899,16 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       top: initial;
       width: 100%;
       h1 {
-        font-size: 3.5em;
+        font-size: 3.25em;
         color: #FFFF00;
         font-family: 'Permanent Marker';
         line-height: .9em;
-        margin: 0px 0px 10px 0px;
+        margin: 0px 0px 25px 0px;
         margin-left: -3px;
         text-shadow: 3px 3px black, -1px 0px 1px rgba(100, 50, 0, 1), 0px -1px 1px rgba(100, 50, 0, 1);
       }
       input {
-        width: 90%;
+        width: 80%;
         font-family: 'Oswald', sans-serif;
         padding: 0px 15px;
         text-align: center;
@@ -963,11 +964,16 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
             background-color: #CF2500;
             text-decoration: none;
           }
+          &:active {
+            background-color: #CF2500;
+            text-decoration: none;
+          }
         }
       }
     }
   }
   .mobile-menu-space {
+    display: block;
     height: 52px;
   }
   .home-perks, .home-contact {

@@ -36,7 +36,7 @@
 	}
 }
 
-table.courses {
+table.courses, table.sessions {
 	width: 100%;
 	margin-top: 10px;
 	tr {
@@ -63,6 +63,10 @@ table.courses {
 				background-color: #ffffff;
 				padding: 0px 10px;
 			}
+		}
+		&:nth-child(1) {
+			background-color: #e2e2e2;
+			border-bottom: none;
 		}
 	}
 }
@@ -94,6 +98,21 @@ form#semester {
 	margin: 10px auto 0px auto;
 	font-size: 1em;
 	padding: 7px 15px;
+	font-size: 14px;
+	color: black;
+	background-color: #f2f2f2;
+	border: 1px solid #aaaaaa;
+	text-shadow: none;
+	&:hover {
+		color: black;
+		background-color: #cccccc;
+		border: 1px solid #aaaaaa;
+	}
+	&:active {
+		color: black;
+		background-color: #cccccc;
+		border: 1px solid #aaaaaa;
+	}
 }
 
 form.course_search {
@@ -123,6 +142,22 @@ form.search_form {
 					font-size: 18px;
 					margin: 0px 12px;
 				}
+				&.location {
+					height: 43px;
+					padding: 0px 13px;
+					font-size: 14px;
+					color: black;
+					background-color: #f2f2f2;
+					border: 1px solid #aaaaaa;
+					text-shadow: none;
+					font-weight: bold;
+					&:hover {
+						background-color: #cccccc;
+					}
+					&:active {
+						background-color: #FF5500;
+					}
+				}
 			}
 		}
 		& > input[type=submit] {
@@ -136,7 +171,7 @@ form.search_form {
 	}
 	.expand-container {
 		display: none;
-		background-color: rgba(0,0,0,.05);
+		background-color: #f2f2f2;
 		border: 1px solid #AAAAAA;
 		padding: 10px 0px;
 		border-radius: 3px;
@@ -256,11 +291,11 @@ form.search_form {
 				padding: 0px 13px;
 				font-size: 14px;
 				color: black;
-				background-color: #ffffff;
+				background-color: #f2f2f2;
 				border: 1px solid #aaaaaa;
 				border-left: none;
 				text-shadow: none;
-				box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.25);
+				font-weight: bold;
 				&:hover {
 					background-color: #cccccc;
 				}
@@ -280,6 +315,18 @@ form.search_form {
 	margin: 15px 0px;
 	font-weight: bold;
 	font-size: 1.25em;
+}
+.results {
+	.loading {
+		font-weight: bold;
+		text-align: center;
+		margin: 25px auto;
+		img {
+			display: block;
+			margin: 10px auto;
+			width: 100px;
+		}
+	}
 }
 ul.search-school {
   padding: 0px;
@@ -312,117 +359,6 @@ ul.search-school {
   .collapse {
   	display: none;
   }
-  table.search-courses {
-  	border-top: 1px solid #999999;
-  	width: 100%;
-  	tr {
-			width: 100%;
-			display: block;
-			td, th{
-				padding: 5px 10px;
-				margin: 0px;
-			}
-			td {
-				display: inline-block;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				overflow: hidden;
-				height: 100%;
-				&:nth-child(1) {
-					width: 35%;
-				}
-				&:nth-child(2) {
-					width: 10%;
-				}
-				&:nth-child(3) {
-					width: 8%;
-				}
-				&:nth-child(4) {
-					width: 8%;
-				}
-				&:nth-child(5) {
-					width: 20%;
-				}
-				&:nth-child(6) {
-					width: 18%;
-				}
-				&.online {
-					background: transparent image-url('strikeout.png') 0 50% repeat-x;
-					span {
-						margin-left: 15%;
-						padding: 0px 10px;
-					}
-				}
-			}
-		}
-  	thead, tbody {
-  		display: block;
-  	}
-  	thead tr {
-  		background-color: #f2f2f2;
-			color: black;
-			border-bottom: 1px solid #cccccc;
-			th {
-				display: inline-block;
-				margin-right: 0px;
-			}
-  	}
-  	tbody {
-  		max-height: 500px;
-  		overflow-x: hidden;
-  		overflow-y: auto;
-  		tr {
-  			cursor: pointer;
-  			&:nth-child(even) {
-					background-color: #F2F2F2;
-					td.online span {
-						background-color: #F2F2F2;
-					}
-				}
-				&:nth-child(odd) {
-					background-color: #FFFFFF;
-					td.online span {
-						background-color: #FFFFFF;
-					}
-				}
-				&:hover {
-					background-color: #CCCCCC;
-					td.online span {
-						background-color: #CCCCCC;
-					}
-				}
-  		}
-  		tr.inspect {
-				background-color: #f2f2f2;
-				padding: 8px 15px;
-				border-top: 2px solid #CCCCCC;
-				border-bottom: 2px solid #CCCCCC;
-				cursor: initial;
-				td {
-					padding: 0px;
-					width: 100%;
-					cursor: initial;
-				}
-				table {
-					width: 100%;
-					cursor: initial;
-					tr {
-						background-color: transparent;
-						display: table-row;
-						cursor: initial;
-						td {
-							display: table-cell;
-							white-space: normal;
-							vertical-align: text-top;
-							width: auto;
-							padding: 2px 10px;
-							cursor: initial;
-						}
-					}
-				}
-			}
-  	}
-  }
   li {
     padding: 0px;
     ul.search-courses {
@@ -447,6 +383,118 @@ ul.search-school {
       }
     }
   }
+}
+table.search-courses {
+	border-top: 1px solid #999999;
+	width: 100%;
+	tr {
+		width: 100%;
+		display: block;
+		td, th{
+			padding: 5px 10px;
+			margin: 0px;
+		}
+		td, th {
+			display: inline-block;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			height: 100%;
+			&:nth-child(1) {
+				width: 35%;
+			}
+			&:nth-child(2) {
+				width: 10%;
+			}
+			&:nth-child(3) {
+				width: 8%;
+			}
+			&:nth-child(4) {
+				width: 8%;
+			}
+			&:nth-child(5) {
+				width: 20%;
+			}
+			&:nth-child(6) {
+				width: 18%;
+			}
+			&.online {
+				background: transparent image-url('strikeout.png') 0 50% repeat-x;
+				text-align: left;
+				span {
+					margin-left: 5%;
+					padding: 0px 10px;
+				}
+			}
+		}
+	}
+	thead, tbody {
+		display: block;
+	}
+	thead tr {
+		background-color: #f2f2f2;
+		color: black;
+		border-bottom: 1px solid #cccccc;
+		th {
+			display: inline-block;
+			margin-right: 0px;
+		}
+	}
+	tbody {
+		max-height: 500px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		tr {
+			cursor: pointer;
+			&:nth-child(even) {
+				background-color: #F2F2F2;
+				td.online span {
+					background-color: #F2F2F2;
+				}
+			}
+			&:nth-child(odd) {
+				background-color: #FFFFFF;
+				td.online span {
+					background-color: #FFFFFF;
+				}
+			}
+			&:hover {
+				background-color: #CCCCCC;
+				td.online span {
+					background-color: #CCCCCC;
+				}
+			}
+		}
+		tr.inspect {
+			background-color: #f2f2f2;
+			padding: 8px 15px;
+			border-top: 2px solid #CCCCCC;
+			border-bottom: 2px solid #CCCCCC;
+			cursor: initial;
+			td {
+				padding: 0px;
+				width: 100%;
+				cursor: initial;
+			}
+			table {
+				width: 100%;
+				cursor: initial;
+				tr {
+					background-color: transparent;
+					display: table-row;
+					cursor: initial;
+					td {
+						display: table-cell;
+						white-space: normal;
+						vertical-align: text-top;
+						width: auto;
+						padding: 2px 10px;
+						cursor: initial;
+					}
+				}
+			}
+		}
+	}
 }
 
 @media (max-width: 768px) {
@@ -514,7 +562,7 @@ ul.search-school {
 	ul.search-school li ul.search-courses {
 		max-height: none;
 	}
-	table.sessions, ul.search-school table.search-sessions {
+	table.sessions, table.search-sessions {
 		width: 100%;
 		tbody {
 			max-height: initial;
@@ -544,10 +592,12 @@ ul.search-school {
 			}
 			td.online {
 				background: transparent image-url('strikeout.png') 0 50% repeat-x;
+				text-align: left;
 				span {
 					position: absolute;
 					margin-top: -10px;
 					margin-left: 0px;
+					float: left;
 				}
 			}
 			&:nth-child(even) {

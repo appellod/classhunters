@@ -14,9 +14,18 @@ class CoursesController < ApplicationController
     elsif params[:school_id].present?
       @school = School.find(params[:school_id])
       if params[:search].present?
-        search
+        search_term = ""
+        params[:search].split(" ").each do |word|
+          search_term << "#{word.singularize} "
+        end
+        search_term = search_term.strip
+        search = Course.search do
+          fulltext search_term
+          paginate page: params[:page], per_page: 9999999
+        end
+        @courses = search.results
         ids = Array.new
-        @courses_query.each do |course|
+        @courses.each do |course|
           ids << course.id
         end
         if @courses.present?
@@ -44,9 +53,18 @@ class CoursesController < ApplicationController
     elsif params[:school_id].present?
       @school = School.find(params[:school_id])
       if params[:search].present?
-        search
+        search_term = ""
+        params[:search].split(" ").each do |word|
+          search_term << "#{word.singularize} "
+        end
+        search_term = search_term.strip
+        search = Course.search do
+          fulltext search_term
+          paginate page: params[:page], per_page: 9999999
+        end
+        @courses = search.results
         ids = Array.new
-        @courses_query.each do |course|
+        @courses.each do |course|
           ids << course.id
         end
         if @courses.present?

@@ -23,7 +23,8 @@ class School < ActiveRecord::Base
 	before_save { self.url = self.name.parameterize }
 
 	searchable do
-		text :name, :address, :phone, :website, :city, :state, :zip
+		text :name, boost: 2.0
+		text :address, :phone, :website, :city, :state, :zip
 	end
 
 	def strip_attributes

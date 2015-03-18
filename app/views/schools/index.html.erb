@@ -50,9 +50,9 @@
     <%= form_tag schools_path, method: :get, id: "school-location-form" do %>
       <div class="input-group">
         <%= text_field_tag :location, session[:location_name], class: 'form-control clearable' %>
-        <%= hidden_field_tag :sort, "distance" %>
+        <%= hidden_field_tag :sort, params[:sort] %>
         <span class="input-group-btn">
-          <button class="btn btn-default orange" type="button" onclick="this.form.submit();">Locate</button>
+          <button class="btn btn-default orange" type="button" onclick="locate.byGeocoder($('#school-location-form input#location').val(), true);">Locate</button>
         </span>
       </div>
     <% end %>
@@ -85,14 +85,14 @@
 <% if params[:sort].nil? && params[:search].nil? %>
   <%= render 'shared/paginate_alpha' %>
   <hr>
-  <%= label_tag :page_alpha, "Page:", class: "paginate-label" %>
+  <%= label_tag :page_alpha, "Page:", class: "paginate-label" unless @schools.total_pages < 2 %>
   <%= will_paginate %>
 
   <ul class="schools">
     <%= render @schools %>
   </ul>
 
-  <%= label_tag :page_alpha, "Page:", class: "paginate-label" %>
+  <%= label_tag :page_alpha, "Page:", class: "paginate-label" unless @schools.total_pages < 2 %>
   <%= will_paginate %>
   <hr>
   <%= render 'shared/paginate_alpha' %>
