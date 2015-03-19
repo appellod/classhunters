@@ -41,7 +41,7 @@ class CoursesController < ApplicationController
       @courses = @courses.paginate(page: params[:page])
       params[:sort] ||= 'name'
     else
-      search
+      search_courses
     end
 	end
 
@@ -74,7 +74,7 @@ class CoursesController < ApplicationController
         @courses = @school.courses.order(:name)
       end
     elsif params[:search].present?
-      search
+      search_courses
       if session[:latitude].present? && session[:longitude].present?
         ids = Array.new
         @courses_query.each do |course|
@@ -257,7 +257,7 @@ class CoursesController < ApplicationController
       @school = School.find(params[:school_id])
     end
 
-    def search
+    def search_courses
       if params[:location].present?
         if params[:location] == session[:location_name]
           session[:location_method] = 'geocoder'

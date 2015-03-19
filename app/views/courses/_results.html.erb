@@ -17,7 +17,7 @@
 				<%= render 'school', school: school[0], courses: school[1] %>
 			<% end %>
 		<% elsif params[:search].present? %>
-			<% if session[:latitude].present? && session[:longitude].present? %>
+			<% if location_set? %>
 				<div class="empty">There are no courses matching your search terms.</div>
 			<% else %>
 				<div class="empty">Please specify a location.</div>
