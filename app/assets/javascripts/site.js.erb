@@ -191,12 +191,6 @@ $(document).ready(function() {
     $(this).closest('table').find(':checkbox').prop('checked', false);
   });
   bindActionsToSearchResults();
-  $(".location-form button").click(function(e) {
-    e.preventDefault();
-    navigator.geolocation.getCurrentPosition(function(position) {
-      locate.byCoordinates(position.coords.latitude, position.coords.longitude);
-    });
-  });
   $("#school-location-form").submit(function(e) {
     e.preventDefault();
     locate.byGeocoder($('#school-location-form input#location').val(), true);
@@ -339,6 +333,12 @@ function bindActionsToSearchResults() {
       id = $(this).data("session-id");
     }
     displayCourseInfo($(this), id, data_type);
+  });
+  $(".location-form button").click(function(e) {
+    e.preventDefault();
+    navigator.geolocation.getCurrentPosition(function(position) {
+      locate.byCoordinates(position.coords.latitude, position.coords.longitude);
+    });
   });
 }
 
