@@ -1,3 +1,5 @@
+<%= render "shared/loading" %>
+
 <% if @user.present? %>
 	<% provide(:title, 'My Courses') %>
   <h1>My Courses</h1>
@@ -6,13 +8,15 @@
 	<% provide(:meta, "Browse all courses offered at #{@school.name}") %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>'' }) %>
   <h1>Courses at <%= @school.name %></h1>
+	<p>Use the "Optional Search Filters" to narrow your search by criteria such as location, time and meeting days. Click on a class to view more information about that class.</p>
 <% else %>
-	<% provide(:title, 'Search Courses') %>
-	<% provide(:meta, 'Find classes near you by keyword, department, time and many other criteria') %>
+	<% provide(:title, 'Search All Courses') %>
+	<% provide(:meta, 'Find classes at colleges and universities near you by keyword, time and many other criteria') %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Courses'=>"" }) %>
   <h1>Search Courses</h1>
+  <h2>Search for classes at local colleges and universities</h2>
+	<p>Use the "Optional Search Filters" to narrow your search by criteria such as location, time and meeting days. Results are displayed under collapsable tabs by school. Click on the school's tab to view its matching classes. Click on a class to view more information about that class.</p>
 <% end %>
-
 <div class="sort">
 	<strong>Courses</strong>
 	 | 

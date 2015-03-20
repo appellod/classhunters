@@ -4,9 +4,7 @@
 
 <div class="school">
   <h1><%= @school.name %></h1>
-  <% if @school.courses.present? %>
-    <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
-  <% end %>
+  <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
   <table>
     <tr>
       <td>Address:</td>
@@ -20,9 +18,9 @@
     <% if @school.phone.present? %>
       <tr><td>Phone:</td><td><%= @school.phone %></td></tr>
     <% end %>
-  <% if @school.website.present? %>
-    <tr><td>Website:</td><td><%= link_to @school.website, "http://#{@school.website.gsub('http://', '')}", target: '_blank' %></td></tr>
-  <% end %>
+    <% if @school.website.present? %>
+      <tr><td>Website:</td><td><%= link_to @school.website, "http://#{@school.website.gsub('http://', '')}", target: '_blank' %></td></tr>
+    <% end %>
   </table>
   <div id="map-canvas"></div>
 </div>

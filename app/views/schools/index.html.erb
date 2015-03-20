@@ -1,3 +1,4 @@
+<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>'' }) %>
 <% if params[:sort].nil? %>
   <% provide(:title, 'Find Schools By Name') %>
   <% provide(:meta, 'Search for two- and four-year colleges and universities by name') %>
@@ -15,7 +16,7 @@
   <% provide(:meta, 'View two- and four-year colleges and universities on a map') %>
   <h1>Find Schools By Map</h1>
 <% end %>
-<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>'' }) %>
+<h2>Search from over 3000 colleges and universities in the United States by name, distance, state or map. View information about each school such as its address, website and phone number to contact.</h2>
 <div class="sort">
 	<% if params[:sort].present? %>
 		<%= link_to "Name", schools_path %>

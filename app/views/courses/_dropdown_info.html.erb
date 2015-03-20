@@ -20,7 +20,7 @@
 	</tr>
 <% else %>
 	<tr class='inspect'>
-		<td>
+		<td colspan="<%= desktop? ? 6 : 3 %>">
 			<table>
 				<tr>
 					<td><strong>Name:</strong></td><td><%= link_to course.name.html_safe, school_course_path(course.school, course) %></td>

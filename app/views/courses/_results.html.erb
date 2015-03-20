@@ -2,13 +2,17 @@
 	<% if @school.present? %>
 		<% if @courses.present? && @courses.count > 0 %>
 			<%= will_paginate @courses %>
-				<table class="courses">
-					<tr><th>Name</th><th>Department</th></tr>
-				  <%= render @courses %>
+				<table class="search-courses school-courses">
+					<thead>
+						<tr><th>Name</th></tr>
+					</thead>
+					<tbody>
+				  	<%= render partial: 'search', collection: @courses, as: :course, locals: { school: @school } %>
+				  </tbody>
 				</table>
 			<%= will_paginate @courses %>
 		<% else %>
-			<div class="empty">There are currently no course listings for this school.</div>
+			<div class="empty">We do not currently have any course information for this school.<br><%= link_to "Click here to visit the school's website for more information.", "http://#{@school.website.gsub('http://', '')}", target: '_blank' %></div>
 		<% end %>
 	<% else %>
 		<% if @courses.present? && @courses.count > 0 %>
@@ -28,7 +32,7 @@
 	<% if @school.present? %>
 		<% if @sessions.present? && @sessions.count > 0 %>
 			<%= will_paginate @sessions %>
-				<table class="search-courses search-sessions sessions" style="border-top: none;">
+				<table class="search-courses search-sessions school-sessions" style="border-top: none;">
 	    		<thead>
 	  				<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
 	  			</thead>
@@ -38,7 +42,7 @@
 	    	</table>
 			<%= will_paginate @sessions %>
 		<% else %>
-				<div class="empty">There are currently no course listings for this semester.</div>
+				<div class="empty">There are currently no course listings for this semester.<br><%= link_to "Click here to visit the school's website for more information.", "http://#{@school.website.gsub('http://', '')}", target: '_blank' %></div>
 		<% end %>
 	<% else %>
 		<% if @sessions.present? && @sessions.count > 0 %>

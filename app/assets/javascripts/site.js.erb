@@ -197,7 +197,6 @@ $(document).ready(function() {
   });
   $(window).resize(function() {
     fitTablesToContainer();
-    resizeSearchHeaders();
   }).resize(); // Trigger resize handler
   $('.days-container tr, .department-container tr').click(function(e) {
     if(!$(e.target).is(':checkbox')){
@@ -253,6 +252,7 @@ function resizeSearchHeaders() {
 
 function displayCourseInfo(element, id, data_type) {
   if(element.next().attr('class') == "inspect") {
+    element.next().css("display", "block")
     element.next().slideToggle(200, function() {
       element.next().remove();
     });
@@ -263,8 +263,9 @@ function displayCourseInfo(element, id, data_type) {
       data: data_type + '_id=' + id,
       success: function(data) {
         element.after(data.html);
+        element.next().css("display", "block")
         element.next().toggle();
-        element.next().slideToggle(200);
+        element.next().slideToggle(200, function() { element.next().css("display", "table-row") });
       }
     });
   }
@@ -274,13 +275,14 @@ function submitSearchForm(element, e) {
   e.preventDefault();
   $('form.search_form input').blur();
   school = '&school_id=' + $('form.search_form').data("id");
-  $('.results').html('<div class="loading"><img src="<%= image_path('loading.gif') %>">Searching for Courses</div>')
+  $('.loading').show();
   $.ajax({
     url: '/courses/search', 
     type: 'GET', 
     data: $('form.search_form').serialize() + school, 
     success: function(results) {
       $('.results').html(results.results_html);
+      $('.loading').hide();
       if(!$('.expand').length) {
         $('form.search_form').html(results.form_html);
         $('.expand').click(function() {
@@ -298,7 +300,6 @@ function submitSearchForm(element, e) {
       history.pushState(obj, obj.Title, obj.Url);
       bindActionsToSearchResults();
       fitTablesToContainer();
-      resizeSearchHeaders();
     },
     error: function(e) {
       params = $('form.search_form').serialize();
@@ -321,7 +322,6 @@ function bindActionsToSearchResults() {
     }
     $(".collapse", $(this).parent()).slideToggle(200);
     $("ul", $(this).parent()).slideToggle(200);
-    resizeSearchHeaders();
   });
   $('table.search-courses tr').click(function() {
     data_type = '';

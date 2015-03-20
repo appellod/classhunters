@@ -16,7 +16,7 @@
 }
 
 .course {
-	table {
+	& > table {
 		margin: 10px 0px;
 		width: 100%;
 		tr {
@@ -32,41 +32,6 @@
 			&:nth-child(even) {
 				background-color: transparent;
 			}
-		}
-	}
-}
-
-table.courses, table.sessions {
-	width: 100%;
-	margin-top: 10px;
-	tr {
-		td, th{
-			padding: 5px 10px;
-		}
-		td.online {
-			background: transparent image-url('strikeout.png') 0 50% repeat-x;
-			text-align: center;
-			vertical-align: center;
-		}
-		th {
-			background-color: #e2e2e2;
-		}
-		&:nth-child(odd) {
-			background-color: #f2f2f2;
-			td span{
-				background-color: #f2f2f2;
-				padding: 0px 10px;
-			}
-		}
-		&:nth-child(even) {
-			td span{
-				background-color: #ffffff;
-				padding: 0px 10px;
-			}
-		}
-		&:nth-child(1) {
-			background-color: #e2e2e2;
-			border-bottom: none;
 		}
 	}
 }
@@ -309,24 +274,27 @@ form.search_form {
 		}
 	}
 }
-
+.loading {
+	position: fixed; 
+	display: none; 
+	top: calc(50% - 76px); 
+	left: calc(50% - 92px); 
+	text-align: center; 
+	font-weight: bold; 
+	background-color: white; 
+	border: 2px solid #e0e0e0; 
+	padding: 15px; 
+	z-index: 999999;
+	img {
+		width: 100px;
+		height: 100px;
+	}
+}
 .results-count {
 	text-align: center;
 	margin: 15px 0px;
 	font-weight: bold;
 	font-size: 1.25em;
-}
-.results {
-	.loading {
-		font-weight: bold;
-		text-align: center;
-		margin: 25px auto;
-		img {
-			display: block;
-			margin: 10px auto;
-			width: 100px;
-		}
-	}
 }
 ul.search-school {
   padding: 0px;
@@ -366,8 +334,6 @@ ul.search-school {
       background-color: white;
       margin: 0px;
       padding: 0px;
-      max-height: 500px;
-			overflow-y: initial;
 			overflow-x: hidden;
       li {
         list-style-type: none;
@@ -385,65 +351,32 @@ ul.search-school {
   }
 }
 table.search-courses {
+	table-layout: fixed;
 	border-top: 1px solid #999999;
 	width: 100%;
 	tr {
 		width: 100%;
-		display: block;
 		td, th{
 			padding: 5px 10px;
 			margin: 0px;
 		}
 		td, th {
-			display: inline-block;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			overflow: hidden;
 			height: 100%;
-			&:nth-child(1) {
-				width: 35%;
-			}
-			&:nth-child(2) {
-				width: 10%;
-			}
-			&:nth-child(3) {
-				width: 8%;
-			}
-			&:nth-child(4) {
-				width: 8%;
-			}
-			&:nth-child(5) {
-				width: 20%;
-			}
-			&:nth-child(6) {
-				width: 18%;
-			}
-			&.online {
-				background: transparent image-url('strikeout.png') 0 50% repeat-x;
-				text-align: left;
-				span {
-					margin-left: 5%;
-					padding: 0px 10px;
-				}
-			}
 		}
-	}
-	thead, tbody {
-		display: block;
 	}
 	thead tr {
 		background-color: #f2f2f2;
 		color: black;
 		border-bottom: 1px solid #cccccc;
 		th {
-			display: inline-block;
 			margin-right: 0px;
 		}
 	}
 	tbody {
-		max-height: 500px;
 		overflow-x: hidden;
-		overflow-y: auto;
 		tr {
 			cursor: pointer;
 			&:nth-child(even) {
@@ -467,12 +400,11 @@ table.search-courses {
 		}
 		tr.inspect {
 			background-color: #f2f2f2;
-			padding: 8px 15px;
 			border-top: 2px solid #CCCCCC;
 			border-bottom: 2px solid #CCCCCC;
 			cursor: initial;
-			td {
-				padding: 0px;
+			& > td {
+				padding: 8px 15px;
 				width: 100%;
 				cursor: initial;
 			}
@@ -490,10 +422,67 @@ table.search-courses {
 						width: auto;
 						padding: 2px 10px;
 						cursor: initial;
+						&:nth-child(2) {
+							width: 100%;
+						}
 					}
 				}
 			}
 		}
+	}
+}
+
+table.search-sessions {
+	tr {
+		td, th {
+			&:nth-child(1) {
+				width: 35%;
+			}
+			&:nth-child(2) {
+				width: 10%;
+			}
+			&:nth-child(3) {
+				width: 8%;
+			}
+			&:nth-child(4) {
+				width: 8%;
+			}
+			&:nth-child(5) {
+				width: 20%;
+			}
+			&:nth-child(6) {
+				width: 18%;
+			}
+			&.online {
+				background: transparent image-url('strikeout.png') 0 50% repeat-x;
+				text-align: center;
+				span {
+					padding: 0px 10px;
+				}
+			}
+		}
+	}
+}
+
+table.school-courses {
+	margin-top: 10px;
+	border-top: none;
+	thead tr {
+		background-color: #e2e2e2;
+		border-bottom: none;
+	}
+	tbody tr {
+		td, th{
+			padding: 5px 10px;
+		}
+	}
+}
+
+table.school-sessions {
+	border-top: none;
+	thead tr {
+		border-bottom: none;
+		background-color: #e2e2e2;
 	}
 }
 
@@ -534,39 +523,29 @@ table.search-courses {
 				background-color: initial;
 			}
 		}
-		table.search-courses {
-			width: 100%;
-			tbody {
-				max-height: initial;
-			}
-			tr {
-				td, th {
-					padding: 10px;
-					&:nth-child(1) {
-						width: 100%;
-						overflow-x: hidden;
-					}
-				}
-				&:hover {
-					background-color: none;
-				}
-			}
-			tbody tr.inspect {
-				padding: 8px 5px;
-				table {
-					width: calc(100% - 10px);
-				}
-			}
-		}
 	}
-	ul.search-school li ul.search-courses {
-		max-height: none;
-	}
-	table.sessions, table.search-sessions {
+	table.search-courses {
 		width: 100%;
 		tbody {
 			max-height: initial;
 		}
+		tr {
+			td, th {
+				padding: 10px;
+			}
+			&:hover {
+				background-color: none;
+			}
+		}
+		tbody tr.inspect {
+			padding: 8px 5px;
+			table {
+				width: calc(100% - 10px);
+			}
+		}
+	}
+	table.sessions, table.search-sessions {
+		width: 100%;
 		tr {
 			padding: 0px 3px;
 			td, th {
@@ -592,13 +571,7 @@ table.search-courses {
 			}
 			td.online {
 				background: transparent image-url('strikeout.png') 0 50% repeat-x;
-				text-align: left;
-				span {
-					position: absolute;
-					margin-top: -10px;
-					margin-left: 0px;
-					float: left;
-				}
+				text-align: center;
 			}
 			&:nth-child(even) {
 				background-color: #f2f2f2;
@@ -615,7 +588,10 @@ table.search-courses {
 			}
 		}
 		tbody tr.inspect {
-			padding: 8px 5px;
+			padding: 0px;
+			& > td {
+				padding: 8px 5px;
+			}
 			table {
 				width: 100%;
 			}
@@ -627,6 +603,13 @@ table.search-courses {
 		}
 		&:nth-child(odd):hover {
 			background-color: #ffffff;
+		}
+	}
+	table.school-courses {
+		tbody {
+		 tr td {
+		 	padding: 10px;
+		 }
 		}
 	}
 }

@@ -40,9 +40,11 @@
 		     	<label>Search:</label>
 					<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
 		    </div>
-		    <div class="col-sm-4">
-		    	<%= render 'departments_form' %>
-		    </div>
+		    <% if @departments.present? %>
+			    <div class="col-sm-4">
+			    	<%= render 'departments_form' %>
+			    </div>
+		    <% end %>
 		    <div style="clear: both;"></div>
 		    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
 		  </div>
@@ -106,9 +108,11 @@
 		      <label>Search:</label>
 		      <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
 		    </div>
-				<div class="col-sm-4">
-		    	<%= render 'departments_form' %>
-		    </div>
+		    <% if @departments.present? %>
+					<div class="col-sm-4">
+			    	<%= render 'departments_form' %>
+			    </div>
+		    <% end %>
 		    <div class="col-sm-4">
 		    	<%= render 'days_form' %>
 		    </div>

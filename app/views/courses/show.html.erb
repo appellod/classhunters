@@ -1,4 +1,5 @@
 <% provide(:title, @course.name) %>
+<% provide(:meta, "Information for #{@course.name} at #{@course.school.name}.") %>
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), @course.name=>'' }) %>
 <div class="course">
   <h1><%= @course.name %></h1>
@@ -10,7 +11,7 @@
   	<% if @sessions.include?(semester) %>
   	<br>
 	  <strong><%= semester %> Sessions:</strong><br>
-	  <table class="search-courses search-sessions sessions" style="border-top: none;">
+	  <table class="search-courses search-sessions school-sessions">
 	  	<thead>
 		  	<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
 		  </thead>

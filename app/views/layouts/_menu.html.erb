@@ -25,11 +25,13 @@
         <li><%= link_to 'Contact', contact_path %></li>
         <li><%= link_to 'Schools', schools_path %></li>
         <li><%= link_to 'Courses', courses_path %></li>
-        <% if signed_in? %>
-          <li><%= link_to 'Account', user_path(current_user) %></li>
-          <li><%= link_to 'Sign Out', signout_path %></li>
-        <% else %>
-          <li><%= link_to 'Sign In', signin_path %></li>
+        <% if Rails.env != "production" %>
+          <% if signed_in? %>
+            <li><%= link_to 'Account', user_path(current_user) %></li>
+            <li><%= link_to 'Sign Out', signout_path %></li>
+          <% else %>
+            <li><%= link_to 'Sign In', signin_path %></li>
+          <% end %>
         <% end %>
       </ul>
     </nav>
@@ -52,11 +54,13 @@
       <li><%= link_to 'Contact', contact_path %></li>
       <li><%= link_to 'Schools', schools_path %></li>
       <li><%= link_to 'Courses', courses_path %></li>
-      <% if signed_in? %>
-        <li><%= link_to 'Account', user_path(current_user) %></li>
-        <li><%= link_to 'Sign Out', signout_path %></li>
-      <% else %>
-        <li><%= link_to 'Sign In', signin_path %></li>
+      <% if Rails.env != "production" %>
+        <% if signed_in? %>
+          <li><%= link_to 'Account', user_path(current_user) %></li>
+          <li><%= link_to 'Sign Out', signout_path %></li>
+        <% else %>
+          <li><%= link_to 'Sign In', signin_path %></li>
+        <% end %>
       <% end %>
     </ul>
 

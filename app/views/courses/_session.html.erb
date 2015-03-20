@@ -1,10 +1,6 @@
 <tr data-session-id="<%= session.id %>">
 	<td>
-    <%# if @school.present? %>
-      <%#= link_to session.course.name.html_safe, school_course_path(@school, session.course) %>
-    <%# else %>
-      <strong><%= session.course.name.html_safe %></strong>
-    <%# end %>
+    <strong><%= session.course.name.html_safe %></strong>
   </td><td>
     <%= session.crn %>
   </td><td>
@@ -12,7 +8,7 @@
   		<%= session.credits % 1 == 0 ? session.credits.to_f.round(0) : session.credits.round %>
   	<% end %>
   <% if session.start_time.nil? && session.end_time.nil? && days_to_string(session).length == 0 && session.online %>
-    <td class="online"></td><td class="online"><span>Online</span>
+    <td colspan="2" class="online"><span>Online</span>
   <% else %>
     </td><td>
     <%= days_to_string(session) %>

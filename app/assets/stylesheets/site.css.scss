@@ -66,14 +66,14 @@ h1 {
 h2 {
   font-size: 1.2em;
   letter-spacing: 0px;
-  margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
   color: black;
 }
 p {
   font-size: 1.1em;
-  line-height: 1.7em;
+  line-height: 1.1em;
+  text-align: center;
 }
 button, input[type=submit], .orange, a.button, .button {
   display: block;
@@ -845,6 +845,9 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 /* Mobile */
 
 @media (max-width: 767px) {
+  p {
+    text-align: center;
+  }
   .container-fluid {
     overflow-x: hidden;
     .container {
@@ -853,7 +856,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
     }
   }
   h1 {
-    font-size: 2em;
+    font-size: 1.75em;
   }
   .content {
     padding: 0px;
