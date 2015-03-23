@@ -58,4 +58,8 @@ module SchoolsHelper
                   ['Wyoming', 'Wyoming']
             ]
       end
+
+      def school_website_url(school)
+            return "http://#{school.website.gsub('http://', '').gsub('>', '')}"
+      end
 end

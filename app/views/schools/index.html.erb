@@ -86,6 +86,7 @@
 <% if params[:sort].nil? && params[:search].nil? %>
   <%= render 'shared/paginate_alpha' %>
   <hr>
+  <div class="results-count"><%= @schools.total_entries %> schools found!</div>
   <%= label_tag :page_alpha, "Page:", class: "paginate-label" unless @schools.total_pages < 2 %>
   <%= will_paginate %>
 
@@ -98,6 +99,7 @@
   <hr>
   <%= render 'shared/paginate_alpha' %>
 <% elsif params[:sort] != "map" %>
+  <div class="results-count"><%= @schools.total_entries %> schools found!</div>
   <%= will_paginate %>
 
   <ul class="schools">

@@ -1,6 +1,7 @@
 <% if params[:semester].nil? %>
 	<% if @school.present? %>
 		<% if @courses.present? && @courses.count > 0 %>
+			<div class="results-count"><%= @courses.total_entries %> courses found!</div>
 			<%= will_paginate @courses %>
 				<table class="search-courses school-courses">
 					<thead>
@@ -11,12 +12,14 @@
 				  </tbody>
 				</table>
 			<%= will_paginate @courses %>
+		<% elsif @school.courses.empty? %>
+			<div class="empty">To view course offerings for this institution, click <%= link_to "here", school_website_url(@school), target: '_blank' %> to visit the school's website.</div>
 		<% else %>
-			<div class="empty">We do not currently have any course information for this school.<br><%= link_to "Click here to visit the school's website for more information.", "http://#{@school.website.gsub('http://', '')}", target: '_blank' %></div>
+			<div class="empty">There are no courses matching your search terms.</div>
 		<% end %>
 	<% else %>
 		<% if @courses.present? && @courses.count > 0 %>
-			<div class="results-count"><%= @course_count %> Courses Found!</div>
+			<div class="results-count"><%= @course_count %> courses found!</div>
 			<% @courses.each do |school| %>
 				<%= render 'school', school: school[0], courses: school[1] %>
 			<% end %>
@@ -31,6 +34,7 @@
 <% else %>
 	<% if @school.present? %>
 		<% if @sessions.present? && @sessions.count > 0 %>
+			<div class="results-count"><%= @sessions.total_entries %> course sessions found!</div>
 			<%= will_paginate @sessions %>
 				<table class="search-courses search-sessions school-sessions" style="border-top: none;">
 	    		<thead>
@@ -41,12 +45,14 @@
 	    		</tbody>
 	    	</table>
 			<%= will_paginate @sessions %>
+		<% elsif @school.courses.empty? %>
+			<div class="empty">To view course offerings for this institution, click <%= link_to "here", school_website_url(@school), target: '_blank' %> to visit the school's website.</div>
 		<% else %>
-				<div class="empty">There are currently no course listings for this semester.<br><%= link_to "Click here to visit the school's website for more information.", "http://#{@school.website.gsub('http://', '')}", target: '_blank' %></div>
+			<div class="empty">There are no courses matching your search terms.</div>
 		<% end %>
 	<% else %>
 		<% if @sessions.present? && @sessions.count > 0 %>
-			<div class="results-count"><%= @session_count %> Course Sessions Found!</div>
+			<div class="results-count"><%= @session_count %> course sessions found!</div>
 			<% @sessions.each do |school| %>
 				<%= render 'school', school: school[0], sessions: school[1] %>
 			<% end %>

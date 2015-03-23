@@ -1,26 +1,18 @@
 <% provide(:meta, 'Find classes offered at colleges and universities near you.') %>
 <div class="container-fluid home-form">
   <div class="container-fluid">
-    <%= form_tag courses_path, method: 'get' do %>
-      <% if mobile? %>
+    <%= form_tag courses_path, method: 'get', :enforce_utf8 => false do %>
+      <div class="group">
         <h1>
-          Find A Class<br>Near You
+          Find A Class Near You
         </h1>
-        <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, etc...', id: 'home-search' %>
-        <button class="btn btn-default" type="button" onclick="this.form.submit();">Search Classes</button>
-      <% else %>
-        <div class="group">
-          <h1>
-            Find A Class Near You
-          </h1>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...', id: 'home-search' %>
-            <span class="input-group-btn">
-              <button class="btn btn-default button" type="button" onclick="this.form.submit();">Search Classes</button>
-            </span>
-          </div>
+        <div class="input-group">
+          <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...', id: 'home-search' %>
+          <span class="input-group-btn">
+            <button class="btn btn-default button" type="button" onclick="this.form.submit();">Search Classes</button>
+          </span>
         </div>
-      <% end %>
+      </div>
     <% end %>
   </div>
 </div>

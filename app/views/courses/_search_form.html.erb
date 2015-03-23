@@ -9,8 +9,9 @@
 				  <div class="input-group location-form">
 		      	<%= text_field_tag :location, session[:location_name], placeholder: '12345, Chicago IL, etc...' %>
 		      	<span class="input-group-btn location-form">
-				      <button class="btn btn-default orange submit location" type="button">My Location</button>
+				      <button type="button" class="btn btn-default orange submit location">My Location</button>
 				    </span>
+				    <div class="arrow-box alert-location">Please click "Allow" at the top of your browser to let it use your location.</div>
 		      </div>
 		      <%= submit_tag 'Search', id: 'submit_button', class: "btn btn-large btn-primary" %>
 				</div>
@@ -18,7 +19,7 @@
 				<div class="outside">
 					<label>Search:</label>
 					<div class="input-group">
-		      	<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+		      	<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...', onload: 'alert("Worked");' %>
 		      	<span class="input-group-btn">
 		          <button class="btn btn-default orange submit" type="button">Search</button>
 		        </span>
@@ -70,6 +71,7 @@
 		      	<span class="input-group-btn location-form">
 				      <button class="btn btn-default orange submit location" type="button">My Location</button>
 				    </span>
+				    <div class="arrow-box alert-location">Please click "Allow" at the top of your browser to let it use your location.</div>
 		      </div>
 		      <%= submit_tag 'Search', id: 'submit_button', class: "btn btn-large btn-primary" %>
 	      </div>

@@ -146,7 +146,8 @@ function fixMenuOnScroll() {
   }
 }
 
-$(document).ready(function() {
+var ready;
+ready = function() {
   $(function() {
     $("#menu").mmenu();
   });
@@ -156,7 +157,7 @@ $(document).ready(function() {
       $(this).closest('form').submit();
     }
   });
-	setActiveMenuItem();
+  setActiveMenuItem();
   resizeBackground();
   $(window).on('scroll', function() {
     fixMenuOnScroll();
@@ -164,19 +165,19 @@ $(document).ready(function() {
   $(window).on('resize', function() {
     resizeBackground()
   });
-	if(document.title == 'Find A Class Near You | Classhunters') {
-	  resizeHomePage();
-	  $(window).on('resize', function() {
-	  	resizeHomePage();
-	  });
-	}
+  if(document.title == 'Find A Class Near You | Classhunters') {
+    resizeHomePage();
+    $(window).on('resize', function() {
+      resizeHomePage();
+    });
+  }
   $('.home-form input').focus(function() {
-  	placeholder = $(this).attr('placeholder');
-  	$(this).attr('placeholder', '');
+    placeholder = $(this).attr('placeholder');
+    $(this).attr('placeholder', '');
     $(this).css('textAlign', 'left');
   });
   $('.home-form input').focusout(function() {
-  	$(this).attr('placeholder', placeholder);
+    $(this).attr('placeholder', placeholder);
     if($(this).val() == '') {
       $(this).css('textAlign', 'center');
     }
@@ -220,7 +221,10 @@ $(document).ready(function() {
       $(this).removeClass('open');
     }
   });
-});
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
 
 function fitTablesToContainer() {
   if($('ul.search-school').length > 0) {
@@ -277,7 +281,7 @@ function submitSearchForm(element, e) {
   school = '&school_id=' + $('form.search_form').data("id");
   $('.loading').show();
   $.ajax({
-    url: '/courses/search', 
+    url: [location.protocol, '//', location.host, location.pathname].join(''), 
     type: 'GET', 
     data: $('form.search_form').serialize() + school, 
     success: function(results) {
@@ -300,15 +304,46 @@ function submitSearchForm(element, e) {
       history.pushState(obj, obj.Title, obj.Url);
       bindActionsToSearchResults();
       fitTablesToContainer();
-    },
-    error: function(e) {
-      params = $('form.search_form').serialize();
-      if(params.indexOf('semester=') > -1) {
-        url_path = '/courses/sessions';
-      } else {
-        url_path = '/courses';
+    }
+  });
+}
+
+function ajaxPagination(element, e) {
+  e.preventDefault();
+  $('.loading').show();
+  $.ajax({
+    url: element.attr('href'), 
+    type: 'GET', 
+    success: function(results) {
+      $('.results').html(results.results_html);
+      $('.loading').hide();
+      var obj = { Title: document.title, Url: element.attr('href') };
+      history.pushState(obj, obj.Title, obj.Url);
+      bindActionsToSearchResults();
+      fitTablesToContainer();
+    }
+  });
+}
+
+function ajaxRefresh() {
+  current_url = [location.protocol, '//', location.host, location.pathname].join('');
+  $.ajax({
+    url: location.href, 
+    type: 'GET', 
+    success: function(results) {
+      $('.results').html(results.results_html);
+      $('form.search_form').html(results.form_html);
+      $('.loading').hide();
+      bindActionsToSearchResults();
+      fitTablesToContainer();
+      /*
+      current_url = [location.protocol, '//', location.host, location.pathname].join('');
+      if(document.referrer.split('?')[0] == current_url) {
+        $(window).bind('popstate', function(event){
+            ajaxRefresh();
+        });
       }
-      window.location.href = url_path + '?' + params;
+      */
     }
   });
 }
@@ -336,9 +371,27 @@ function bindActionsToSearchResults() {
   });
   $(".location-form button").click(function(e) {
     e.preventDefault();
+    if(document.documentElement.clientWidth > 767) {
+      setTimeout(function() {
+        $('.alert-location').show();
+      }, 200);
+    }
     navigator.geolocation.getCurrentPosition(function(position) {
       locate.byCoordinates(position.coords.latitude, position.coords.longitude);
+      $('.alert-location').remove();
+    }, function() {
+      $('.alert-location').html("You have either denied the location request or your Location Services are off.");
+      setTimeout(function() {
+        $('.alert-location').fadeOut(1000);
+      }, 5000);
     });
+    return false;
+  });
+  $('.alert-location').click(function() {
+    $(this).fadeOut(500);
+  });
+  $('.pagination a').click(function(e) {
+    //ajaxPagination($(this), e);
   });
 }
 

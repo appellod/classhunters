@@ -1,9 +1,10 @@
 <div class="location-form">
 	<label>Specify a location:</label>
-	<div class="input-group">
+	<div class="input-group location-form">
     <%= text_field_tag :location, session[:location_name], class: 'form-control', placeholder: '12345, Chicago IL, etc...' %>
-    <span class="input-group-btn">
+    <span class="input-group-btn location-form">
       <button class="btn btn-default" type="button">My Location</button>
     </span>
+    <div class="arrow-box alert-location">Please click "Allow" at the top of your browser to let it use your location.</div>
   </div>
 </div>

@@ -8,7 +8,6 @@
 	<% provide(:meta, "Browse schedules of all courses offered at #{@school.name}") %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), 'Sessions'=>'' }) %>
   <h1>Course Sessions at <%= @school.name %></h1>
-  <h2>Search for classes at local colleges and universities</h2>
 	<p>Use the "Optional Search Filters" to narrow your search by criteria such as location, time and meeting days. Click on a class to view more information about that class.</p>
 <% else %>
 	<% provide(:title, 'Search All Sessions') %>

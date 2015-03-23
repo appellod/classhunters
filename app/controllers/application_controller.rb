@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   	def get_location
   		if session[:latitude].nil? || session[:longitude].nil?
-  			#get_location_by_ip
+  			get_location_by_ip
   		end
   	end
 end

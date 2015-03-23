@@ -141,7 +141,6 @@ form {
     font-family: 'Oswald', sans-serif;
     border-radius: 3px;
     border: 1px solid #CCCCCC;
-    box-shadow: inset 0px 0px 4px rgba(0,0,0,.25);
   }
   .btn-primary {
     font-size: 1.5em;
@@ -251,14 +250,13 @@ hr {
         margin-right: 0px;
         margin-top: 6px;
         input {
-          font-size: 12px;
+          font-size: 14px;
           padding: 0px 10px;
           font-weight: 400;
           line-height: 28px;
           height: 32px;
           //border-radius: 0px;
           border: 1px solid #CCC;
-          box-shadow: inset 0px 0px 4px rgba(0,0,0,.2);
         }
         button {
           height: 32px;
@@ -815,6 +813,41 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
 .ui-autocomplete {
   max-height: 200px;
   overflow-x: hidden;
+}
+
+.arrow-box {
+  position: absolute;
+  display: none;
+  background: #ffffcc;
+  border: 2px solid #ddddaa;
+  z-index: 99999999;
+  padding: 5px 10px;
+  font-weight: bold;
+  width: calc(100% - 2px);
+  left: 0px;
+  top: 47px;
+  border-radius: 3px;
+}
+.arrow-box:after, .arrow-box:before {
+  bottom: 100%;
+  right: 50px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow-box:after {
+  border-bottom-color: #ffffcc;
+  border-width: 10px;
+  margin-right: -10px;
+}
+.arrow-box:before {
+  border-bottom-color: #ddddaa;
+  border-width: 13px;
+  margin-right: -13px;
 }
 
 @media (min-width: 768px) and (max-width: 992px) {

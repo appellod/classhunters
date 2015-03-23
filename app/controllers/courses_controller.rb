@@ -21,7 +21,7 @@ class CoursesController < ApplicationController
         search_term = search_term.strip
         search = Course.search do
           fulltext search_term
-          paginate page: params[:page], per_page: 9999999
+          paginate per_page: 9999999
         end
         @courses = search.results
         ids = Array.new
@@ -30,6 +30,8 @@ class CoursesController < ApplicationController
         end
         if @courses.present?
           @courses = @school.courses.where(id: ids).order("FIELD(id, #{ids.join(',')})")
+        else
+          @courses = Course.none
         end
       else
         @courses = @school.courses.order(:name)
@@ -39,9 +41,16 @@ class CoursesController < ApplicationController
         @courses = @courses.where(department: params[:departments])
       end
       @courses = @courses.paginate(page: params[:page])
-      params[:sort] ||= 'name'
     else
       search_courses
+    end
+    if request.xhr?
+      form_html = render_to_string(partial: 'search_form')
+      results_html = render_to_string(partial: 'results')
+      respond_to do |format|
+        msg = { results_html: results_html, form_html: form_html }
+        format.json  { render :json => msg }
+      end
     end
 	end
 
@@ -60,7 +69,7 @@ class CoursesController < ApplicationController
         search_term = search_term.strip
         search = Course.search do
           fulltext search_term
-          paginate page: params[:page], per_page: 9999999
+          paginate per_page: 9999999
         end
         @courses = search.results
         ids = Array.new
@@ -127,7 +136,14 @@ class CoursesController < ApplicationController
         @sessions = @sessions.paginate(page: params[:page])
       end
     end
-    params[:sort] ||= 'name'
+    if request.xhr?
+      form_html = render_to_string(partial: 'search_form')
+      results_html = render_to_string(partial: 'results')
+      respond_to do |format|
+        msg = { results_html: results_html, form_html: form_html }
+        format.json  { render :json => msg }
+      end
+    end
   end
 
 	def new
@@ -277,7 +293,7 @@ class CoursesController < ApplicationController
         search_term = search_term.strip
         search = Course.search do
           fulltext search_term
-          paginate page: params[:page], per_page: 9999999
+          paginate per_page: 9999999
         end
         @courses_query = search.results
         @course_count = @courses_query.count

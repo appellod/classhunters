@@ -93,12 +93,17 @@ form.search_form {
 	.outside {
 		max-width: 400px;
 		margin: 15px auto 25px auto;
+		input {
+			box-shadow: none;
+		}
 		.input-group {
 			margin-bottom: 10px;
 			input {
 				border-top-right-radius: 0px;
 				border-bottom-right-radius: 0px;
 				margin: 0px;
+				height: 43px;
+				box-shadow: none;
 			}
 			button {
 				padding: 10px 15px 9px 15px;
@@ -116,6 +121,8 @@ form.search_form {
 					border: 1px solid #aaaaaa;
 					text-shadow: none;
 					font-weight: bold;
+					border-top-left-radius: 0px;
+					border-bottom-left-radius: 0px;
 					&:hover {
 						background-color: #cccccc;
 					}
@@ -261,6 +268,8 @@ form.search_form {
 				border-left: none;
 				text-shadow: none;
 				font-weight: bold;
+				border-top-left-radius: 0px;
+				border-bottom-left-radius: 0px;
 				&:hover {
 					background-color: #cccccc;
 				}
