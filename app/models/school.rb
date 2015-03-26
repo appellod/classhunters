@@ -2,6 +2,8 @@ class School < ActiveRecord::Base
 	has_and_belongs_to_many :users
 	has_many :courses, dependent: :destroy
 	has_many :instructors, dependent: :destroy
+	has_many :course_searches
+	has_many :session_searches
 
 	before_validation :strip_attributes
 

@@ -46,6 +46,17 @@ class SiteController < ApplicationController
     end
   end
 
+  def stats
+    if admin_user
+      @course_searches = CourseSearch.select("search, count(*) AS count").where("search IS NOT NULL").group("search").order("count(*) DESC").limit(20)
+      @session_searches = SessionSearch.select("search, count(*) AS count").where("search IS NOT NULL").group("search").order("count(*) DESC").limit(20)
+      @course_search_locations = CourseSearch.select(:latitude, :longitude)
+      @session_search_locations = SessionSearch.select(:latitude, :longitude)
+    else
+      redirect_to root_path
+    end
+  end
+
   private
 
     def contact_params

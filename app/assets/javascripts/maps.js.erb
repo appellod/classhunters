@@ -62,6 +62,51 @@ var maps = (function() {
       map.fitBounds(bounds);
     },
 
+    initializeStats: function(element) {
+      screenWidth = document.documentElement.clientWidth;
+      if(screenWidth > 767) {
+        var sw = new google.maps.LatLng(29.994875, -120.551526);
+        var ne = new google.maps.LatLng(45.773356, -75.049573);
+        bounds = new google.maps.LatLngBounds (sw, ne);
+        mapOptions = {};
+        $(element).css('height', $(element).width() * .5625 + "px");
+      } else {
+        var sw = new google.maps.LatLng(21.571282, -130.544454);
+        var ne = new google.maps.LatLng(56.281307, -57.914994);
+        bounds = new google.maps.LatLngBounds (sw, ne);
+        document.querySelector(element).style.height = '200px';
+        var mapOptions = {
+          disableDefaultUI: true,
+          mapTypeControl: false,
+          draggable: false, 
+          zoomControl: false, 
+          scrollwheel: false, 
+          disableDoubleClickZoom: true
+        };
+      }
+      map = new google.maps.Map(document.querySelector(element), mapOptions);
+      map.fitBounds(bounds);
+    },
+
+    markerStats: function(lat, lon) {
+      width = 10;
+      height = 10;
+      var image = {
+        url: "<%= image_path('dot-red.png') %>",
+        size: new google.maps.Size(width, height),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(width/2, height/2),
+        scaledSize: new google.maps.Size(width, height)
+      };
+      var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lon),
+          map: map,
+          zIndex: 1,
+          icon: image
+      });
+      return marker;
+    },
+
     /**
      * Places a marker on #map-canvas.
      * @param lat The latitude

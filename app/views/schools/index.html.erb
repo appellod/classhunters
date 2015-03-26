@@ -1,3 +1,5 @@
+<%= render "shared/loading" %>
+
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>'' }) %>
 <% if params[:sort].nil? %>
   <% provide(:title, 'Find Schools By Name') %>
@@ -16,7 +18,7 @@
   <% provide(:meta, 'View two- and four-year colleges and universities on a map') %>
   <h1>Find Schools By Map</h1>
 <% end %>
-<h2>Search from over 3000 colleges and universities in the United States by name, distance, state or map. View information about each school such as its address, website and phone number to contact.</h2>
+<p>Search from over 3000 colleges and universities in the United States by name, distance, state or map. View information about each school such as its address, website and phone number to contact.</p>
 <div class="sort">
 	<% if params[:sort].present? %>
 		<%= link_to "Name", schools_path %>
@@ -83,40 +85,4 @@
   </div>
 <% end %>
 
-<% if params[:sort].nil? && params[:search].nil? %>
-  <%= render 'shared/paginate_alpha' %>
-  <hr>
-  <div class="results-count"><%= @schools.total_entries %> schools found!</div>
-  <%= label_tag :page_alpha, "Page:", class: "paginate-label" unless @schools.total_pages < 2 %>
-  <%= will_paginate %>
-
-  <ul class="schools">
-    <%= render @schools %>
-  </ul>
-
-  <%= label_tag :page_alpha, "Page:", class: "paginate-label" unless @schools.total_pages < 2 %>
-  <%= will_paginate %>
-  <hr>
-  <%= render 'shared/paginate_alpha' %>
-<% elsif params[:sort] != "map" %>
-  <div class="results-count"><%= @schools.total_entries %> schools found!</div>
-  <%= will_paginate %>
-
-  <ul class="schools">
-    <%= render @schools %>
-  </ul>
-
-  <%= will_paginate %>
-<% else %>
-  <h2>Click on a marker to view school info.</h2>
-  <div id="map-canvas"></div>
-  <script>
-    maps.initializeWithBounds(<%= @min_lat %>, <%= @min_lon %>, <%= @max_lat %>, <%= @max_lon %>);
-    <% if session[:latitude].present? && session[:longitude].present? %>
-      maps.currentLocation(<%= "#{session[:latitude]}, #{session[:longitude]}" %>);
-    <% end %>
-    <% @schools.each do |school| %>
-      maps.markerWithInfo(<%= school.latitude %>, <%= school.longitude %>, "<%= school.name %>", "<%= school.address %>", <%= school.id %>);
-    <% end %>
-  </script>
-<% end %>
+<%= render 'results' %>

@@ -1,0 +1,33 @@
+.site-stats {
+	h2 {
+		text-align: left;
+		font-size: 1.5em;
+		margin-bottom: 15px;
+	}
+	table {
+		width: 100%;
+		thead {
+			tr {
+				background-color: #e2e2e2;
+				th {
+					padding: 5px 10px;
+				}
+			}
+		}
+		tbody {
+			tr {
+				td {
+					padding: 5px 10px;
+				}
+				&:nth-child(even) {
+					background-color: #f2f2f2;
+				}
+			}
+		}
+	}
+	.stats-map {
+		margin: 10px 15px;
+		width: calc(100% - 30px);
+		height: 350px;
+	}
+}

@@ -8,7 +8,7 @@
 						<tr><th>Name</th></tr>
 					</thead>
 					<tbody>
-				  	<%= render partial: 'search', collection: @courses, as: :course, locals: { school: @school } %>
+				  	<%= render partial: 'courses/search', collection: @courses, as: :course, locals: { school: @school } %>
 				  </tbody>
 				</table>
 			<%= will_paginate @courses %>
@@ -21,7 +21,7 @@
 		<% if @courses.present? && @courses.count > 0 %>
 			<div class="results-count"><%= @course_count %> courses found!</div>
 			<% @courses.each do |school| %>
-				<%= render 'school', school: school[0], courses: school[1] %>
+				<%= render 'courses/school', school: school[0], courses: school[1] %>
 			<% end %>
 		<% elsif params[:search].present? %>
 			<% if location_set? %>
@@ -41,7 +41,7 @@
 	  				<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
 	  			</thead>
 	  			<tbody style="max-height: none;">
-	    			<%= render partial: 'search', collection: @sessions, as: :session, locals: {school: @school} %>
+	    			<%= render partial: 'courses/search', collection: @sessions, as: :session, locals: {school: @school} %>
 	    		</tbody>
 	    	</table>
 			<%= will_paginate @sessions %>
@@ -54,7 +54,7 @@
 		<% if @sessions.present? && @sessions.count > 0 %>
 			<div class="results-count"><%= @session_count %> course sessions found!</div>
 			<% @sessions.each do |school| %>
-				<%= render 'school', school: school[0], sessions: school[1] %>
+				<%= render 'courses/school', school: school[0], sessions: school[1] %>
 			<% end %>
 		<% elsif params[:search].present? %>
 			<% if session[:latitude].present? && session[:longitude].present? %>

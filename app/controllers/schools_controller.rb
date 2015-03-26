@@ -63,6 +63,14 @@ class SchoolsController < ApplicationController
     elsif params[:sort] != "map"
       @schools = @schools.paginate(page: params[:page])
     end
+    if request.xhr?
+      params["_"] = nil
+      results_html = render_to_string(partial: 'results')
+      respond_to do |format|
+        msg = { results_html: results_html }
+        format.json  { render :json => msg }
+      end
+    end
 	end
 	
 	def new

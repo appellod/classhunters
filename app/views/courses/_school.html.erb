@@ -17,7 +17,7 @@
     <div class="collapse">
   		<table class="search-courses">
         <tbody class="scrollable">
-    		  <%= render partial: 'search', collection: courses, as: :course, locals: {school: school} %>
+    		  <%= render partial: 'courses/search', collection: courses, as: :course, locals: {school: school} %>
         </tbody>
     	</table>
     </div>
@@ -30,7 +30,7 @@
   				</tr>
   			</thead>
   			<tbody class="scrollable">
-    			<%= render partial: 'search', collection: sessions, as: :session, locals: {school: school} %>
+    			<%= render partial: 'courses/search', collection: sessions, as: :session, locals: {school: school} %>
     		</tbody>
     	</table>
     </div>

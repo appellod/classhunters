@@ -23,7 +23,7 @@
 				<% if params[:page_alpha] == i %>
 					<li class="active"><a href="#"><%= i %></a></li>
 				<% else %>
-					<li><%= link_to i, params.except(:page).merge(page_alpha: i) %></li>
+					<li><%= link_to i, params.except(:page, "_").merge(page_alpha: i) %></li>
 				<% end %>
 			<% end %>
 		</ul>

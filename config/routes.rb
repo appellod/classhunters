@@ -15,6 +15,7 @@ Site::Application.routes.draw do
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'get'
   match '/dashboard', to: 'site#dashboard', via: 'get'
+  match '/stats', to: 'site#stats', via: 'get'
   match "/search", to: "search#index", via: "get"
   match "/location", to: "sessions#location", via: "post"
   match "/autocomplete", to: "site#autocomplete", via: "get"

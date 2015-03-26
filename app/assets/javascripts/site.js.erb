@@ -1,3 +1,61 @@
+var ready;
+ready = function() {
+  $(function() {
+    $("#menu").mmenu();
+  });
+  $("input").keypress(function(event) {
+    if (event.which == 13) {
+      event.preventDefault();
+      $(this).closest('form').submit();
+    }
+  });
+  setActiveMenuItem();
+  resizeBackground();
+  $(window).on('scroll', function() {
+    fixMenuOnScroll();
+  });
+  $(window).on('resize', function() {
+    resizeBackground()
+  });
+  if(document.title == 'Find A Class Near You | Classhunters') {
+    resizeHomePage();
+    $(window).on('resize', function() {
+      resizeHomePage();
+    });
+  }
+  $('.home-form input').focus(function() {
+    placeholder = $(this).attr('placeholder');
+    $(this).attr('placeholder', '');
+    $(this).css('textAlign', 'left');
+  });
+  $('.home-form input').focusout(function() {
+    $(this).attr('placeholder', placeholder);
+    if($(this).val() == '') {
+      $(this).css('textAlign', 'center');
+    }
+  });
+  $( ".search-container #search" ).autocomplete({
+    source: 'schools/autocomplete'
+  });
+  bindActionsToSearchResults();
+  $("#school-location-form").submit(function(e) {
+    e.preventDefault();
+    locate.byGeocoder($('#school-location-form input#location').val(), true);
+  });
+  $(window).resize(function() {
+    fitTablesToContainer();
+  }).resize(); // Trigger resize handler
+  $('form.search_form .submit').click(function(e) {
+    $(this).closest('form').submit();
+  });
+  $('form.search_form').submit(function(e) {
+    submitSearchForm($(this), e);
+  });
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
+
 var lastHeight = 0;
 
 function resizeHomePage() {
@@ -74,18 +132,6 @@ function resizeBackground() {
   }
 }
 
-function setContentHeight() {
-  screenHeight = document.documentElement.clientHeight;
-  menuHeight = document.querySelector('.menu').clientHeight;
-  topHeight = document.querySelector('.top-banner').clientHeight;
-  elementHeight = screenHeight - topHeight - menuHeight - 50;
-  if(document.querySelector('.content') != null) {
-    if (document.querySelector('.content').clientHeight < elementHeight) {
-      $('.content').css('height', elementHeight + 'px');
-    }
-  }
-}
-
 /**
  * Checks URL to determine which menu item to set active.
  */
@@ -146,85 +192,23 @@ function fixMenuOnScroll() {
   }
 }
 
-var ready;
-ready = function() {
-  $(function() {
-    $("#menu").mmenu();
-  });
-  $("input").keypress(function(event) {
-    if (event.which == 13) {
-      event.preventDefault();
-      $(this).closest('form').submit();
-    }
-  });
-  setActiveMenuItem();
-  resizeBackground();
-  $(window).on('scroll', function() {
-    fixMenuOnScroll();
-  });
-  $(window).on('resize', function() {
-    resizeBackground()
-  });
-  if(document.title == 'Find A Class Near You | Classhunters') {
-    resizeHomePage();
-    $(window).on('resize', function() {
-      resizeHomePage();
-    });
+var prevHash = getHash;
+window.setInterval(function () {
+  var hash = getHash();
+  if(hash == prevHash - 1 || hash == prevHash + 1) {
+    ajaxRefresh();
   }
-  $('.home-form input').focus(function() {
-    placeholder = $(this).attr('placeholder');
-    $(this).attr('placeholder', '');
-    $(this).css('textAlign', 'left');
-  });
-  $('.home-form input').focusout(function() {
-    $(this).attr('placeholder', placeholder);
-    if($(this).val() == '') {
-      $(this).css('textAlign', 'center');
-    }
-  });
-  $( ".search-container #search" ).autocomplete({
-    source: 'schools/autocomplete'
-  });
-  $('.check-all').click(function() {
-    $(this).closest('table').find(':checkbox').prop('checked', true);
-  });
-  $('.uncheck-all').click(function() {
-    $(this).closest('table').find(':checkbox').prop('checked', false);
-  });
-  bindActionsToSearchResults();
-  $("#school-location-form").submit(function(e) {
-    e.preventDefault();
-    locate.byGeocoder($('#school-location-form input#location').val(), true);
-  });
-  $(window).resize(function() {
-    fitTablesToContainer();
-  }).resize(); // Trigger resize handler
-  $('.days-container tr, .department-container tr').click(function(e) {
-    if(!$(e.target).is(':checkbox')){
-      var checkbox = $(this).find(':checkbox');
-      checkbox.prop("checked", !checkbox.prop("checked"));
-    }
-  });
-  $('form.search_form .submit').click(function(e) {
-    $(this).closest('form').submit();
-  });
-  $('form.search_form').submit(function(e) {
-    submitSearchForm($(this), e);
-  });
-  $('.expand').click(function() {
-    $('.expand-container').toggle();
-    if ($('.expand').html().indexOf('+') >= 0) {
-      $('.expand').html($('.expand').html().replace('+', '-'));
-      $(this).addClass('open');
-    } else {
-      $('.expand').html($('.expand').html().replace('-', '+'));
-      $(this).removeClass('open');
-    }
-  });
-};
+  prevHash = getHash();
+}, 100);
 
-$(document).ready(ready);
-$(document).on('page:load', ready);
+function getHash() {
+  if(window.location.hash.length > 0) {
+    var hash = (parseInt(window.location.hash.substring(1)));
+  } else {
+    var hash = 0;
+  }
+  return hash;
+}
 
 function fitTablesToContainer() {
   if($('ul.search-school').length > 0) {
@@ -256,10 +240,7 @@ function resizeSearchHeaders() {
 
 function displayCourseInfo(element, id, data_type) {
   if(element.next().attr('class') == "inspect") {
-    element.next().css("display", "block")
-    element.next().slideToggle(200, function() {
-      element.next().remove();
-    });
+    element.next().remove();
   } else {
     $.ajax({
       type: "GET",
@@ -267,9 +248,6 @@ function displayCourseInfo(element, id, data_type) {
       data: data_type + '_id=' + id,
       success: function(data) {
         element.after(data.html);
-        element.next().css("display", "block")
-        element.next().toggle();
-        element.next().slideToggle(200, function() { element.next().css("display", "table-row") });
       }
     });
   }
@@ -278,72 +256,36 @@ function displayCourseInfo(element, id, data_type) {
 function submitSearchForm(element, e) {
   e.preventDefault();
   $('form.search_form input').blur();
-  school = '&school_id=' + $('form.search_form').data("id");
-  $('.loading').show();
-  $.ajax({
-    url: [location.protocol, '//', location.host, location.pathname].join(''), 
-    type: 'GET', 
-    data: $('form.search_form').serialize() + school, 
-    success: function(results) {
-      $('.results').html(results.results_html);
-      $('.loading').hide();
-      if(!$('.expand').length) {
-        $('form.search_form').html(results.form_html);
-        $('.expand').click(function() {
-          $('.expand-container').toggle();
-          if ($('.expand').html().indexOf('+') >= 0) {
-            $('.expand').html($('.expand').html().replace('+', '-'));
-            $(this).addClass('open');
-          } else {
-            $('.expand').html($('.expand').html().replace('-', '+'));
-            $(this).removeClass('open');
-          }
-        });
-      }
-      var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + $('form.search_form').serialize() };
-      history.pushState(obj, obj.Title, obj.Url);
-      bindActionsToSearchResults();
-      fitTablesToContainer();
-    }
-  });
+  var hash = getHash() + 1;
+  var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + $('form.search_form').serialize() + "#" + hash };
+  history.pushState(obj, obj.Title, obj.Url);
 }
 
 function ajaxPagination(element, e) {
   e.preventDefault();
-  $('.loading').show();
-  $.ajax({
-    url: element.attr('href'), 
-    type: 'GET', 
-    success: function(results) {
-      $('.results').html(results.results_html);
-      $('.loading').hide();
-      var obj = { Title: document.title, Url: element.attr('href') };
-      history.pushState(obj, obj.Title, obj.Url);
-      bindActionsToSearchResults();
-      fitTablesToContainer();
-    }
-  });
+  var hash = getHash() + 1;
+  var obj = { Title: document.title, Url: element.attr('href') + "#" + hash };
+  history.pushState(obj, obj.Title, obj.Url);
 }
 
 function ajaxRefresh() {
-  current_url = [location.protocol, '//', location.host, location.pathname].join('');
+  $('.loading').show();
   $.ajax({
+    cache: false,
     url: location.href, 
     type: 'GET', 
     success: function(results) {
       $('.results').html(results.results_html);
       $('form.search_form').html(results.form_html);
       $('.loading').hide();
+      if(!$('.expand').length) {
+        $('form.search_form').html(results.form_html);
+      }
       bindActionsToSearchResults();
       fitTablesToContainer();
-      /*
-      current_url = [location.protocol, '//', location.host, location.pathname].join('');
-      if(document.referrer.split('?')[0] == current_url) {
-        $(window).bind('popstate', function(event){
-            ajaxRefresh();
-        });
-      }
-      */
+    },
+    error: function() {
+      window.location.replace(location.href);
     }
   });
 }
@@ -391,10 +333,33 @@ function bindActionsToSearchResults() {
     $(this).fadeOut(500);
   });
   $('.pagination a').click(function(e) {
-    //ajaxPagination($(this), e);
+    ajaxPagination($(this), e);
+  });
+  $('.expand').click(function() {
+    $('.expand-container').toggle();
+    if ($('.expand').html().indexOf('+') >= 0) {
+      $('.expand').html($('.expand').html().replace('+', '-'));
+      $(this).addClass('open');
+    } else {
+      $('.expand').html($('.expand').html().replace('-', '+'));
+      $(this).removeClass('open');
+    }
+  });
+  $('.days-container tr, .department-container tr').click(function(e) {
+    if(!$(e.target).is(':checkbox')){
+      var checkbox = $(this).find(':checkbox');
+      checkbox.prop("checked", !checkbox.prop("checked"));
+    }
+  });
+  $('.check-all').click(function() {
+    $(this).closest('table').find(':checkbox').prop('checked', true);
+  });
+  $('.uncheck-all').click(function() {
+    $(this).closest('table').find(':checkbox').prop('checked', false);
   });
 }
 
+//Scrollable
 $(document).on('DOMMouseScroll mousewheel', '.scrollable', function(ev) {
     if(Math.abs($(this).css('maxHeight').replace('px', '') - $(this).height()) < 5) {
       var $this = $(this),

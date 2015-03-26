@@ -1,0 +1,48 @@
+<% provide :title, "Site Stats" %>
+<% provide(:meta, 'View many different stats regarding the website such as top search queries, user locations and more.') %>
+<% breadcrumbs({ 'Home'=>root_url, 'Account'=>user_path(current_user), 'Site Stats'=>'' }) %>
+<div class="container-fluid content">
+	<div class="container site-stats">
+		<div class="breadcrumbs">
+			<%= yield(:crumbs) %>
+		</div>
+		<h1>Site Stats</h1>
+		<div class="col-sm-6">
+			<h2>Top Course Search Queries:</h2>
+			<table>
+				<thead>
+					<tr><th>Term</th><th>Frequency</th></tr>
+				</thead>
+				<tbody>
+					<% @course_searches.each do |search| %>
+						<tr><td><%= search.search %></td><td><%= search.count %></td></tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-sm-6">
+			<h2>Top Session Search Queries:</h2>
+			<table>
+				<thead>
+					<tr><th>Term</th><th>Frequency</th></tr>
+				</thead>
+				<tbody>
+					<% @session_searches.each do |search| %>
+						<tr><td><%= search.search %></td><td><%= search.count %></td></tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div style="clear: both;"></div>
+		<div class="stats-map course-searches"></div>
+	</div>
+</div>
+<script>
+	maps.initializeStats(".course-searches");
+	<% @course_search_locations.each do |location| %>
+		maps.markerStats(<%= location.latitude %>, <%= location.longitude %>);
+	<% end %>
+	<% @session_search_locations.each do |location| %>
+		maps.markerStats(<%= location.latitude %>, <%= location.longitude %>);
+	<% end %>
+</script>

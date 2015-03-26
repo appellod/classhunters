@@ -28,7 +28,7 @@
 				<div class="expand button">+ Optional Search Filters</div>
 				<div class="expand-container">
 					<div class="col-sm-4">
-			     	<%= render 'location_form' %>
+			     	<%= render 'courses/location_form' %>
 			    </div>
 			    <div style="clear: both;"></div>
 			    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
@@ -43,7 +43,7 @@
 		    </div>
 		    <% if @departments.present? %>
 			    <div class="col-sm-4">
-			    	<%= render 'departments_form' %>
+			    	<%= render 'courses/departments_form' %>
 			    </div>
 		    <% end %>
 		    <div style="clear: both;"></div>
@@ -88,16 +88,16 @@
 				<div class="expand button">+ Optional Search Filters</div>
 				<div class="expand-container">
 					<div class="col-sm-4">
-			      <%= render 'location_form' %>
+			      <%= render 'courses/location_form' %>
 			    </div>
 			    <div class="col-sm-4">
-			    	<%= render 'days_form' %>
+			    	<%= render 'courses/days_form' %>
 			    </div>
 			    <div class="col-sm-4">
-			    	<%= render 'time_form' %>
+			    	<%= render 'courses/time_form' %>
 			    </div>
 		    	<div class="col-sm-4">
-			    	<%= render 'online_form' %>
+			    	<%= render 'courses/online_form' %>
 			    </div>
 			    <div style="clear: both;"></div>
 			    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
@@ -112,17 +112,17 @@
 		    </div>
 		    <% if @departments.present? %>
 					<div class="col-sm-4">
-			    	<%= render 'departments_form' %>
+			    	<%= render 'courses/departments_form' %>
 			    </div>
 		    <% end %>
 		    <div class="col-sm-4">
-		    	<%= render 'days_form' %>
+		    	<%= render 'courses/days_form' %>
 		    </div>
 		    <div class="col-sm-4">
-		    	<%= render 'time_form' %>
+		    	<%= render 'courses/time_form' %>
 		    </div>
 	    	<div class="col-sm-4">
-		    	<%= render 'online_form' %>
+		    	<%= render 'courses/online_form' %>
 		    </div>
 		    <div style="clear: both;"></div>
 		    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>

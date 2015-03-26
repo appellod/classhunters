@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220203625) do
+ActiveRecord::Schema.define(version: 20150325215521) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -33,6 +33,20 @@ ActiveRecord::Schema.define(version: 20150220203625) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "course_searches", force: true do |t|
+    t.text     "search"
+    t.decimal  "latitude",   precision: 15, scale: 10
+    t.decimal  "longitude",  precision: 15, scale: 10
+    t.string   "ip_address"
+    t.integer  "school_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "course_searches", ["school_id"], name: "index_course_searches_on_school_id", using: :btree
+  add_index "course_searches", ["user_id"], name: "index_course_searches_on_user_id", using: :btree
 
   create_table "courses", force: true do |t|
     t.string   "name"
@@ -57,6 +71,19 @@ ActiveRecord::Schema.define(version: 20150220203625) do
   end
 
   add_index "instructors", ["school_id"], name: "index_instructors_on_school_id", using: :btree
+
+  create_table "school_searches", force: true do |t|
+    t.string   "type"
+    t.string   "search"
+    t.decimal  "latitude",   precision: 15, scale: 10
+    t.decimal  "longitude",  precision: 15, scale: 10
+    t.string   "ip_address"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "school_searches", ["user_id"], name: "index_school_searches_on_user_id", using: :btree
 
   create_table "schools", force: true do |t|
     t.string   "name"
@@ -91,6 +118,31 @@ ActiveRecord::Schema.define(version: 20150220203625) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "session_searches", force: true do |t|
+    t.text     "search"
+    t.decimal  "latitude",   precision: 15, scale: 10
+    t.decimal  "longitude",  precision: 15, scale: 10
+    t.string   "ip_address"
+    t.boolean  "sunday"
+    t.boolean  "monday"
+    t.boolean  "tuesday"
+    t.boolean  "wednesday"
+    t.boolean  "thursday"
+    t.boolean  "friday"
+    t.boolean  "saturday"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.boolean  "classroom"
+    t.boolean  "online"
+    t.integer  "school_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "session_searches", ["school_id"], name: "index_session_searches_on_school_id", using: :btree
+  add_index "session_searches", ["user_id"], name: "index_session_searches_on_user_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.boolean  "sunday"
