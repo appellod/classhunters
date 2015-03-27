@@ -8,8 +8,7 @@
   <table>
     <tr>
       <td>Address:</td>
-      <section itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-      <td>
+      <td itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
         <% if @school.address.split(',')[0] != @school.city %>
           <span itemprop="streetAddress"><%= @school.address.split(',')[0] %></span><br>
         <% end %>
