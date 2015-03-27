@@ -45,9 +45,6 @@ ready = function() {
   $(window).resize(function() {
     fitTablesToContainer();
   }).resize(); // Trigger resize handler
-  $('form.search_form .submit').click(function(e) {
-    $(this).closest('form').submit();
-  });
   $('form.search_form').submit(function(e) {
     submitSearchForm($(this), e);
   });
@@ -356,6 +353,9 @@ function bindActionsToSearchResults() {
   });
   $('.uncheck-all').click(function() {
     $(this).closest('table').find(':checkbox').prop('checked', false);
+  });
+  $('form.search_form .submit').click(function(e) {
+    $(this).closest('form').submit();
   });
 }
 

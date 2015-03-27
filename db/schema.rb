@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325215521) do
+ActiveRecord::Schema.define(version: 20150327212627) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -47,6 +47,11 @@ ActiveRecord::Schema.define(version: 20150325215521) do
 
   add_index "course_searches", ["school_id"], name: "index_course_searches_on_school_id", using: :btree
   add_index "course_searches", ["user_id"], name: "index_course_searches_on_user_id", using: :btree
+
+  create_table "course_searches_courses", id: false, force: true do |t|
+    t.integer "course_id",        null: false
+    t.integer "course_search_id", null: false
+  end
 
   create_table "courses", force: true do |t|
     t.string   "name"
@@ -143,6 +148,11 @@ ActiveRecord::Schema.define(version: 20150325215521) do
 
   add_index "session_searches", ["school_id"], name: "index_session_searches_on_school_id", using: :btree
   add_index "session_searches", ["user_id"], name: "index_session_searches_on_user_id", using: :btree
+
+  create_table "session_searches_sessions", id: false, force: true do |t|
+    t.integer "session_id",        null: false
+    t.integer "session_search_id", null: false
+  end
 
   create_table "sessions", force: true do |t|
     t.boolean  "sunday"

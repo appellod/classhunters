@@ -46,9 +46,9 @@ class CoursesController < ApplicationController
     end
     if params[:search].present? && params[:page].nil?
       if @school.present?
-        CourseSearch.create!(search: params[:search], latitude: session[:latitude], longitude: session[:longitude], ip_address: request.remote_ip, school_id: @school.id)
+        @course_search = CourseSearch.create!(search: params[:search], latitude: session[:latitude], longitude: session[:longitude], ip_address: request.remote_ip, school_id: @school.id)
       else
-        CourseSearch.create!(search: params[:search], latitude: session[:latitude], longitude: session[:longitude], ip_address: request.remote_ip)
+        @course_search = CourseSearch.create!(search: params[:search], latitude: session[:latitude], longitude: session[:longitude], ip_address: request.remote_ip)
       end
     end
     if request.xhr?
@@ -321,7 +321,8 @@ class CoursesController < ApplicationController
         search_term = search_term.strip
         search = Course.search do
           fulltext search_term
-          paginate per_page: 9999999
+          with(:location).in_radius(session[:latitude], session[:longitude], 1000, :bbox => true)
+          paginate per_page: 500
         end
         @courses_query = search.results
         @course_count = @courses_query.count
