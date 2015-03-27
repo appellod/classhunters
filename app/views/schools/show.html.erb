@@ -2,8 +2,8 @@
 <% provide(:meta, "Important information for #{@school.name}") %>
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>'' }) %>
 
-<div class="school">
-  <h1><%= @school.name %></h1>
+<div class="school" itemscope itemtype ="http://schema.org/CollegeOrUniversity">
+  <h1 itemprop="legalName"><%= @school.name %></h1>
   <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
   <table>
     <tr>

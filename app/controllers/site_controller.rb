@@ -1,5 +1,6 @@
 class SiteController < ApplicationController
   include ApplicationHelper
+  layout "application", only: [:stats]
 
   def home
   	@contact = Contact.new
