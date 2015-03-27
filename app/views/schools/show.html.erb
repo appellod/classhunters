@@ -3,7 +3,7 @@
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>'' }) %>
 
 <div class="school" itemscope itemtype ="http://schema.org/CollegeOrUniversity">
-  <h1 itemprop="legalName"><%= @school.name %></h1>
+  <h1 itemprop="name"><%= @school.name %></h1>
   <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
   <table>
     <tr>
@@ -16,10 +16,10 @@
       </td>
     </tr>
     <% if @school.phone.present? %>
-      <tr><td>Phone:</td><td><%= @school.phone %></td></tr>
+      <tr><td>Phone:</td><td itemprop="telephone"><%= @school.phone %></td></tr>
     <% end %>
     <% if @school.website.present? %>
-      <tr><td>Website:</td><td><%= link_to @school.website, school_website_url(@school), target: '_blank' %></td></tr>
+      <tr><td>Website:</td><td><%= link_to @school.website, school_website_url(@school), target: '_blank', itemprop: "sameAs" %></td></tr>
     <% end %>
   </table>
   <div id="map-canvas"></div>
