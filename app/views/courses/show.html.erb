@@ -1,12 +1,12 @@
 <% provide(:title, @course.name) %>
 <% provide(:meta, "Information for #{@course.name} at #{@course.school.name}.") %>
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), @course.name=>'' }) %>
-<div class="course">
-  <h1><%= @course.name %></h1>
+<div class="course" itemscope itemtype ="http://schema.org/Thing">
+  <h1 itemprop="name"><%= @course.name %></h1>
   <h2><%= link_to "At #{@course.school.name}", school_path(@course.school) %></h2>
   <%= @course.department.present? ? "<strong>Department: </strong>#{@course.department}<br>".html_safe : '' %>
   <%= @course.number.present? ? "<strong>Course Number: </strong>#{@course.number}<br>".html_safe : '' %>
-  <%= @course.description.present? ? "<strong>Description: </strong>#{@course.description}<br>".html_safe : '' %>
+  <%= @course.description.present? ? "<strong>Description: </strong><span itemprop=\"description\">#{@course.description}</span><br>".html_safe : '' %>
   <% semesters.each do |semester| %>
   	<% if @sessions.include?(semester) %>
   	<br>
