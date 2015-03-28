@@ -30,16 +30,26 @@ module ApplicationHelper
   end
 
   def breadcrumbs(crumbs)
-    string = ''
-    crumbs.each do |crumb, url|
-      if url.present?
-        string += link_to crumb, url
+    string = '<div class="breadcrumbs" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">'
+    i = 0
+    crumbs.each do |key, value|
+      if i > 0
+        string += '<span itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">'
+      end
+      if value.present?
+        string += link_to("<span itemprop=\"title\">#{key}</span>".html_safe, value, itemprop: "url")
       else
-        string += crumb
+        string += link_to("<span itemprop=\"title\">#{key}</span>".html_safe, request.original_url, itemprop: "url")
       end
       string += ' > '
+      i += 1
     end
-    provide :crumbs, string[0..string.length-4].html_safe
+    string = string[0..string.length-4]
+    for i in 0..crumbs.count - 1
+      string += "</span>"
+    end
+    string += "</div>"
+    provide :crumbs, string.html_safe
   end
 
   def sortable(display, attribute = nil)

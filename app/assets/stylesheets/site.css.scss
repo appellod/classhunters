@@ -506,6 +506,10 @@ footer {
   font-weight: bold;
   a {
     font-weight: normal;
+    &:last-child {
+      color: black;
+      font-weight: bold;
+    }
   }
 }
 
