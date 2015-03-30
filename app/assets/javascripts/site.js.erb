@@ -357,6 +357,9 @@ function bindActionsToSearchResults() {
   $('form.search_form .submit').click(function(e) {
     $(this).closest('form').submit();
   });
+  $('.submit-onchange').change(function(e) {
+    $(this).closest('form').submit();
+  });
 }
 
 //Scrollable

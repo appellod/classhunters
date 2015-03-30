@@ -52,10 +52,10 @@
 		<% end %>
 	<% end %>
 <% else %>
-	<%= form_tag (@school.present? ? school_sessions_path(@school) : sessions_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
+	<%= form_tag (@school.present? ? school_sessions_path(@school) : course_sessions_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
 		<div class="outside">
 			<% if params[:search].present? || @school.present? %>
-				<%= select_tag :semester, options_for_select(semesters, params[:semester]), onchange: "this.form.submit();" %>
+				<%= select_tag :semester, options_for_select(semesters, params[:semester]), class: "submit-onchange" %>
 			<% else %>
 				<%= select_tag :semester, options_for_select(semesters, params[:semester]) %>
 			<% end %>

@@ -35,9 +35,13 @@
 <script>
 	maps.initializeStats(".course-searches");
 	<% @course_search_locations.each do |location| %>
-		maps.markerStats(<%= location.latitude %>, <%= location.longitude %>);
+		<% if location.latitude.present? && location.longitude.present? %>
+			maps.markerStats(<%= location.latitude %>, <%= location.longitude %>);
+		<% end %>
 	<% end %>
 	<% @session_search_locations.each do |location| %>
-		maps.markerStats(<%= location.latitude %>, <%= location.longitude %>);
+		<% if location.latitude.present? && location.longitude.present? %>
+			maps.markerStats(<%= location.latitude %>, <%= location.longitude %>);
+		<% end %>
 	<% end %>
 </script>
