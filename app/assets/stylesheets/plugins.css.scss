@@ -8,7 +8,7 @@ body.plugins {
 	//border-image: image-url('chalkboard.jpg') 30 30;
 	//border-width: 5px;
 	border: 5px solid #222222;
-	min-height: 400px;
+	min-height: 500px;
 	ul.sort {
 		list-style-type: none;
 		text-align: left;
@@ -43,7 +43,7 @@ body.plugins {
 	.scroll-container {
 		padding: 25px 15px 0px 15px;
 		display: block;
-		height: 447px;
+		height: 547px;
 		overflow-y: scroll;
 		overflow-x: hidden;
 		background-color: white;

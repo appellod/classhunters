@@ -43,8 +43,10 @@ Site::Application.routes.draw do
   match "/courses/json", to: "courses#json", via: "get", as: "course_json"
   match "/courses/search", to: "courses#get_results", via: "get"
 
+  #Plugins
   match "/plugin-test", to: "site#plugin", via: "get"
   match "/plugin", to: "plugins#index", via: "get"
+  match "/plugin/:school_id", to: "plugins#index", via: "get"
 
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all
