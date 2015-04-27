@@ -640,17 +640,3 @@ table.school-sessions {
 		}
 	}
 }
-
-<% environment.context_class.instance_eval { include ApplicationHelper } %>
-<% SchoolStyle.all.each do |style| %>
-	.school-<%= style.school_id %> {
-		background-color: #<%= style.background %>;
-		color: #<%= style.foreground %>;
-		font-weight: bold;
-		border: 1px solid #<%= changeColor(style.background, -40) %>; 
-		text-shadow: 1px 1px #<%= changeColor(style.background, -40) %>;
-		&:hover {
-			background-color: #<%= changeColor(style.background, -40) %> !important;
-		}
-	}
-<% end %>

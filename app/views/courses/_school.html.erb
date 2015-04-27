@@ -1,6 +1,19 @@
 <ul class="search-school">
   <li>
     <% if school.school_style.present? %>
+      <style>
+        .school-<%= school.school_style.school_id %> {
+          background-color: #<%= school.school_style.background %>;
+          color: #<%= school.school_style.foreground %>;
+          font-weight: bold;
+          border: 1px solid #<%= changeColor(school.school_style.background, -40) %>; 
+          text-shadow: 1px 1px #<%= changeColor(school.school_style.background, -40) %>;
+        }
+        .school-<%= school.school_style.school_id %>:hover {
+            background-color: #<%= changeColor(school.school_style.background, -40) %> !important;
+          }
+        }
+      </style>
       <div class="info school-<%= school.id %>">
     <% else %>
       <div class="info">
