@@ -7,13 +7,14 @@ body.plugins {
 	color: black;
 	//border-image: image-url('chalkboard.jpg') 30 30;
 	//border-width: 5px;
-	border: 5px solid #222222;
+	border: 3px solid #222222;
 	min-height: 500px;
 	ul.sort {
 		list-style-type: none;
 		text-align: left;
 		padding-left: 0px;
 		background: image-url('chalkboard.jpg');
+		background-size: 100% auto;
 		margin-bottom: 0px;
 		li {
 			display: inline-block;
@@ -22,30 +23,136 @@ body.plugins {
 			color: white;
 			border-top-left-radius: 3px;
 			border-top-right-radius: 3px;
-			padding: 5px 40px;
 			margin: 0px;
 			font-size: 20px;
 			font-family: 'Oswald';
 			text-shadow: 2px 2px rgba(0, 0, 0, 0.75);
 			box-shadow: inset 0px -2px 1px rgba(0,0,0,.5);
+			cursor: pointer;
+			a {
+				display: block;
+				color: white;
+				padding: 5px 40px;
+				&:hover {
+					text-decoration: none;
+				}
+			}
+			&:hover {
+				background-color: mix(#FF5500, black, 75%);
+			}
 			&.active {
 				background-color: white;
 				color: black;
 				text-shadow: none;
-				padding-top: 10px;
+				padding: 10px 40px 5px 40px;
 				box-shadow: none;
+				cursor: initial;
 			}
+		}
+		.close {
+			display: none;
 		}
 	}
 	.expand {
 		width: 35%;
 	}
 	.scroll-container {
-		padding: 25px 15px 0px 15px;
+		padding: 25px 15px 50px 15px;
 		display: block;
-		height: 547px;
+		height: 551px;
 		overflow-y: scroll;
 		overflow-x: hidden;
 		background-color: white;
+		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+	.goog-te-gadget-simple {
+		float: right;
+    background-color: #FF5500 !important;
+    border: none !important;
+    border-radius: 3px !important;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 4px 2px 4px 5px !important;
+    &:hover {
+      background-color: mix(#FF5500, black, 75%) !important;
+    }
+  }
+  .goog-te-gadget-simple .goog-te-menu-value span {
+    &:nth-child(1) {
+      color: white !important;
+      font-family: "Oswald" !important;
+      text-shadow: 1px 1px 1px black !important;
+      padding: 1px 3px 0px 1px;
+      display: inline-block;
+      letter-spacing: 1px;
+    }
+    &:nth-child(3) {
+      display: none !important;
+    }
+    &:nth-child(5) {
+      vertical-align: top;
+      margin-top: 0px;
+      color: white !important;
+      text-shadow: 1px 1px 1px black !important;
+      display: inline-block;
+      font-size: 1.1em;
+    }
+  }
+  .goog-te-gadget img {
+    vertical-align: top !important;
+    background-image: image-url("logo-google.png") !important;
+    background-size: 100% 100% !important;
+    background-position: 0px 0px !important;
+    -webkit-filter: drop-shadow(1px 1px rgba(0,0,0,.5));
+    filter: drop-shadow(1px 1px rgba(0,0,0,.5));
+  }
+  .goog-te-gadget-simple .goog-te-menu-value {
+    color: transparent;
+    img {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+	#google_translate_element {
+		display: none;
+	}
+	body.plugins .expand {
+		width: 100%;
+	}
+	body.plugins ul.sort {
+		li {
+			width: calc(40%);
+			padding-left: 0px;
+			padding-right: 0px;
+			&.active {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			&:nth-child(3) {
+				display: block;
+			}
+			a {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+		}
+		.close {
+			display: inline-block;
+			color: white;
+			opacity: 1;
+			font-size: 28px;
+			margin-right: 5px;
+			margin-top: 7px;
+			text-shadow: none;
+			a {
+				color: white;
+			}
+		}
+	}
+	body.plugins .scroll-container {
+		padding-top: 15px;
 	}
 }

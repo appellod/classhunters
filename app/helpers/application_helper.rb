@@ -80,4 +80,17 @@ module ApplicationHelper
     end
     return str.html_safe
   end
+
+  def changeColor(color, offset)
+    red = (color[0..1].hex + offset).to_s(16)
+    green = (color[2..3].hex + offset).to_s(16)
+    blue = (color[4..5].hex + offset).to_s(16)
+    red = '00' if red.to_f <= 0
+    green = '00' if green.to_f <= 0
+    blue = '00' if blue.to_f <= 0
+    red = '0' + red if red.length < 2
+    green = '0' + green if green.length < 2
+    blue = '0' + blue if blue.length < 2
+    return red + green + blue
+  end
 end

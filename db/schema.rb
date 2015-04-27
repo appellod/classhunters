@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150327212627) do
+ActiveRecord::Schema.define(version: 20150427180704) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -77,6 +77,18 @@ ActiveRecord::Schema.define(version: 20150327212627) do
 
   add_index "instructors", ["school_id"], name: "index_instructors_on_school_id", using: :btree
 
+  create_table "plugin_accesses", force: true do |t|
+    t.string   "remote_ip"
+    t.integer  "school_id"
+    t.decimal  "latitude",   precision: 15, scale: 10
+    t.decimal  "longitude",  precision: 15, scale: 10
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "referer"
+  end
+
+  add_index "plugin_accesses", ["school_id"], name: "index_plugin_accesses_on_school_id", using: :btree
+
   create_table "school_searches", force: true do |t|
     t.string   "type"
     t.string   "search"
@@ -89,6 +101,16 @@ ActiveRecord::Schema.define(version: 20150327212627) do
   end
 
   add_index "school_searches", ["user_id"], name: "index_school_searches_on_user_id", using: :btree
+
+  create_table "school_styles", force: true do |t|
+    t.string   "foreground"
+    t.string   "background"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "school_styles", ["school_id"], name: "index_school_styles_on_school_id", using: :btree
 
   create_table "schools", force: true do |t|
     t.string   "name"

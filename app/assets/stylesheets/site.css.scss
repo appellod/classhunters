@@ -164,7 +164,6 @@ hr {
     position: relative;
     padding: 5px 0px;
     font-size: 2em;
-    text-shadow: 3px 3px 5px black;
     h1 {
       letter-spacing: -2px;
       text-align: left;
@@ -174,6 +173,7 @@ hr {
       font-weight: normal;
       margin: -10px 0px 5px 0px;
       text-transform: lowercase;
+      text-shadow: 3px 3px 5px black;
       a {
         color: #FFFF00;
         &:hover {
@@ -203,11 +203,52 @@ hr {
       top: 0px;
       position: absolute;
       right: 0px;
-      font-size: .7em;
-      a {
-        color: white;
+      padding-top: 2px;
+      a:hover, a:focus {
+        text-decoration: none;
+      }
+      .goog-te-gadget-simple {
+        background-color: #FF5500 !important;
+        border: none !important;
+        border-radius: 3px !important;
+        padding: 4px 2px !important;
         &:hover {
-          text-decoration: none;
+          background-color: mix(#FF5500, black, 75%) !important;
+        }
+      }
+      .goog-te-gadget-simple .goog-te-menu-value span {
+        &:nth-child(1) {
+          color: white !important;
+          font-family: "Oswald" !important;
+          text-shadow: 1px 1px 1px black !important;
+          padding: 1px 3px 0px 1px;
+          display: inline-block;
+          letter-spacing: 1px;
+        }
+        &:nth-child(3) {
+          display: none !important;
+        }
+        &:nth-child(5) {
+          vertical-align: top;
+          margin-top: 0px;
+          color: white !important;
+          text-shadow: 1px 1px 1px black !important;
+          display: inline-block;
+          font-size: 1.1em;
+        }
+      }
+      .goog-te-gadget img {
+        vertical-align: top !important;
+        background-image: image-url("logo-google.png") !important;
+        background-size: 100% 100% !important;
+        background-position: 0px 0px !important;
+        -webkit-filter: drop-shadow(1px 1px rgba(0,0,0,.5));
+        filter: drop-shadow(1px 1px rgba(0,0,0,.5));
+      }
+      .goog-te-gadget-simple .goog-te-menu-value {
+        color: transparent;
+        img {
+          display: none;
         }
       }
     }
@@ -766,6 +807,7 @@ ul.account, ul.schools, ul.courses, ul.users, ul.searches {
       display: inline-block;
       color: #FFFFFF;
       width: 100%;
+      margin-top: 8px;
     }
     a:hover, a:active {
       color: white;

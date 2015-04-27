@@ -1,0 +1,65 @@
+// Place all the behaviors and hooks related to the matching controller here.
+// All this logic will automatically be available in application.js.
+
+var clickCount = 1;
+
+var check = setInterval(function() {
+	var google = $('body.plugins .goog-te-gadget-simple .goog-te-menu-value span:nth-child(1)');
+	if(google.length && google.html() != "Select Language") {
+		$('.scroll-container').css('height', "511px");
+	} else {
+		$('.scroll-container').css('height', "551px");
+	}
+}, 100);
+
+$(document).ready(function() {
+	tabs();
+});
+
+function tabs() {
+	$("body.plugins .sort a").click(function(e) {
+		e.preventDefault();
+		$('.loading').show();
+		var url = $(this).attr('href');
+		history.replaceState(null, "Classhunters Plugin", url)
+		if($('#search').val().length > 0) {
+			var params = 'search=' + $('#search').val();
+		} else {
+			var params = '';
+		}
+		$.ajax({
+			cache: false,
+	    url: url,
+	    data: params,
+	    type: 'GET', 
+	    success: function(results) {
+	      $('.results').html(results.results_html);
+	      $('form.search_form').html(results.form_html);
+	      $('ul.sort').html(results.tabs_html);
+	      if(results.tabs_html.indexOf('<li class="active">Sessions</li>') >= 0) {
+	      	$('h1').html($('h1').html().replace("Courses", "Course Sessions"));
+	      } else {
+	      	$('h1').html($('h1').html().replace("Course Sessions", "Courses"));
+	      }
+	      $('.loading').hide();
+	      if(!$('.expand').length) {
+	        $('form.search_form').html(results.form_html);
+	      }
+	      bindActionsToSearchResults();
+	      fitTablesToContainer();
+	      tabs();
+	    }
+	  });
+	});
+}
+
+function backHandler() {
+	if(clickCount > 0) {
+		$('.back').css('display', 'inline-block');
+	} else {
+		$('.back').hide();
+	}
+	$('.back').click(function() {
+  	window.history.back();
+  });
+}

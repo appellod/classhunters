@@ -45,8 +45,10 @@ Site::Application.routes.draw do
 
   #Plugins
   match "/plugin-test", to: "site#plugin", via: "get"
-  match "/plugin", to: "plugins#index", via: "get"
-  match "/plugin/:school_id", to: "plugins#index", via: "get"
+  match "/plugin", to: "plugins#index", via: "get", as: "plugin"
+  match "/plugin/sessions", to: "plugins#sessions", via: "get", as: "plugin_sessions"
+  match "/plugin/:school_id", to: "plugins#index", via: "get", as: "plugin_school"
+  match "/plugin/:school_id/sessions", to: "plugins#sessions", via: "get", as: "plugin_school_sessions"
 
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all

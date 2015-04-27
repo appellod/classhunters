@@ -1,7 +1,15 @@
 <% if @sessions.nil? %>
 	<% if course.school == school %>
 	<tr data-course-id="<%= course.id %>">
-	  <td><strong><%= course.name.html_safe %></strong></td>
+		<% if @school.present? %>
+			<% if params[:order] == "dept" %>
+				<td><strong><%= "#{course.department} #{course.number}" %></strong></td><td><%= course.name.html_safe %></td>
+			<% else %>
+				<td><%= "#{course.department} #{course.number}" %></td><td><strong><%= course.name.html_safe %></strong></td>
+			<% end %>
+	  <% else %>
+	  	<td><%= course.name.html_safe %></td>
+	  <% end %>
 	</tr>
 	<% end %>
 <% else %>

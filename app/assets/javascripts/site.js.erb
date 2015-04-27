@@ -236,13 +236,23 @@ function resizeSearchHeaders() {
 }
 
 function displayCourseInfo(element, id, data_type) {
+  if($('.scroll-container').length) {
+    var plugin = "&plugin=true"
+  } else {
+    var plugin = "";
+  }
+  if(document.URL.indexOf('schools') >= 0 || document.body.innerText.indexOf("Courses at") >= 0) {
+    var school = "&school=true"
+  } else {
+    var school = ""
+  }
   if(element.next().attr('class') == "inspect") {
     element.next().remove();
   } else {
     $.ajax({
       type: "GET",
       url: '/courses/json',
-      data: data_type + '_id=' + id,
+      data: data_type + '_id=' + id + plugin + school,
       success: function(data) {
         element.after(data.html);
       }
@@ -259,6 +269,13 @@ function submitSearchForm(element, e) {
 }
 
 function ajaxPagination(element, e) {
+  e.preventDefault();
+  var hash = getHash() + 1;
+  var obj = { Title: document.title, Url: element.attr('href') + "#" + hash };
+  history.pushState(obj, obj.Title, obj.Url);
+}
+
+function ajaxSort(element, e) {
   e.preventDefault();
   var hash = getHash() + 1;
   var obj = { Title: document.title, Url: element.attr('href') + "#" + hash };
@@ -359,6 +376,10 @@ function bindActionsToSearchResults() {
   });
   $('.submit-onchange').change(function(e) {
     $(this).closest('form').submit();
+  });
+  backHandler();
+  $('a.sort').click(function(e) {
+    ajaxSort($(this), e);
   });
 }
 

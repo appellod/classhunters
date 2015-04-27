@@ -34,7 +34,19 @@ class CoursesController < ApplicationController
           @courses = Course.none
         end
       else
-        @courses = @school.courses.order(:name)
+        if params[:order] == "dept"
+          if params[:dir] == "desc"
+            @courses = @school.courses.order("department DESC", :number)
+          else
+            @courses = @school.courses.order(:department, :number)
+          end
+        else
+          if params[:dir] == "desc"
+            @courses = @school.courses.order("name DESC")
+          else
+            @courses = @school.courses.order(:name)
+          end
+        end
       end
       @departments = @courses.pluck(:department).uniq.sort
       if params[:departments].present?

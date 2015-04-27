@@ -319,6 +319,7 @@ ul.search-school {
   	display: inline-block;
   	white-space: nowrap;
   	text-overflow: ellipsis;
+  	vertical-align: middle;
   }
   .info {
     width: 100%;
@@ -476,19 +477,36 @@ table.search-sessions {
 table.school-courses {
 	margin-top: 10px;
 	border-top: none;
+	border: 1px solid #e2e2e2;
+	border-radius: 3px;
+	border-collapse: separate;
 	thead tr {
 		background-color: #e2e2e2;
 		border-bottom: none;
+		th a {
+			color: black;
+			display: inline-block;
+		}
+		th:nth-child(1) {
+			width: 95px;
+			letter-spacing: -1px;
+		}
 	}
 	tbody tr {
 		td, th{
 			padding: 5px 10px;
+		}
+		td:nth-child(1) {
+			width: 95px;
 		}
 	}
 }
 
 table.school-sessions {
 	border-top: none;
+	border: 1px solid #e2e2e2;
+	border-radius: 3px;
+	border-collapse: separate;
 	thead tr {
 		border-bottom: none;
 		background-color: #e2e2e2;

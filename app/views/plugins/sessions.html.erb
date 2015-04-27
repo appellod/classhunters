@@ -1,13 +1,13 @@
-<% provide(:tab, "courses") %>
+<% provide(:tab, "sessions") %>
 
 <%= render "shared/loading" %>
 <div class="scroll-container scrollable">
 	<% if @school.present? %>
-		<% provide(:title, "Courses at #{@school.name}".html_safe) %>
-	  <h1>Courses at <%= @school.name %></h1>
+		<% provide(:title, "Course Sessions at #{@school.name}".html_safe) %>
+	  <h1>Course Sessions at <%= @school.name %></h1>
 	<% else %>
 		<% provide(:title, 'Search Courses') %>
-	  <h1>Search Courses</h1>
+	  <h1>Search Course Sessions</h1>
 	<% end %>
 
 	<%= render 'courses/search_form' %>

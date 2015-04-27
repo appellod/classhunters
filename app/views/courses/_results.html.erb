@@ -5,7 +5,27 @@
 			<%= will_paginate @courses %>
 				<table class="search-courses school-courses">
 					<thead>
-						<tr><th>Name</th></tr>
+						<tr><th>
+							<% if params[:order] == "dept" %>
+								<% if params[:dir].nil? %>
+									<%= link_to "Department &#9660;".html_safe, params.except(:page, "_", :order, :dir).merge(order: "dept", dir: "desc"), class: 'sort' %>
+								<% else %>
+									<%= link_to "Department &#9650;".html_safe, params.except(:page, "_", :order, :dir).merge(order: "dept"), class: 'sort' %>
+								<% end %>
+							<% else %>
+								<%= link_to "Department", params.except(:page, "_", :order, :dir).merge(order: "dept"), class: 'sort' %>
+							<% end %>
+							</th><th>
+							<% if params[:order].nil? %>
+								<% if params[:dir].nil? %>
+									<%= link_to "Name &#9660;".html_safe, params.except(:page, "_", :order, :dir).merge(dir: "desc"), class: 'sort' %>
+								<% else %>
+									<%= link_to "Name &#9650;".html_safe, params.except(:page, "_", :order, :dir), class: 'sort' %>
+								<% end %>
+							<% else %>
+								<%= link_to "Name", params.except(:page, "_", :order, :dir), class: 'sort' %>
+							<% end %>
+						</th></tr>
 					</thead>
 					<tbody>
 				  	<%= render partial: 'courses/search', collection: @courses, as: :course, locals: { school: @school } %>

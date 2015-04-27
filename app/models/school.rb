@@ -4,6 +4,8 @@ class School < ActiveRecord::Base
 	has_many :instructors, dependent: :destroy
 	has_many :course_searches
 	has_many :session_searches
+	has_many :plugin_accesses
+	has_one :school_style
 
 	before_validation :strip_attributes
 

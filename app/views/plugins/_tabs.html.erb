@@ -1,0 +1,10 @@
+<% if @tab == "courses" %>
+  <li class="active">Courses</li>
+  <li><%= link_to "Sessions", params[:school_id].present? ? plugin_school_sessions_path(params[:school_id], semester: semesters[0]) : plugin_sessions_path(semester: semesters[0]) %></li>
+<% else %>
+  <li><%= link_to "Courses", params[:school_id].present? ? plugin_school_path(params[:school_id]) : plugin_path %></li>
+  <li class="active">Sessions</li>
+<% end %>
+<% if session[:referer].present? %>
+	<div class="close"><%= link_to "<i class=\"glyphicon glyphicon-remove\">".html_safe, session[:referer] %></i></div>
+<% end %>

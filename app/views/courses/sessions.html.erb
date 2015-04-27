@@ -14,7 +14,6 @@
 	<% provide(:meta, 'Find the schedules of classes being offered at colleges and universities near you by keyword, time and many other criteria') %>
 	<% breadcrumbs({ 'Home'=>root_url, 'Courses'=>courses_path, 'Sessions'=>"" }) %>
   <h1>Search Sessions</h1>
-	<p>Search for classes at local colleges and universities. Use the "Optional Search Filters" to narrow your search by criteria such as location, time and meeting days. Results are displayed under collapsable tabs by school. Click on the school's tab to view its matching classes. Click on a class to view more information about that class.</p>
 <% end %>
 <div class="sort">
 	<% if params[:search].present? %>
