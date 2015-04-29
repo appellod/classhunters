@@ -212,7 +212,7 @@ function fitTablesToContainer() {
     $('table.search-courses').css('width', $('ul.search-school').width());
     $('table.search-courses thead').css('width', $('ul.search-school').width());
     $('table.search-courses tbody').css('width', $('ul.search-school').width());
-  } else if(document.documentElement.clientWidth < 768) {
+  } else if($("body.plugins").length || document.documentElement.clientWidth < 768) {
     $('table.search-courses').css('width', document.documentElement.clientWidth - 30 + 'px');
     $('table.search-courses thead').css('width', document.documentElement.clientWidth - 30 + 'px');
     $('table.search-courses tbody').css('width', document.documentElement.clientWidth - 30 + 'px');
