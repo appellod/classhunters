@@ -114,7 +114,7 @@ body.plugins {
     }
   }
 }
-@media (max-width: 500px) {
+@media (max-width: 400px) {
 	#google_translate_element {
 		display: none;
 	}
@@ -148,6 +148,9 @@ body.plugins {
 			}
 		}
 	}
+	body.plugins table.search-sessions tr td, body.plugins table.search-sessions tr th {
+		padding: 10px 2px;
+	}
 }
 @media (max-width: 767px) {
 	body.plugins .expand {
@@ -155,5 +158,8 @@ body.plugins {
 	}
 	body.plugins .scroll-container {
 		padding-top: 15px;
+	}
+	body.plugins table.search-sessions tr td, body.plugins table.search-sessions tr th {
+		padding: 5px 10px;
 	}
 }
