@@ -150,25 +150,6 @@ class PluginsController < ApplicationController
         @sessions = @sessions.paginate(page: params[:page])
       end
     end
-    if params[:page].nil? && (params[:search].present? || params[:days].present? || params[:start_time].present? || params[:end_time].present? || params[:departments].present? || params[:meeting].present?)
-      @session_search = SessionSearch.new(latitude: session[:latitude], longitude: session[:longitude], ip_address: request.remote_ip)
-      @session_search.search = params[:search].present? ? params[:search] : nil
-      @session_search.sunday = params[:days].present? && params[:days].include?('sunday') ? 1 : nil
-      @session_search.monday = params[:days].present? && params[:days].include?('monday') ? 1 : nil
-      @session_search.tuesday = params[:days].present? && params[:days].include?('tuesday') ? 1 : nil
-      @session_search.wednesday = params[:days].present? && params[:days].include?('wednesday') ? 1 : nil
-      @session_search.thursday = params[:days].present? && params[:days].include?('thursday') ? 1 : nil
-      @session_search.friday = params[:days].present? && params[:days].include?('friday') ? 1 : nil
-      @session_search.saturday = params[:days].present? && params[:days].include?('saturday') ? 1 : nil
-      @session_search.start_time = params[:start_time]
-      @session_search.end_time = params[:end_time]
-      @session_search.classroom = params[:meeting].present? && params[:meeting].include?('classroom') ? 1 : nil
-      @session_search.online = params[:meeting].present? && params[:meeting].include?('online') ? 1 : nil
-      if @school.present?
-        @session_search.school_id = @school.id
-      end
-      @session_search.save
-    end
     @tab = "sessions"
     if request.xhr?
       params["_"] = nil
