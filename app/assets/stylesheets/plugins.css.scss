@@ -114,14 +114,7 @@ body.plugins {
     }
   }
 }
-
-@media (max-width: 767px) {
-	#google_translate_element {
-		display: none;
-	}
-	body.plugins .expand {
-		width: 100%;
-	}
+@media (max-width: 500px) {
 	body.plugins ul.sort {
 		li {
 			width: calc(50% - 2px);
@@ -151,6 +144,14 @@ body.plugins {
 				color: white;
 			}
 		}
+	}
+}
+@media (max-width: 767px) {
+	#google_translate_element {
+		display: none;
+	}
+	body.plugins .expand {
+		width: 100%;
 	}
 	body.plugins .scroll-container {
 		padding-top: 15px;
