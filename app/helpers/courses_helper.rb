@@ -33,7 +33,7 @@ module CoursesHelper
 
 	def semesters
 		[
-			'Spring 2015', 'Summer 2015', 'Fall 2015', 'Winter 2015'
+			'Summer 2015', 'Fall 2015', 'Winter 2015', 'Spring 2016'
 		]
 	end
 
