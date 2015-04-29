@@ -115,6 +115,9 @@ body.plugins {
   }
 }
 @media (max-width: 500px) {
+	#google_translate_element {
+		display: none;
+	}
 	body.plugins ul.sort {
 		li {
 			width: calc(50% - 2px);
@@ -147,9 +150,6 @@ body.plugins {
 	}
 }
 @media (max-width: 767px) {
-	#google_translate_element {
-		display: none;
-	}
 	body.plugins .expand {
 		width: 100%;
 	}
