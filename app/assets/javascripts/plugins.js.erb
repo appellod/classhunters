@@ -6,9 +6,9 @@ var clickCount = 1;
 var check = setInterval(function() {
 	var google = $('body.plugins .goog-te-gadget-simple .goog-te-menu-value span:nth-child(1)');
 	if(google.length && google.html() != "Select Language") {
-		$('.scroll-container').css('height', "511px");
+		$('.scroll-container').css('height', document.documentElement.clientHeight - 89 + "px");
 	} else {
-		$('.scroll-container').css('height', "551px");
+		$('.scroll-container').css('height', document.documentElement.clientHeight - 49 + "px");
 	}
 }, 100);
 
