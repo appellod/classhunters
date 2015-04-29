@@ -147,6 +147,9 @@ body.plugins {
 			}
 		}
 	}
+	body.plugins table.search-courses tr td, body.plugins table.search-courses tr th {
+		padding: 10px;
+	}
 	body.plugins table.search-sessions tr td, body.plugins table.search-sessions tr th {
 		padding: 10px 2px;
 	}
@@ -157,6 +160,9 @@ body.plugins {
 	}
 	body.plugins .scroll-container {
 		padding-top: 15px;
+	}
+	body.plugins table.search-courses tr td, body.plugins table.search-courses tr th {
+		padding: 5px 10px;
 	}
 	body.plugins table.search-sessions tr td, body.plugins table.search-sessions tr th {
 		padding: 5px 10px;
