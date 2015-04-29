@@ -226,11 +226,13 @@ class PluginsController < ApplicationController
           end
         end
       end
+      count = 0
       Date::DAYNAMES.each_with_index do |day, i|
         day = day.downcase
         if !params[:days].include?(day) && Session.column_names.include?(day)
           days_off << "#{day} IS NULL"
-          if i < (8 - params[:days].count)
+          count += 1
+          if count < (7 - params[:days].count)
             days_off << " AND "
           end
         end
