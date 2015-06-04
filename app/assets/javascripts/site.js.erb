@@ -333,7 +333,7 @@ function ajaxRefresh() {
 }
 
 function showShortcutAlert() {
-  if (!$.cookie('alerted')) {
+  if (!$.cookie('alerted') && document.documentElement.clientWidth < 768) {
     $('.shortcuts-alert').show().delay(10000).fadeOut(1000);
     $.cookie('alerted', true);    
   }
