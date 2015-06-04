@@ -2,25 +2,25 @@
 <% provide(:meta, "Information for #{@course.name} at #{@course.school.name}.") %>
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), @course.name=>'' }) %>
 <div class="course" itemscope itemtype ="http://schema.org/Thing">
-  <h1 itemprop="name"><%= @course.name %></h1>
+  <h1 itemprop="name"><span><%= @course.name %></span></h1>
   <h2><%= link_to "At #{@course.school.name}", school_path(@course.school) %></h2>
   <%= @course.department.present? ? "<strong>Department: </strong>#{@course.department}<br>".html_safe : '' %>
   <%= @course.number.present? ? "<strong>Course Number: </strong>#{@course.number}<br>".html_safe : '' %>
   <%= @course.description.present? ? "<strong>Description: </strong><span itemprop=\"description\">#{@course.description}</span><br>".html_safe : '' %>
   <% semesters.each do |semester| %>
-  	<% if @sessions.include?(semester) %>
-  	<br>
-	  <strong><%= semester %> Sessions:</strong><br>
-	  <table class="search-courses search-sessions school-sessions">
-	  	<thead>
-		  	<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
-		  </thead>
-		  <tbody>
-			<% @sessions[semester].each do |session| %>
-		  	<%= render 'courses/session', session: session %>
-			<% end %>
-			</tbody>
-  	</table>
+  	<% if @sessions.include?(semester.id) %>
+	  	<br>
+		  <strong><%= semester_display(semester) %> Sessions:</strong><br>
+		  <table class="search-courses search-sessions school-sessions">
+		  	<thead>
+			  	<tr><th>Name</th><th>Days</th><th>Time</th></tr>
+			  </thead>
+			  <tbody>
+				<% @sessions[semester.id].each do |session| %>
+			  	<%= render 'course_sessions/session', session: session %>
+				<% end %>
+				</tbody>
+	  	</table>
   	<% end %>
 	<% end %>
 </div>

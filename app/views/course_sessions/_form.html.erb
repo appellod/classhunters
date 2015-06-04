@@ -1,0 +1,41 @@
+<%= f.label :crn, "CRN" %>
+<%= f.text_field :crn %>
+<%= render 'shared/errors', object: f.object, field: :crn %>
+
+<%= f.label :credits %>
+<%= f.text_field :credits %>
+<%= render 'shared/errors', object: f.object, field: :credits %>
+
+<%= f.label :semester %>
+<%= select_tag :semester_id, options_for_select(semesters_array, params[:semester]) %>
+<%= render 'shared/errors', object: f.object, field: :semester %><br><br>
+
+
+<%= f.label :location, "Location/Building" %>
+<%= f.text_field :location %>
+<%= render 'shared/errors', object: f.object, field: :location %>
+
+<%= f.label :room %>
+<%= f.text_field :room %>
+<%= render 'shared/errors', object: f.object, field: :room %>
+
+<%= f.label :online, "Online?", class: "inline" %>
+<div class="col-sm-12">
+	<%= f.check_box :online %>
+	<i>(Check box if class is online)</i>
+	<%= render 'shared/errors', object: f.object, field: :online %>
+</div>
+<div class="clearfix"></div>
+
+<hr>
+
+<%= f.label :days %>
+<div class="col-sm-12 days">
+	<%= f.check_box :sunday %><%= f.label :sunday %><br>
+	<%= f.check_box :monday %><%= f.label :monday %><br>
+	<%= f.check_box :tuesday %><%= f.label :tuesday %><br>
+	<%= f.check_box :wednesday %><%= f.label :wednesday %><br>
+	<%= f.check_box :thursday %><%= f.label :thursday %><br>
+	<%= f.check_box :friday %><%= f.label :friday %><br>
+	<%= f.check_box :saturday %><%= f.label :saturday %><br>
+</div>

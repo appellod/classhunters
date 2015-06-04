@@ -1,11 +1,22 @@
+.courses-container {
+	border: 1px solid #AAAAAA;
+	border-top: none;
+	padding: 0px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
 .import {
 	form {
+		max-width: none;
+		margin: 0px;
 		label {
-			text-align: center;
+			text-align: left;
 		}
 		select {
-			margin: 10px auto 20px auto;
+			margin: 0px 0px 20px 0px;
 			display: block;
+			padding: 10px;
 		}
 		input[type=file] {
 			margin: 10px auto;
@@ -46,7 +57,7 @@ form#semester {
 
 .empty {
   font-size: 1.2em;
-  letter-spacing: -1px;
+  letter-spacing: 0px;
   padding: 10px 0px;
   text-align: center;
   color: black;
@@ -54,30 +65,7 @@ form#semester {
   border: 1px solid black;
   background-color: rgba(0,0,0,.075);
   margin: 25px 0px;
-}
-
-.expand {
-	text-align: center;
-	cursor: pointer;
-	display: table;
-	margin: 10px auto 0px auto;
-	font-size: 1em;
-	padding: 7px 15px;
-	font-size: 14px;
-	color: black;
-	background-color: #f2f2f2;
-	border: 1px solid #aaaaaa;
-	text-shadow: none;
-	&:hover {
-		color: black;
-		background-color: #cccccc;
-		border: 1px solid #aaaaaa;
-	}
-	&:active {
-		color: black;
-		background-color: #cccccc;
-		border: 1px solid #aaaaaa;
-	}
+  border-radius: 5px;
 }
 
 form.course_search {
@@ -90,77 +78,116 @@ form.course_search {
 
 form.search_form {
 	width: 100%;
-	.outside {
-		max-width: 400px;
-		margin: 15px auto 25px auto;
-		input {
-			box-shadow: none;
-		}
-		.input-group {
-			margin-bottom: 10px;
-			input {
-				border-top-right-radius: 0px;
-				border-bottom-right-radius: 0px;
-				margin: 0px;
-				height: 43px;
-				box-shadow: none;
-			}
-			button {
-				padding: 10px 15px 9px 15px;
-				font-size: 16px;
-				i {
-					font-size: 18px;
-					margin: 0px 12px;
-				}
-				&.location {
-					height: 43px;
-					padding: 0px 13px;
-					font-size: 14px;
-					color: black;
-					background-color: #f2f2f2;
-					border: 1px solid #aaaaaa;
-					text-shadow: none;
-					font-weight: bold;
-					border-top-left-radius: 0px;
-					border-bottom-left-radius: 0px;
-					&:hover {
-						background-color: #cccccc;
-					}
-					&:active {
-						background-color: #FF5500;
-					}
-				}
-			}
-		}
-		& > input[type=submit] {
-			font-size: 1.1em;
-		}
-		select {
-			padding: 5px;
-			margin: 0px auto;
-			display: block;
-		}
+	max-width: none;
+	input[type=submit] {
+		width: 100%;
+		padding: 9px 0px 9px 0px;
+		font-size: 1.25em;
+		margin: 0px;
+		border: none;
 	}
 	.expand-container {
-		display: none;
-		background-color: #f2f2f2;
-		border: 1px solid #AAAAAA;
-		padding: 10px 0px;
-		border-radius: 3px;
 		width: 100%;
-		padding: 10px 0px 15px 0px;
-		margin: 10px auto;
-		.col-sm-4 {
-			margin-bottom: 5px;
+		background-color: white;
+		border: 1px solid #AAAAAA;
+		padding: 0px;
+		border-radius: 5px;
+		margin: 10px 0px 0px 0px;
+		strong {
+			font-size: 1.5em;
+			text-align: center;
+			display: block;
+			margin: 5px 5px 0px 5px;
+			background: image-url('header-background.jpg');
+			background-position: center;
+			background-repeat: repeat-x;
+			span {
+				background-color: white;
+				padding: 0px 5px;
+			}
+		}
+		.sort {
+			padding: 0px;
+			ul {
+				list-style-type: none;
+				padding: 0px;
+				li {
+					display: inline-block;
+					width: 50%;
+					text-align: center;
+					font-size: 14px;
+					color: black;
+					background: #ffffff;
+					border: 1px solid #aaaaaa;
+					text-shadow: none;
+					border-radius: 5px;
+					font-family: 'Oswald';
+					letter-spacing: 1px;
+					padding: 0px;
+					&:hover {
+						background: #e2e2e2;
+					}
+					&:active {
+						background: #e2e2e2;
+					}
+					&.active {
+						padding: 10px 0px;
+						background-color: #e2e2e2;
+						font-weight: bold;
+						box-shadow: inset 0px 0px 6px rgba(0,0,0,.45);
+					}
+					a {
+						display: block;
+						padding: 10px 0px;
+						color: black;
+						&:hover {
+							text-decoration: none;
+							color: black;
+						}
+					}
+					&:nth-child(1) {
+						border-radius: 5px 0px 0px 5px;
+						border-right: none;
+					}
+					&:nth-child(2) {
+						border-radius: 0px 5px 5px 0px;
+						border-bottom: 1px solid #aaaaaa;
+					}
+				}
+			}
+		}
+		hr {
+			margin: 15px 0px 5px 0px;
+		}
+		ul {
+			padding: 0px;
+			margin: 0px;
+			list-style-type: none;
+			li {
+				border-bottom: 1px solid #aaaaaa;
+				padding: 10px 10px;
+				background: linear-gradient(#ffffff, #eeeeee);
+				&:first-child {
+					border-radius: 5px 5px 0px 0px;
+				}
+				&:last-child {
+					border-bottom: none;
+					border-radius: 0px 0px 5px 5px;
+				}
+				label {
+					margin: 0px 0px 5px 0px;
+				}
+			}
 		}
 		input[type=text], input[type=search] {
 			border-radius: 0px;
 			border: 1px solid #AAAAAA;
-			border-radius: 3px;
+			border-radius: 5px;
+			padding: 10px;
 		}
 		.days-container, .department-container {
 			border: 1px solid #AAAAAA;
-			border-radius: 3px;
+			border-radius: 5px;
 			background-color: white;
 			max-height: 150px;
 			overflow-y: auto;
@@ -202,6 +229,7 @@ form.search_form {
 			label {
 				display: inline-block;
 				text-align: left;
+				margin: 5px 0px;
 			}
 			input {
 				display: inline-block;
@@ -216,7 +244,7 @@ form.search_form {
 			padding: 10px;
 			width: 100%;
 			cursor: pointer;
-			-webkit-border-radius: 3px;
+			-webkit-border-radius: 5px;
 			box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25) inset;
 			font-family: 'Oswald', sans-serif;
 		}
@@ -233,22 +261,6 @@ form.search_form {
 			font-weight: 900;
 			margin: 5px 0px;
 			font-family: 'Oswald', sans-serif;
-			span {
-				background-color: #F2F2F2;
-			  padding: 0 15px;
-			  position: relative;
-			  z-index: 1;
-			}
-			&:before {
-				background: #AAAAAA;
-			  content: "";
-			  display: block;
-			  height: 2px;
-			  position: absolute;
-			  top: 35%;
-			  width: 100%;
-			  left: 0;
-			}
 		}
 		.location-form {
 			input {
@@ -278,16 +290,13 @@ form.search_form {
 				}
 			}
 		}
-		.time-container {
-			padding-bottom: 30px;
-		}
 	}
 }
 .loading {
 	position: fixed; 
 	display: none; 
-	top: calc(50% - 76px); 
-	left: calc(50% - 92px); 
+	top: calc(50% - 78px); 
+	left: calc(50% - 67px); 
 	text-align: center; 
 	font-weight: bold; 
 	background-color: white; 
@@ -297,22 +306,28 @@ form.search_form {
 	img {
 		width: 100px;
 		height: 100px;
+		margin-bottom: 5px;
+	}
+}
+.results {
+	.alert {
+		margin-top: 0px;
 	}
 }
 .results-count {
-	text-align: center;
-	margin: 15px 0px;
+	margin: 0px 0px 0px 0px;
 	font-weight: bold;
 	font-size: 1.25em;
+	text-align: center;
+}
+.course-search {
+	border: none;
 }
 ul.search-school {
   padding: 0px;
-  margin: 10px 0px;
+  margin: 0px 0px 5px 0px;
   list-style-type: none;
-  background-color: #eeeeee;
   color: black;
-  border: 1px solid #aaaaaa;
-  border-radius: 3px;
   .truncate {
   	width: 75%;
   	overflow: hidden;
@@ -327,15 +342,22 @@ ul.search-school {
     cursor: pointer;
     padding: 10px;
     //text-shadow: 1px 1px rgba(0,0,0,.75);
-    strong {
-    	//text-shadow: 2px 2px rgba(0,0,0,.75);
-    }
+    background: #f7f7f7;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px;
     &:hover {
-      background: mix(#eeeeee, black, 75%);
+      background: linear-gradient(#dddddd, #cccccc);
     }
   }
   .collapse {
   	display: none;
+  	border-left: 1px solid #aaaaaa;
+  	border-right: 1px solid #aaaaaa;
+  	border-bottom: 1px solid #aaaaaa;
+  	border-radius: 0px 0px 5px 5px;
+  	table tr:last-child td {
+  		border-radius: 0px 0px 5px 5px;
+  	}
   }
   li {
     padding: 0px;
@@ -362,7 +384,6 @@ ul.search-school {
 }
 table.search-courses {
 	table-layout: fixed;
-	border-top: 1px solid #999999;
 	width: 100%;
 	tr {
 		width: 100%;
@@ -380,7 +401,7 @@ table.search-courses {
 	thead tr {
 		background-color: #f2f2f2;
 		color: black;
-		border-bottom: 1px solid #cccccc;
+		border-bottom: 1px solid #aaaaaa;
 		th {
 			margin-right: 0px;
 		}
@@ -446,22 +467,15 @@ table.search-sessions {
 	tr {
 		td, th {
 			&:nth-child(1) {
-				width: 35%;
+				width: 55%;
 			}
 			&:nth-child(2) {
-				width: 10%;
+				width: 15%;
+				padding-left: 0px;
+				padding-right: 10px;
 			}
 			&:nth-child(3) {
-				width: 8%;
-			}
-			&:nth-child(4) {
-				width: 8%;
-			}
-			&:nth-child(5) {
-				width: 20%;
-			}
-			&:nth-child(6) {
-				width: 18%;
+				width: 30%;
 			}
 			&.online {
 				background: transparent image-url('strikeout.png') 0 50% repeat-x;
@@ -475,14 +489,21 @@ table.search-sessions {
 }
 
 table.school-courses {
-	margin-top: 10px;
 	border-top: none;
-	border: 1px solid #e2e2e2;
-	border-radius: 3px;
+	border: 1px solid #aaaaaa;
+	border-radius: 5px;
 	border-collapse: separate;
 	thead tr {
-		background-color: #e2e2e2;
-		border-bottom: none;
+		background-color: #eaeaea;
+		border-bottom: 1px solid #AAAAFF;
+		th {
+			&:first-child {
+				border-radius: 5px 0px 0px 0px;
+			}
+			&:last-child {
+				border-radius: 0px 5px 0px 0px;
+			}
+		}
 		th a {
 			color: black;
 			display: inline-block;
@@ -499,17 +520,135 @@ table.school-courses {
 		td:nth-child(1) {
 			width: 95px;
 		}
+		td.icon {
+			width: 50px;
+			a {
+				float: right;
+				display: inline-block;
+				margin-left: 5px;
+				img {
+					height: 30px;
+					opacity: .7;
+					&:hover {
+						opacity: 1;
+					}
+				}
+			}
+		}
+		&:last-child {
+			td {
+				&:first-child {
+					border-radius: 0px 0px 0px 5px;
+				}
+				&:last-child {
+					border-radius: 0px 0px 5px 0px;
+				}
+			}
+		}
+	}
+}
+
+table.edit-courses, table.edit-sessions {
+	tbody tr {
+		cursor: initial;
+		&:nth-child(even):hover {
+			background-color: #F2F2F2;
+			td.online span {
+				background-color: #F2F2F2;
+			}
+		}
+		&:nth-child(odd):hover {
+			background-color: #FFFFFF;
+			td.online span {
+				background-color: #FFFFFF;
+			}
+		}
 	}
 }
 
 table.school-sessions {
-	border-top: none;
-	border: 1px solid #e2e2e2;
-	border-radius: 3px;
+	border: 1px solid #aaaaaa;
+	border-radius: 5px;
 	border-collapse: separate;
 	thead tr {
 		border-bottom: none;
 		background-color: #e2e2e2;
+	}
+	tbody tr {
+		th {
+			&:first-child {
+				border-radius: 5px 0px 0px 0px;
+			}
+			&:last-child {
+				border-radius: 0px 5px 0px 0px;
+			}
+		}
+		td.icon {
+			width: 50px;
+			a {
+				float: right;
+				display: inline-block;
+				margin: 0px 5px 0px 0px;
+				img {
+					height: 20px;
+					opacity: .7;
+					&:hover {
+						opacity: 1;
+					}
+				}
+			}
+		}
+		&:last-child {
+			td {
+				&:first-child {
+					border-radius: 0px 0px 0px 5px;
+				}
+				&:last-child {
+					border-radius: 0px 0px 5px 0px;
+				}
+			}
+		}
+	}
+}
+
+table.edit-sessions {
+	td, th {
+		&:nth-child(4) {
+			width: 15% !important;
+		}
+	}
+}
+
+.edit_session, .new_session {
+	input[type=checkbox] {
+		bottom: 1px;
+		vertical-align: middle;
+		position: relative;
+		margin: 0px;
+		padding: 0px;
+		margin-right: 10px;
+	}
+	.days {
+		label {
+			width: auto;
+		}
+	}
+	select {
+		padding: 10px;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+	.location-form {
+		.input-group {
+		width: 100%;
+			input {
+				border-radius: 5px !important;
+			}
+			button {
+				display: none;
+			}
+		}
 	}
 }
 
@@ -519,8 +658,18 @@ table.school-sessions {
 			font-size: 2em;
 		}
 	}
+	hr.header {
+		display: none;
+	}
+	.results-count {
+		text-align: center;
+		margin: 10px 0px;
+	}
 	.col-sm-4 {
 		-webkit-overflow-scrolling: touch;
+	}
+	.container .col-sm-3, .container .col-sm-9 {
+		padding: 0px;
 	}
 	.expand {
 		padding: 10px 15px;
@@ -530,17 +679,20 @@ table.school-sessions {
 		border-bottom-left-radius: 0px;
 		border-bottom-right-radius: 0px;
 	}
+	form.search_form input[type=submit] {
+		margin: 15px 0px;
+	}
 	form.search_form .expand-container {
 		width: 100%;
 		margin: 0px;
-		border-top-left-radius: 0px;
-		border-top-right-radius: 0px;
-		border-top: none;
+		strong {
+			display: none;
+		}
 		.days-container {
 			max-height: none;
 		}
-		.time-container {
-			padding-bottom: 0px;
+		input[type=submit] {
+			margin-top: 20px;
 		}
 	}
 	ul.search-school {
@@ -581,19 +733,10 @@ table.school-sessions {
 					width: 45%;
 				}
 				&:nth-child(2) {
-					display: none;
-				}
-				&:nth-child(3) {
-					display: none;
-				}
-				&:nth-child(4) {
 					width: 15%;
 				}
-				&:nth-child(5) {
+				&:nth-child(3) {
 					width: 40%;
-				}
-				&:nth-child(6) {
-					display: none;
 				}
 			}
 			td.online {

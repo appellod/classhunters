@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   has_mobile_fu false
 
   before_action :get_location
+  before_action :page_to_integer
 
   private
 
@@ -14,4 +15,8 @@ class ApplicationController < ActionController::Base
   			get_location_by_ip
   		end
   	end
+
+    def page_to_integer
+      params[:page] = params[:page].to_i if params[:page].present?
+    end
 end

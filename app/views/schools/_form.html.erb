@@ -2,10 +2,151 @@
 <%= f.text_field :name %>
 <%= render 'shared/errors', object: f.object, field: :name %>
 
+<%= f.label :description %>
+<%= f.text_area :description, size: "12x5" %>
+<%= render 'shared/errors', object: f.object, field: :description %>
+
 <%= f.label :address %>
 <%= f.text_field :address %>
 <%= render 'shared/errors', object: f.object, field: :address %>
 
+<%= f.label :category %>
+<%= f.select :category, school_categories %>
+
 <%= f.label :website %>
 <%= f.text_field :website %>
 <%= render 'shared/errors', object: f.object, field: :website %>
+
+<%= f.label :founding_date %>
+<%= f.text_field :founding_date %>
+<%= render 'shared/errors', object: f.object, field: :founding_date %>
+
+<hr>
+<%= label_tag :phone, "Important Phone Numbers" %>
+<div class="col-sm-6">
+	<%= label_tag :name, "Name" %>
+</div>
+<div class="col-sm-6">
+	<%= label_tag :number, "Number" %>
+</div>
+<% for i in 0..2 %>
+	<%= hidden_field_tag "phone_ids[]", @school.phone_numbers[i].present? ? @school.phone_numbers[i].id : "" %>
+	<div class="col-sm-6">
+		<%= text_field_tag "phone_names[]", @school.phone_numbers[i].present? ? @school.phone_numbers[i].name : "", placeholder: "Admissions, John Doe, etc." %>
+	</div>
+	<div class="col-sm-6">
+		<%= text_field_tag "phone_numbers[]", @school.phone_numbers[i].present? ? @school.phone_numbers[i].number : "", placeholder: "(123) 456-7890" %>
+	</div>
+<% end %>
+<div class="clearfix"></div>
+<hr>
+<%= label_tag :email, "Important Email Addresses" %>
+<div class="col-sm-6">
+	<%= label_tag :name, "Name" %>
+</div>
+<div class="col-sm-6">
+	<%= label_tag :number, "Email Address" %>
+</div>
+<% for i in 0..2 %>
+	<%= hidden_field_tag "email_ids[]", @school.emails[i].present? ? @school.emails[i].id : "" %>
+	<div class="col-sm-6">
+		<%= text_field_tag "email_names[]", @school.emails[i].present? ? @school.emails[i].name : "", placeholder: "Admissions, John Doe, etc." %>
+	</div>
+	<div class="col-sm-6">
+		<%= text_field_tag "email_emails[]", @school.emails[i].present? ? @school.emails[i].address : "", placeholder: "admissions@school.edu" %>
+	</div>
+<% end %>
+<div class="clearfix"></div>
+<hr>
+<%= label_tag :email, "Important Links" %>
+<div class="col-sm-6">
+	<%= label_tag :name, "Name" %>
+</div>
+<div class="col-sm-6">
+	<%= label_tag :number, "URL" %>
+</div>
+<% for i in 0..2 %>
+	<%= hidden_field_tag "link_ids[]", @school.links[i].present? ? @school.links[i].id : "" %>
+	<div class="col-sm-6">
+		<%= text_field_tag "link_names[]", @school.links[i].present? ? @school.links[i].name : "", placeholder: "College Catalog, Course Catalog, etc." %>
+	</div>
+	<div class="col-sm-6">
+		<%= text_field_tag "link_urls[]", @school.links[i].present? ? @school.links[i].url : "", placeholder: "www.school.edu/catalog" %>
+	</div>
+<% end %>
+<div class="clearfix"></div>
+<hr>
+<%= label_tag :colors, "School Colors" %>
+<div class="col-sm-5">
+	<%= label_tag :primary, "Primary" %>
+</div>
+<div class="col-sm-5">
+	<%= label_tag :secondary, "Secondary" %>
+</div>
+<div class="col-sm-5">
+	<%= color_field :background, nil, value: @school.school_style.present? ? "##{@school.school_style.background}" : "#eeeeee" %>
+	<%= hidden_field_tag "background_default", @school.school_style.present? ? "##{@school.school_style.background}" : "#eeeeee" %>
+</div>
+<div class="col-sm-5">
+	<%= color_field :foreground, nil, value: @school.school_style.present? ? "##{@school.school_style.foreground}" : "#000000" %>
+	<%= hidden_field_tag "foreground_default", @school.school_style.present? ? "##{@school.school_style.foreground}" : "#000000" %>
+</div>
+<div class="col-sm-2">
+	<button class="reset">Reset</button>
+</div>
+<div class="clearfix"></div><br>
+<%= label_tag :preview, "Search Preview" %>
+<div class="col-sm-12">
+<ul class="search-school">
+  <li>
+  	<% if @school.school_style.present? %>
+	    <style>
+		    ul.search-school .school-<%= @school.school_style.school_id %> {
+		      background: #<%= @school.school_style.background %>;
+		      color: #<%= @school.school_style.foreground %>;
+		      text-shadow: 1px 1px #<%= changeColor(@school.school_style.background, -40) %>;
+		      border: 1px solid #<%= changeColor(@school.school_style.background, -40) %> !important;
+		    }
+		    ul.search-school .school-<%= @school.school_style.school_id %>:hover {
+		      background: #<%= changeColor(@school.school_style.background, -34) %>;
+		    }
+		  </style>
+    <% end %>
+    <div class="info school-<%= @school.id %>">
+    <% if mobile? %>
+      <strong>+&nbsp&nbsp<div class="truncate"><%= @school.name %></div><div style="float: right; display: inline-block;">(24)</div></strong>
+    <% else %>
+      <strong>+&nbsp&nbsp<%= @school.name %></strong> - <i>32 miles</i> - 24 Courses
+    <% end %>
+  </div>
+ 	</li>
+</ul>
+<% if current_user.admin %>
+	<hr>
+	<%= f.label :start_date %>
+	<%= f.text_field :start_date, value: @school.start_date.present? ? @school.start_date.strftime("%m/%d/%Y") : "", class: "date" %>
+	<%= render 'shared/errors', object: f.object, field: :start_date %>
+
+	<%= f.label :end_date %>
+	<%= f.text_field :end_date, value: @school.end_date.present? ? @school.end_date.strftime("%m/%d/%Y") : "", class: "date" %>
+	<%= render 'shared/errors', object: f.object, field: :end_date %>
+
+	<%= f.label :active %>
+	<div class="col-sm-6">
+		<%= f.radio_button :active, '1', checked: @school.active %>
+		<%= f.label :active, "Active" %>
+	</div>
+	<div class="col-sm-6">
+		<%= f.radio_button :active, '0', checked: !@school.active %>
+		<%= f.label :active, "Inactive" %>
+	</div>
+	<%= render 'shared/errors', object: f.object, field: :active %>
+
+	<script>
+		$('.date').datepicker({
+			format: 'Y/m/d',
+		});
+	</script>
+<% end %>
+<div class="clearfix"></div>
+<br>

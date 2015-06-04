@@ -1,11 +1,12 @@
 <% provide(:title, "Import Courses") %>
-<h1>Import Courses</h1>
+<% breadcrumbs({ 'Home'=>root_url, 'Account'=>user_path(current_user), @school.name=>edit_school_path(@school), 'Courses'=>school_edit_courses_path(@school), 'Import'=>'' }) %>
+<h1><span>Import Courses</span></h1>
 
 <div class="import">
-	<%= form_tag school_import_action_path(@school), multipart: true do %>
+	<%= form_tag school_import_courses_path(@school), method: :post, multipart: true do %>
 
 		<%= label_tag :semester %>
-		<%= select_tag :semester, options_for_select(semesters, params[:semester]) %>
+		<%= select_tag :semester, options_for_select(semesters_array, params[:semester]) %>
 
 		<%= label_tag :type %>
 		<%= select_tag :type, options_for_select(['Schedule', 'Descriptions']) %>

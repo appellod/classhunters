@@ -1,6 +1,6 @@
 <% if session.nil? %>
 	<tr class='inspect'>
-		<td <%= params[:school].present? ? "colspan=2" : '' %>>
+		<td <% if params[:school].present? %><%= request.referer.include?("/edit") ? "colspan=3" : "colspan=2" %><% end %>>
 			<table>
 				<tr>
 					<td><strong>Name:</strong></td><td>

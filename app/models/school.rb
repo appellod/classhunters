@@ -6,6 +6,9 @@ class School < ActiveRecord::Base
 	has_many :session_searches
 	has_many :plugin_accesses
 	has_one :school_style
+	has_many :phone_numbers
+	has_many :emails
+	has_many :links
 
 	before_validation :strip_attributes
 
@@ -69,5 +72,28 @@ class School < ActiveRecord::Base
 	  when ".xlsx" then Roo::Excelx.new(file.path, file_warning: :ignore)
 	  else raise "Unknown file type: #{file.original_filename}"
 	  end
+	end
+
+	def self.check_dates_for_active
+		set_active
+		set_inactive
+	end
+
+	def self.set_active
+		School.all.each do |school|
+			if school.start_date.present? && school.start_date <= Time.now
+				school.active = true
+				school.save
+			end
+		end
+	end
+
+	def self.set_inactive
+		School.all.each do |school|
+			if school.end_date.present? && school.end_date < Time.now
+				school.active = false
+				school.save
+			end
+		end
 	end
 end

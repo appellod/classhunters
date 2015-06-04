@@ -1,0 +1,22 @@
+<tr data-session-id="<%= session.id %>">
+  <td>
+    <strong><%= session.course.name.html_safe %></strong>
+  <% if session.online %>
+    </td><td colspan="2" class="online"><span>Online</span>
+  <% else %>
+    </td><td>
+    <%= days_to_string(session) %>
+    </td><td>
+    <% if session.start_time.present? && session.end_time.present? %><%= session.start_time.present? ? session.start_time.strftime('%l:%M%p') : '' %>-<%= session.end_time.present? ? session.end_time.strftime('%l:%M%p').strip : '' %>
+    <% end %>
+  <% end %>
+  </td>
+  <% if @edit %>
+    <td class="icon">
+      <%= form_tag school_session_path(@school, session), method: :delete, id: "form-session-#{session.id}" do %>
+        <%= link_to(image_tag('icon-delete.png'), "#delete", :onclick =>  "if(confirm('You sure?')) { $('#form-session-#{session.id}').submit(); }") %>
+      <% end %>
+      <%= link_to image_tag('icon-edit.png'), school_edit_session_path(@school, session) %>
+    </td>
+  <% end %>
+</tr>

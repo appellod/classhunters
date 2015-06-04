@@ -1,4 +1,19 @@
-<tr>
-	<td><%= link_to course.name.html_safe, school_course_path(course.school, course) %></td>
-	<td><%= course.number.present? ? "#{course.department} #{course.number}" : course.department %></td>
+<tr data-course-id="<%= course.id %>">
+	<% if @school.present? %>
+		<% if params[:order] == "dept" %>
+			<td><strong><%= "#{course.department} #{course.number}" %></strong></td><td><%= course.name.html_safe %></td>
+		<% else %>
+			<td><%= "#{course.department} #{course.number}" %></td><td><strong><%= course.name.html_safe %></strong></td>
+		<% end %>
+		<% if @edit %>
+			<td class="icon">
+				<%= form_tag school_course_path(@school, course), method: :delete, id: "form-course-#{course.id}" do %>
+					<%= link_to(image_tag('icon-delete.png'), "#delete", :onclick =>  "if(confirm('You sure?')) { $('#form-course-#{course.id}').submit(); }") %>
+				<% end %>
+				<%= link_to image_tag('icon-edit.png'), edit_school_course_path(school, course) %>
+			</td>
+		<% end %>
+  <% else %>
+  	<td><%= course.name.html_safe %></td>
+  <% end %>
 </tr>

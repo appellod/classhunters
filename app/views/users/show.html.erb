@@ -1,7 +1,7 @@
 <% provide(:title, @user.name) %>
 <% breadcrumbs({ 'Home'=>root_url, 'Account'=>'' }) %>
 <div class="user">
-  <h1><%= @user == current_user ? 'My Account' : 'View User' %></h1>
+  <h1><span><%= @user == current_user ? 'My Account' : 'View User' %></span></h1>
   <table>
 	  <tr><td>Email:</td><td><%= @user.email %></td></tr>
 	  <tr><td>Joined:</td><td><%= @user.created_at.strftime('%B %e, %Y') %></td></tr>
@@ -18,14 +18,8 @@
 	<% if @schools.present? %>
 		<hr>
 		<h1>My Schools</h1>
-		<%= will_paginate @schools, param_name: 'school_page' %>
-		<% @schools.each do |school| %>
-			<div class="school">
-				<%= link_to school.name, school %>
-				<%= link_to image_tag('icon-edit.png'), edit_school_path(school), class: 'icon' %>
-				<div style="clear: both;"></div>
-			</div>
-		<% end %>
-		<%= will_paginate @schools, param_name: 'school_page' %>
+		<div class="results">
+			<%= render 'schools' %>
+		</div>
 	<% end %>
 </div>

@@ -1,0 +1,7 @@
+<div class="box-header">My Account</div>
+<div class="box-container">
+	<%= form_for(@user, method: :post, url: account_path) do |f| %>
+		<%= render "users/form", f: f %>
+		<%= f.submit "Save Changes" %>
+	<% end %>
+</div>

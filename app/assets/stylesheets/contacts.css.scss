@@ -1,24 +1,43 @@
 .contact-form {
   display: block;
-  margin: 0px auto;
   text-align: left;
   form {
-  	width: 80%;
+  	width: 100%;
+    max-width: 750;
   }
   h1 {
-    padding: 0px 25px 10px 25px;
-  }
-  h2 {
-    padding: 0px 25px;
+    margin: 0px auto 25px auto;
+    display: block;
+    line-height: normal;
+    background: image-url("header-background.jpg");
+    background-position: center;
+    background-repeat: repeat-x;
+    text-align: center;
+    font-size: 3em;
+    span {
+      background: #FFFCFA;
+      padding: 0px 15px;
+    }
   }
   input[type=text] {
   	height: 44px;
+  }
+  label {
+    color: #101010;
+    text-shadow: none;
+  }
+  hr {
+    margin: 10px 15px 15px 15px;
+    border: 1px solid rgba(255,85,0,.35);
   }
   textarea {
   	height: 210px;
   	width: 100%;
   	border-radius: 3px;
   	border: 1px solid #CCCCCC;
+  }
+  p {
+    margin: 0px 0px 20px 0px;
   }
 }
 

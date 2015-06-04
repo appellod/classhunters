@@ -1,0 +1,11 @@
+<% @page = params[:page].present? ? params[:page].to_i : 1 %>
+
+<div class="results-pagination">
+  <div class="col-sm-4">
+    <%= render 'shared/results', items: items %>
+  </div>
+  <div class="col-sm-8">
+    <%= render 'shared/pagination', items: items %>
+  </div>
+  <div class="clearfix"></div>
+</div>

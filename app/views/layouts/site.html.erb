@@ -7,11 +7,13 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+  <meta name="msvalidate.01" content="9B90E452ED27C899CD6FABF1B1F3AC4A" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="google-translate-customization" content="505ee7d410ecf42e-b5dea89dfca44329-g1afb4cd85734c2b4-14"></meta>
   <%= render 'layouts/google_analytics' %>
 </head>
 <body>
+  <%= render 'shared/loading' %>
   <div class="container-fluid top-banner">
     <div class="container">
       <%= render 'layouts/top_banner' %>

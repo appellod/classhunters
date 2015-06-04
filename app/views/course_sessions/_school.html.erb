@@ -1,0 +1,44 @@
+<% if school.active && school.school_style.present? %>
+  <style>
+    .school-<%= school.school_style.school_id %> .info {
+      background: #<%= school.school_style.background %> !important;
+      color: #<%= school.school_style.foreground %>;
+      text-shadow: 1px 1px #<%= changeColor(school.school_style.background, -40) %>;
+      border: 1px solid #<%= changeColor(school.school_style.background, -40) %> !important;
+    }
+    .school-<%= school.school_style.school_id %> .info:hover {
+      background: #<%= changeColor(school.school_style.background, -34) %> !important;
+    }
+  </style>
+  <ul class="search-school school-<%= school.id %>">
+<% else %>
+  <ul class="search-school">
+<% end %>
+  <li>
+    <div class="info">
+      <% if mobile? %>
+        <strong><i class="glyphicon glyphicon-plus"></i>&nbsp&nbsp<div class="truncate"><%= school.name %></div><div style="float: right; display: inline-block;">(<%= @sessions.nil? ? courses.count : sessions.count %>)</div></strong>
+      <% else %>
+        <strong><i class="glyphicon glyphicon-plus"></i>&nbsp&nbsp<%= school.name %></strong> - <i><%= school.distance_from([session[:latitude], session[:longitude]]).round(2) %> miles</i> - 
+        <% if @sessions.nil? %>
+          <%= pluralize(courses.count, 'course') %>
+        <% else %>
+          <%= pluralize(sessions.count, 'session') %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="collapse">
+    	<table class="search-courses search-sessions">
+    		<thead>
+  				<tr>
+  					<th>Name</th><th>Days</th><th>Time</th>
+  				</tr>
+  			</thead>
+  			<tbody class="scrollable">
+    			<%= render partial: 'course_sessions/session', collection: sessions, as: :session, locals: {school: school} %>
+    		</tbody>
+    	</table>
+    </div>
+  </li>
+</ul>

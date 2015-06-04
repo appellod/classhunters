@@ -1,0 +1,6 @@
+<%= label_tag :semester, "Semester:" %>
+<% if params[:search].present? || @school.present? %>
+	<%= select_tag :semester, options_for_select(semesters_array, params[:semester]), class: "submit-onchange" %>
+<% else %>
+	<%= select_tag :semester, options_for_select(semesters_array, params[:semester]) %>
+<% end %>

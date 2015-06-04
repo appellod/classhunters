@@ -1,5 +1,7 @@
 <% provide(:title, "Edit Course") %>
-<h1>Edit Course</h1>
+<% breadcrumbs({ 'Home'=>root_url, 'Account'=>user_path(current_user), @school.name=>edit_school_path(@school), 'Courses'=>school_edit_courses_path(@school), @course.name=>'' }) %>
+
+<h1><span>Edit Course</span></h1>
 
 <div class="row">
   <div class="span6 offset3">

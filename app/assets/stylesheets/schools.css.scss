@@ -1,4 +1,5 @@
 .school {
+	margin-top: -15px;
 	text-align: left;
 	table {
 		tr {
@@ -14,6 +15,73 @@
 	}
 	button {
 		margin: 0px auto;
+	}
+}
+
+.schools-container {
+	max-width: 750px;
+	margin: 0px auto;
+	.school {
+		margin-top: 0px;
+	}
+}
+
+.search-container {
+	width: 100%;
+	form {
+		width: 100%;
+	}
+}
+
+.edit_school {
+
+	input[type=color] {
+		width: 100%;
+		height: 36px;
+	}
+	input[type=radio] {
+		display: inline-block;
+	}
+	input[type=submit] {
+		margin-top: 25px;
+	}
+	.col-sm-6 {
+		label[for=school_active] {
+			width: auto;
+		}
+	}
+	select {
+		margin-bottom: 10px;
+		padding: 10px;
+	}
+	button.reset, a.button {
+		text-align: center;
+		cursor: pointer;
+		display: table;
+		margin: 0px;
+		font-size: 1em;
+		padding: 7px 15px;
+		font-size: 14px;
+		color: black;
+		background-color: #f2f2f2;
+		border: 1px solid #aaaaaa;
+		text-shadow: none;
+		&:hover {
+			color: black;
+			background-color: #cccccc;
+			border: 1px solid #aaaaaa;
+		}
+		&:active {
+			color: black;
+			background-color: #cccccc;
+			border: 1px solid #aaaaaa;
+		}
+	}
+	a.button {
+		margin: 15px auto;
+	}
+	.info {
+		border-top: 1px solid #aaaaaa;
 	}
 }
 

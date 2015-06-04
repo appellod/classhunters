@@ -1,5 +1,13 @@
-<% provide(:title, "Edit User") %>
-<h1>Edit User</h1>
+<% if current_user == @user %>
+	<% provide(:title, "Edit Account") %>
+	<% breadcrumbs({ 'Home'=>root_url, 'Manage'=>account_path, 'Edit Account'=>'' }) %>
+	<h1><span>Edit Account</span></h1>
+<% else %>
+	<% provide(:title, "Edit User") %>
+	<% breadcrumbs({ 'Home'=>root_url, 'Manage'=>account_path, 'Edit'=>'' }) %>
+	<h1><span>Edit User</span></h1>
+<% end %>
+
 
 <%= form_for(@user) do |f| %>
   <%= render "form", f: f, object: @user %>

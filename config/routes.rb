@@ -14,7 +14,8 @@ Site::Application.routes.draw do
   match "/signup", to: "users#new", via: "get"
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'get'
-  match '/dashboard', to: 'site#dashboard', via: 'get'
+  match '/account', to: 'site#account', via: 'get'
+  match '/account', to: 'site#edit_user', via: 'post'
   match '/stats', to: 'site#stats', via: 'get'
   match "/search", to: "search#index", via: "get"
   match "/location", to: "sessions#location", via: "post"
@@ -33,13 +34,20 @@ Site::Application.routes.draw do
   match "/schools/import", to: "schools#import", via: "post", as: "import_schools_action"
   match "/schools/autocomplete", to: "schools#autocomplete", via: "get"
   resources :schools do
-    match "/courses/import", to: "courses#import", via: "get", as: "import"
-    match "/courses/import", to: "courses#import", via: "post", as: "import_action"
-    match "/courses/sessions", to: "courses#sessions", via: "get", as: "sessions"
+    match "/courses/import", to: "courses#import", via: "get", as: "import_courses"
+    match "/courses/import", to: "courses#import_action", via: "post"
+    match "/courses/sessions", to: "course_sessions#index", via: "get", as: "sessions"
+    match "/courses/edit", to: "courses#edit_index", via: "get", as: "edit_courses"
+    match "/courses/sessions/edit", to: "course_sessions#edit_index", via: "get", as: "edit_sessions"
+    match "/courses/sessions/:id/edit", to: "course_sessions#edit", via: "get", as: "edit_session"
+    match "/courses/sessions/:id", to: "course_sessions#update", via: "patch", as: "session"
+    match "/courses/sessions/:id", to: "course_sessions#destroy", via: "delete"
+    match "/courses/sessions/new", to: "course_sessions#new", via: "get", as: "new_session"
+    match "/courses/sessions", to: "course_sessions#create", via: "post"
     resources :courses
   end
   resources :courses, only: [:index]
-  match "/courses/sessions", to: "courses#sessions", via: "get", as: "course_sessions"
+  match "/courses/sessions", to: "course_sessions#index", via: "get", as: "course_sessions"
   match "/courses/json", to: "courses#json", via: "get", as: "course_json"
   match "/courses/search", to: "courses#get_results", via: "get"
 

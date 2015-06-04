@@ -1,87 +1,52 @@
-<% if params[:semester].nil? %>
-	<% if @school.present? %>
-		<% if @courses.present? && @courses.count > 0 %>
-			<div class="results-count"><%= @courses.total_entries %> courses found!</div>
-			<%= will_paginate @courses %>
-				<table class="search-courses school-courses">
-					<thead>
-						<tr><th>
-							<% if params[:order] == "dept" %>
-								<% if params[:dir].nil? %>
-									<%= link_to "Department &#9660;".html_safe, params.except(:page, "_", :order, :dir).merge(order: "dept", dir: "desc"), class: 'sort' %>
-								<% else %>
-									<%= link_to "Department &#9650;".html_safe, params.except(:page, "_", :order, :dir).merge(order: "dept"), class: 'sort' %>
-								<% end %>
+<% if @school.nil? && @too_far && params[:search].present? %>
+	<div class="alert alert-warning">
+		Your location is outside our service area which may reduce your experience with our site. Please be patient while we expand into your region.
+	</div>
+<% end %>
+<% flash.each do |key, message| %>
+	<div class="alert alert-<%= key %>">
+		<%= message %>
+	</div>
+<% end %>
+<% if @school.present? %>
+	<% if @courses.present? && @courses.count > 0 %>
+		<%= render 'shared/results_pagination', items: @courses %>
+			<table class="search-courses school-courses<%= @edit ? ' edit-courses' : '' %>">
+				<thead>
+					<tr><th>
+						<% if params[:order] == "dept" %>
+							<% if params[:dir].nil? %>
+								<%= link_to "Department &#9660;".html_safe, params.except(:page, "_", :order, :dir).merge(order: "dept", dir: "desc"), class: 'sort' %>
 							<% else %>
-								<%= link_to "Department", params.except(:page, "_", :order, :dir).merge(order: "dept"), class: 'sort' %>
+								<%= link_to "Department &#9650;".html_safe, params.except(:page, "_", :order, :dir).merge(order: "dept"), class: 'sort' %>
 							<% end %>
-							</th><th>
-							<% if params[:order].nil? %>
-								<% if params[:dir].nil? %>
-									<%= link_to "Name &#9660;".html_safe, params.except(:page, "_", :order, :dir).merge(dir: "desc"), class: 'sort' %>
-								<% else %>
-									<%= link_to "Name &#9650;".html_safe, params.except(:page, "_", :order, :dir), class: 'sort' %>
-								<% end %>
+						<% else %>
+							<%= link_to "Department", params.except(:page, "_", :order, :dir).merge(order: "dept"), class: 'sort' %>
+						<% end %>
+						</th><th>
+						<% if params[:order].nil? %>
+							<% if params[:dir].nil? %>
+								<%= link_to "Name &#9660;".html_safe, params.except(:page, "_", :order, :dir).merge(dir: "desc"), class: 'sort' %>
 							<% else %>
-								<%= link_to "Name", params.except(:page, "_", :order, :dir), class: 'sort' %>
+								<%= link_to "Name &#9650;".html_safe, params.except(:page, "_", :order, :dir), class: 'sort' %>
 							<% end %>
-						</th></tr>
-					</thead>
-					<tbody>
-				  	<%= render partial: 'courses/search', collection: @courses, as: :course, locals: { school: @school } %>
-				  </tbody>
-				</table>
-			<%= will_paginate @courses %>
-		<% elsif @school.courses.empty? %>
-			<div class="empty">To view course offerings for this institution, click <%= link_to "here", school_website_url(@school), target: '_blank' %> to visit the school's website.</div>
-		<% else %>
-			<div class="empty">There are no courses matching your search terms.</div>
-		<% end %>
-	<% else %>
-		<% if @courses.present? && @courses.count > 0 %>
-			<div class="results-count"><%= @course_count %> courses found!</div>
+						<% else %>
+							<%= link_to "Name", params.except(:page, "_", :order, :dir), class: 'sort' %>
+						<% end %>
+					</th><% if @edit %><th></th><% end %></tr>
+				</thead>
+				<tbody>
+			  	<%= render partial: 'courses/course', collection: @courses, as: :course, locals: { school: @school } %>
+			  </tbody>
+			</table>
+	<% end %>
+<% else %>
+	<% if @courses.present? && @courses.count > 0 %>
+	  <div class="courses-container course-search">
 			<% @courses.each do |school| %>
 				<%= render 'courses/school', school: school[0], courses: school[1] %>
 			<% end %>
-		<% elsif params[:search].present? %>
-			<% if location_set? %>
-				<div class="empty">There are no courses matching your search terms.</div>
-			<% else %>
-				<div class="empty">Please specify a location.</div>
-			<% end %>
-		<% end %>
-	<% end %>
-<% else %>
-	<% if @school.present? %>
-		<% if @sessions.present? && @sessions.count > 0 %>
-			<div class="results-count"><%= @sessions.total_entries %> course sessions found!</div>
-			<%= will_paginate @sessions %>
-				<table class="search-courses search-sessions school-sessions" style="border-top: none;">
-	    		<thead>
-	  				<tr><th>Name</th><th>CRN</th><th>Credits</th><th>Days</th><th>Time</th><th>Instructor</th></tr>
-	  			</thead>
-	  			<tbody style="max-height: none;">
-	    			<%= render partial: 'courses/search', collection: @sessions, as: :session, locals: {school: @school} %>
-	    		</tbody>
-	    	</table>
-			<%= will_paginate @sessions %>
-		<% elsif @school.courses.empty? %>
-			<div class="empty">To view course offerings for this institution, click <%= link_to "here", school_website_url(@school), target: '_blank' %> to visit the school's website.</div>
-		<% else %>
-			<div class="empty">There are no courses matching your search terms.</div>
-		<% end %>
-	<% else %>
-		<% if @sessions.present? && @sessions.count > 0 %>
-			<div class="results-count"><%= @session_count %> course sessions found!</div>
-			<% @sessions.each do |school| %>
-				<%= render 'courses/school', school: school[0], sessions: school[1] %>
-			<% end %>
-		<% elsif params[:search].present? %>
-			<% if session[:latitude].present? && session[:longitude].present? %>
-				<div class="empty">There are no courses matching your search terms.</div>
-			<% else %>
-				<div class="empty">Please specify a location.</div>
-			<% end %>
-		<% end %>
+		</div>
 	<% end %>
 <% end %>
+

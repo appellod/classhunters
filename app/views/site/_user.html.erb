@@ -1,0 +1,18 @@
+<div class="box-header">Account Information</div>
+<div class="box-container">
+	<div class="col-sm-2">
+		<%= label_tag :email, "Email:" %>
+	</div>
+	<div class="col-sm-10">
+		<%= @user.email %>
+	</div>
+	<div class="clearfix"></div>
+	<div class="col-sm-2">
+		<%= label_tag :joined, "Joined:" %>
+	</div>
+	<div class="col-sm-10">
+		<%= @user.created_at.strftime("%B %d, %Y") %>
+	</div>
+	<div class="clearfix"></div>
+	<%= link_to "Edit Account", account_path(view: "edit_account"), class: "button" %>
+</div>

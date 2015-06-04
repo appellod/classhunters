@@ -7,8 +7,8 @@ gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
-gem 'sunspot_solr', '~> 2.1.1'
-gem 'sunspot_rails', '~> 2.1.1'
+gem 'sunspot_solr', '~> 2.2.0'
+gem 'sunspot_rails', '~> 2.2.0'
 gem 'geocoder', '~> 1.2.4'
 gem 'roo', :git => 'git://github.com/roo-rb/roo.git'
 gem 'roo-xls', :git => 'git://github.com/roo-rb/roo-xls.git'
@@ -20,6 +20,7 @@ gem 'uglifier', '2.1.1'
 gem 'jbuilder', '1.0.2'
 gem 'progress_bar'
 gem 'rubyzip', '1.1.7', :require => 'zip'
+gem 'whenever', '0.9.4', require: false
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'

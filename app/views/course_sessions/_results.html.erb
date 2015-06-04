@@ -1,0 +1,30 @@
+<% if @school.nil? && @too_far && params[:search].present? %>
+	<div class="alert alert-warning">
+		Your location is outside our service area which may reduce your experience with our site. Please be patient while we expand into your region.
+	</div>
+<% end %>
+<% flash.each do |key, message| %>
+	<div class="alert alert-<%= key %>">
+		<%= message %>
+	</div>
+<% end %>
+<% if @school.present? %>
+	<% if @sessions.present? && @sessions.count > 0 %>
+		<%= render 'shared/results_pagination', items: @sessions %>
+			<table class="search-courses search-sessions school-sessions<%= @edit ? ' edit-sessions' : '' %>">
+    		<thead>
+  				<tr><th>Name</th><th>Days</th><th>Time</th><%= @edit ? "<th></th>".html_safe : "" %></tr></thead>
+  			<tbody style="max-height: none;">
+    			<%= render partial: 'course_sessions/session', collection: @sessions, as: :session, locals: {school: @school} %>
+    		</tbody>
+    	</table>
+	<% end %>
+<% else %>
+	<% if @sessions.present? && @sessions.count > 0 %>
+	  <div class="courses-container course-search">
+		<% @sessions.each do |school| %>
+			<%= render 'course_sessions/school', school: school[0], sessions: school[1] %>
+		<% end %>
+		</div>
+	<% end %>
+<% end %>

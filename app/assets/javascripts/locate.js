@@ -16,8 +16,8 @@ var locate = (function() {
               state = results[0].address_components[i].short_name;
             }
           }
-          var latitude = results[0].geometry.location.k;
-          var longitude = results[0].geometry.location.D;
+          var latitude = results[0].geometry.location.lat();
+          var longitude = results[0].geometry.location.lng();
           var url = "/location";
           var data = 'latitude=' + latitude + '&longitude=' + longitude + '&city=' + city + '&state=' + state + '&method=coordinates';
           $.ajax({

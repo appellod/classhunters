@@ -1,0 +1,51 @@
+<%= form_tag (@school.present? ? school_sessions_path(@school) : course_sessions_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
+	<%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" unless mobile? %>
+	<div class="expand-container">
+    <ul>
+      <li>
+        <label>Search for:</label>
+        <div class="sort">
+          <ul>
+            <li>
+            <%= link_to "Courses", @courses_path %>
+            </li><li class="active">Sessions</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <%= render 'shared/semesters_form' %>
+      </li>
+      <% if @school.nil? %>
+        <li>
+          <%= render 'shared/location_form' %>
+        </li>
+      <% end %>
+      <li>
+        <label>Search:</label>
+        <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+      </li>
+      <% if @departments.present? && !mobile? %>
+        <li>
+          <%= render 'shared/departments_form' %>
+        </li>
+      <% end %>
+      <% if @school.nil? %>
+        <li>
+          <%= render 'shared/school_type_form' %>
+        </li>
+      <% end %>
+      <li>
+        <%= render 'shared/days_form' %>
+      </li>
+      <li>
+        <%= render 'shared/time_form' %>
+      </li>
+      <li>
+        <%= render 'shared/online_form' %>
+      </li>
+    </ul>
+	</div>
+  <% if mobile? %>
+    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
+  <% end %>
+<% end %>

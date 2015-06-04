@@ -1,132 +1,39 @@
-<% if params[:semester].nil? %>
-	<%= form_tag (@school.present? ? school_courses_path(@school) : courses_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
-		<% if @school.nil? %>
-			<% if !location_set? || session[:location_method] == 'ip' %>
-				<div class="outside">
-					<label>Search:</label>
-					<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-					<label>Location:</label>
-				  <div class="input-group location-form">
-		      	<%= text_field_tag :location, session[:location_name], placeholder: '12345, Chicago IL, etc...' %>
-		      	<span class="input-group-btn location-form">
-				      <button type="button" class="btn btn-default orange submit location">My Location</button>
-				    </span>
-				    <div class="arrow-box alert-location">Please click "Allow" at the top of your browser to let it use your location.</div>
-		      </div>
-		      <%= submit_tag 'Search', id: 'submit_button', class: "btn btn-large btn-primary" %>
+<%= form_tag (@school.present? ? school_courses_path(@school) : courses_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
+	<%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" unless mobile? %>
+	<div class="expand-container">
+		<ul>
+			<li>
+				<label>Search for:</label>
+				<div class="sort">
+					<ul>
+						<li class="active">Courses</li><li>
+						<%= link_to "Sessions", @sessions_path %>
+						</li>
+					</ul>
 				</div>
-			<% else %>
-				<div class="outside">
-					<label>Search:</label>
-					<div class="input-group">
-		      	<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...', onload: 'alert("Worked");' %>
-		      	<span class="input-group-btn">
-		          <button class="btn btn-default orange submit" type="button">Search</button>
-		        </span>
-		      </div>
-				</div>
-				<div class="expand button">+ Optional Search Filters</div>
-				<div class="expand-container">
-					<div class="col-sm-4">
-			     	<%= render 'courses/location_form' %>
-			    </div>
-			    <div style="clear: both;"></div>
-			    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
-			  </div>
+			</li>
+			<% if @school.nil? %>
+				<li>
+					<%= render 'shared/location_form' %>
+				</li>
 			<% end %>
-		<% else %>
-			<div class="expand button">+ Optional Search Filters</div>
-			<div class="expand-container">
-				<div class="col-sm-4">
-		     	<label>Search:</label>
-					<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-		    </div>
-		    <% if @departments.present? %>
-			    <div class="col-sm-4">
-			    	<%= render 'courses/departments_form' %>
-			    </div>
-		    <% end %>
-		    <div style="clear: both;"></div>
-		    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
-		  </div>
-		<% end %>
-	<% end %>
-<% else %>
-	<%= form_tag (@school.present? ? school_sessions_path(@school) : course_sessions_path), method: :get, class: "search_form", :'data-id' => @school.present? ? @school.id : '' do %>
-		<div class="outside">
-			<% if params[:search].present? || @school.present? %>
-				<%= select_tag :semester, options_for_select(semesters, params[:semester]), class: "submit-onchange" %>
-			<% else %>
-				<%= select_tag :semester, options_for_select(semesters, params[:semester]) %>
-			<% end %>
-		</div>
-		<% if @school.nil? %>
-			<% if !location_set? || session[:location_method] == 'ip' %>
-				<div class="outside">
-					<label>Search:</label>
-					<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-					<label>Location:</label>
-				  <div class="input-group location-form">
-		      	<%= text_field_tag :location, session[:location_name], placeholder: '12345, Chicago IL, etc...'%>
-		      	<span class="input-group-btn location-form">
-				      <button class="btn btn-default orange submit location" type="button">My Location</button>
-				    </span>
-				    <div class="arrow-box alert-location">Please click "Allow" at the top of your browser to let it use your location.</div>
-		      </div>
-		      <%= submit_tag 'Search', id: 'submit_button', class: "btn btn-large btn-primary" %>
-	      </div>
-			<% else %>
-				<div class="outside">
-					<label>Search:</label>
-					<div class="input-group">
-		      	<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-		      	<span class="input-group-btn">
-		          <button class="btn btn-default orange submit" type="button">Search</button>
-		        </span>
-		      </div>
-				</div>
-				<div class="expand button">+ Optional Search Filters</div>
-				<div class="expand-container">
-					<div class="col-sm-4">
-			      <%= render 'courses/location_form' %>
-			    </div>
-			    <div class="col-sm-4">
-			    	<%= render 'courses/days_form' %>
-			    </div>
-			    <div class="col-sm-4">
-			    	<%= render 'courses/time_form' %>
-			    </div>
-		    	<div class="col-sm-4">
-			    	<%= render 'courses/online_form' %>
-			    </div>
-			    <div style="clear: both;"></div>
-			    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
-				</div>
-			<% end %>
-		<% else %>
-			<div class="expand button">+ Optional Search Filters</div>
-			<div class="expand-container">
-				<div class="col-sm-4">
-		      <label>Search:</label>
-		      <%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
-		    </div>
-		    <% if @departments.present? %>
-					<div class="col-sm-4">
-			    	<%= render 'courses/departments_form' %>
-			    </div>
-		    <% end %>
-		    <div class="col-sm-4">
-		    	<%= render 'courses/days_form' %>
-		    </div>
-		    <div class="col-sm-4">
-		    	<%= render 'courses/time_form' %>
-		    </div>
-	    	<div class="col-sm-4">
-		    	<%= render 'courses/online_form' %>
-		    </div>
-		    <div style="clear: both;"></div>
-		    <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
-			</div>
-		<% end %>
-	<% end %>
+			<li>
+				<label>Search:</label>
+				<%= text_field_tag :search, params[:search], placeholder: 'Business, Computers, etc...' %>
+			</li>
+			<% if @departments.present? && !mobile? %>
+				<li>
+		    	<%= render 'shared/departments_form' %>
+		    </li>
+		  <% end %>
+		  <% if @school.nil? %>
+		  	<li>
+		  		<%= render 'shared/school_type_form' %>
+		  	</li>
+		  <% end %>
+		</ul>
+  </div>
+  <% if mobile? %>
+  	<%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" %>
+  <% end %>
 <% end %>

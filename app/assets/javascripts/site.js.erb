@@ -12,15 +12,15 @@ ready = function() {
   setActiveMenuItem();
   resizeBackground();
   $(window).on('scroll', function() {
-    fixMenuOnScroll();
+    //fixMenuOnScroll();
   });
   $(window).on('resize', function() {
     resizeBackground()
   });
   if(document.title == 'Find A Class Near You | Classhunters') {
-    resizeHomePage();
+    //resizeHomePage();
     $(window).on('resize', function() {
-      resizeHomePage();
+      //resizeHomePage();
     });
   }
   $('.home-form input').focus(function() {
@@ -37,17 +37,20 @@ ready = function() {
   $( ".search-container #search" ).autocomplete({
     source: 'schools/autocomplete'
   });
-  bindActionsToSearchResults();
   $("#school-location-form").submit(function(e) {
     e.preventDefault();
-    locate.byGeocoder($('#school-location-form input#location').val(), true);
+    locate.byGeocoder($('#school-location-form input#location').val(), false);
   });
   $(window).resize(function() {
-    fitTablesToContainer();
+    //fitTablesToContainer();
   }).resize(); // Trigger resize handler
   $('form.search_form').submit(function(e) {
     submitSearchForm($(this), e);
   });
+  $('.shortcuts-alert, .shortcuts').click(function() {
+    $('.shortcuts-alert').fadeOut(1000);
+  });
+  bindActionsToSearchResults();
 };
 
 $(document).ready(ready);
@@ -134,12 +137,12 @@ function resizeBackground() {
  */
 function setActiveMenuItem() {
 	url = document.URL;
-  if(url.indexOf('users') >= 0) {
+  if(url.indexOf('account') >= 0 || url.indexOf('/edit') > 0) {
     setLiToActive('Account');
-  } else if(url.indexOf('courses') >= 0) {
-    setLiToActive('Courses');
-	} else if(url.indexOf('schools') >= 0) {
-		setLiToActive('Schools');
+  } else if(url.indexOf('schools') >= 0) {
+    setLiToActive('Schools');
+	} else if(url.indexOf('courses') >= 0) {
+		setLiToActive('Courses');
 	} else if(url.indexOf('about') >= 0) {
 		setLiToActive('About');
 	} else if(url.indexOf('contact') >= 0) {
@@ -199,8 +202,8 @@ window.setInterval(function () {
 }, 100);
 
 function getHash() {
-  if(window.location.hash.length > 0) {
-    var hash = (parseInt(window.location.hash.substring(1)));
+  if(window.location.hash.length > 0 && !isNaN(window.location.hash.substring(1))) {
+    var hash = parseInt(window.location.hash.substring(1));
   } else {
     var hash = 0;
   }
@@ -217,7 +220,6 @@ function fitTablesToContainer() {
     //$('table.search-courses thead').css('width', document.documentElement.clientWidth - 50 + 'px');
     //$('table.search-courses tbody').css('width', document.documentElement.clientWidth - 50 + 'px');
   } else if(document.documentElement.clientWidth < 768) {
-    alert($("body.plugins").length );
     $('table.search-courses').css('width', document.documentElement.clientWidth - 30 + 'px');
     $('table.search-courses thead').css('width', document.documentElement.clientWidth - 30 + 'px');
     $('table.search-courses tbody').css('width', document.documentElement.clientWidth - 30 + 'px');
@@ -269,8 +271,32 @@ function submitSearchForm(element, e) {
   e.preventDefault();
   $('form.search_form input').blur();
   var hash = getHash() + 1;
-  var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + $('form.search_form').serialize() + "#" + hash };
+  var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + element.serialize() + "#" + hash };
   history.pushState(obj, obj.Title, obj.Url);
+}
+
+function submitEditUserForm(element, e) {
+  e.preventDefault();
+  $('input').blur();
+  var hash = getHash();
+  var obj = { Title: document.title, Url: window.location.href.split('?')[0] + '?' + element.serialize() + "#" + hash };
+  history.pushState(obj, obj.Title, obj.Url);
+  $('.loading').show();
+  $.ajax({
+    cache: false,
+    data: element.serialize(),
+    url: location.href, 
+    type: 'POST',
+    success: function(results) {
+      $('.results').html(results.results_html);
+      $('.loading').hide();
+      bindActionsToSearchResults();
+      showShortcutAlert();
+    },
+    error: function() {
+      window.location.replace(location.href);
+    }
+  });
 }
 
 function ajaxPagination(element, e) {
@@ -292,16 +318,13 @@ function ajaxRefresh() {
   $.ajax({
     cache: false,
     url: location.href, 
-    type: 'GET', 
+    type: 'GET',
     success: function(results) {
       $('.results').html(results.results_html);
       $('form.search_form').html(results.form_html);
       $('.loading').hide();
-      if(!$('.expand').length) {
-        $('form.search_form').html(results.form_html);
-      }
       bindActionsToSearchResults();
-      fitTablesToContainer();
+      showShortcutAlert();
     },
     error: function() {
       window.location.replace(location.href);
@@ -309,17 +332,32 @@ function ajaxRefresh() {
   });
 }
 
+function showShortcutAlert() {
+  if (!$.cookie('alerted')) {
+    $('.shortcuts-alert').show().delay(10000).fadeOut(1000);
+    $.cookie('alerted', true);    
+  }
+}
+
+function scrollToElement(element) {
+  $('html, body').animate({
+    scrollTop: element.offset().top - 62
+  }, 500);
+}
+
 function bindActionsToSearchResults() {
   $("ul.search-school .info").click(function() {
-    if ($(this).html().indexOf('+') >= 0) {
-      $(this).html($(this).html().replace('+', '-'));
-    } else {
-      $(this).html($(this).html().replace('-', '+'));
-    }
     $(".collapse", $(this).parent()).slideToggle(200);
     $("ul", $(this).parent()).slideToggle(200);
+    if ($(this).html().indexOf('glyphicon-plus') >= 0) {
+      $(this).html($(this).html().replace('glyphicon-plus', 'glyphicon-minus'));
+      $(this).css('borderRadius', '5px 5px 0px 0px');
+    } else {
+      $(this).html($(this).html().replace('glyphicon-minus', 'glyphicon-plus'));
+      $(this).css('borderRadius', '5px');
+    }
   });
-  $('table.search-courses tr').click(function() {
+  $('table.search-courses:not(.edit-courses, .edit-sessions) tr').click(function() {
     data_type = '';
     if($(this).data("course-id") > 0) {
       data_type = 'course';
@@ -354,20 +392,11 @@ function bindActionsToSearchResults() {
   $('.pagination a').click(function(e) {
     ajaxPagination($(this), e);
   });
-  $('.expand').click(function() {
-    $('.expand-container').toggle();
-    if ($('.expand').html().indexOf('+') >= 0) {
-      $('.expand').html($('.expand').html().replace('+', '-'));
-      $(this).addClass('open');
-    } else {
-      $('.expand').html($('.expand').html().replace('-', '+'));
-      $(this).removeClass('open');
-    }
-  });
   $('.days-container tr, .department-container tr').click(function(e) {
     if(!$(e.target).is(':checkbox')){
       var checkbox = $(this).find(':checkbox');
       checkbox.prop("checked", !checkbox.prop("checked"));
+      $(this).closest('form').submit();
     }
   });
   $('.check-all').click(function() {
@@ -382,10 +411,15 @@ function bindActionsToSearchResults() {
   $('.submit-onchange').change(function(e) {
     $(this).closest('form').submit();
   });
-  backHandler();
   $('a.sort').click(function(e) {
     ajaxSort($(this), e);
   });
+  $('.pagination form').submit(function(e) {
+    submitSearchForm($(this), e);
+  });
+  $('form.search_form input[type=checkbox]').change(function() {
+    $(this).closest('form').submit();
+  })
 }
 
 //Scrollable

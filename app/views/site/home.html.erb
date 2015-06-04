@@ -1,46 +1,126 @@
 <% provide(:meta, 'Find classes offered at colleges and universities near you.') %>
-<div class="container-fluid home-form">
-  <div class="container-fluid">
-    <%= form_tag courses_path, method: 'get', :enforce_utf8 => false do %>
-      <div class="group">
-        <h1>
-          Find A Class Near You
-        </h1>
-        <div class="input-group">
-          <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...', id: 'home-search', autofocus: true %>
-          <span class="input-group-btn">
-            <button class="btn btn-default button" type="button" onclick="this.form.submit();">Search Classes</button>
-          </span>
+<div class="home">
+  <div class="container">
+    <!--
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img src="img_chania.jpg" alt="Chania">
+        </div>
+
+        <div class="item">
+          <img src="img_chania2.jpg" alt="Chania">
+        </div>
+
+        <div class="item">
+          <img src="img_flower.jpg" alt="Flower">
+        </div>
+
+        <div class="item">
+          <img src="img_flower2.jpg" alt="Flower">
+        </div>
+      </div>
+
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    -->
+    <div class="home-form">
+      <%= form_tag courses_path, method: 'get', :enforce_utf8 => false do %>
+        <div class="group">
+          <h1>
+            Find A Class Near You
+          </h1>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Biology, Business, Computers, etc...', id: 'home-search' %>
+            <span class="input-group-btn">
+              <button class="btn btn-default button" type="button" onclick="this.form.submit();">Search Classes</button>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <!--
+    <div class="container-fluid home-perks">
+      <div class="container">
+        <div class="col-sm-4 perk">
+          <h1>Find Classes</h1>
+          <h2>
+            Search for all nearby classes currently being offered or view all courses that a college or university is currently offering.
+          </h2>
+        </div>
+        <div class="col-sm-4 perk">
+          <h1>Find Schools</h1>
+          <h2>
+            Search from over 3000 colleges and universities by name, distance, state and map.
+          </h2>
+        </div>
+        <div class="col-sm-4 perk">
+          <h1>Save Time</h1>
+          <h2>
+            All searches and features on Classhunters are designed with simplicity in mind. No confusing forms. All results are displayed in uniform format.
+          </h2>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    -->
+    <div class="home-who">
+      <h1><span>Who Uses Classhunters?</span></h1>
+      <div class="col-sm-4">
+        <%= image_tag "home-who-1.jpg" %>
+        <h1>College Students</h1>
+        Studying at a four-year institution and need to find summer classes at home? Interested in taking a particular course before enrolling in a four-year institution? Classhunters can help you find a class near you so you can graduate on time or early.
+      </div>
+      <div class="col-sm-4">
+        <%= image_tag "home-who-2.jpg" %>
+        <h1>Adult Learners</h1>
+        Looking to take a few courses to expand your knowledge of a specific interest? Trying to change career paths? Classhunters can help you through this process.
+      </div>
+      <div class="col-sm-4">
+        <%= image_tag "home-who-3.jpg" %>
+        <h1>International Students</h1>
+        Attending school in another country is not easy. Taking classes in a foreign language is even more difficult. Let Classhunters make planning your education easier.
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <!--
+    <% if Rails.env == 'development' %>
+      <div class="featured-school">
+        <div class="header">
+          Featured School
+        </div>
+        <div class="info">
+          <div class="lighten">
+            <img src="http://upload.wikimedia.org/wikipedia/en/e/eb/Wilkes_University_seal.png">
+            <strong>Wilkes University</strong><br><i>84 West South Street, Wilkes-Barre, PA 18766</i><hr>
+            Wilkes University is a private, non-denominational American university located in Wilkes-Barre, Pennsylvania. It has over 2,200 undergraduates and over 2,200 graduate students (both full and part-time). Wilkes was founded in 1933 as a satellite campus of Bucknell University, and became an independent institution in 1947, naming itself Wilkes College, after English radical politician John Wilkes. The school was granted university status in January 1990.<br>
+            <ul><li><a>Visit Website</a></li><li>|</li><li><a>View Courses</a></li></ul>
+            <div class="clearfix"></div>
+          </div>
         </div>
       </div>
     <% end %>
-  </div>
-</div>
-<div class="container-fluid home-perks">
-  <div class="container">
-    <div class="col-sm-4 perk">
-      <h1>Find Classes</h1>
-      <h2>
-        Search for all nearby classes currently being offered or view all courses that a college or university is currently offering.
-      </h2>
+    -->
+    <div class="home-contact">
+        <div class="contact-form">
+          <h1><span>Interested in Classhunters?</span></h1>
+          <p>Part of a school or organization that is interested in listing classes on Classhunters? Fill out the form below and we'll be sure to contact you!</p>
+          <%= render 'contacts/form', contact: @contact %>
+        </div>
     </div>
-    <div class="col-sm-4 perk">
-      <h1>Find Schools</h1>
-      <h2>
-        Search from over 3000 colleges and universities by name, distance, state and map.
-      </h2>
-    </div>
-    <div class="col-sm-4 perk">
-      <h1>Save Time</h1>
-      <h2>
-        All searches and features on Classhunters are designed with simplicity in mind. No confusing forms. All results are displayed in uniform format.
-      </h2>
-    </div>
-    <div class="clearfix"></div>
-  </div>
-</div>
-<div class="container-fluid home-contact">
-  <div class="container">
-    <%= render 'contacts/form', contact: @contact %>
   </div>
 </div>

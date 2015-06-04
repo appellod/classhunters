@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
 
 	belongs_to :school
 	has_and_belongs_to_many :users
-	has_many :sessions
+	has_many :sessions, dependent: :destroy
 	has_and_belongs_to_many :course_searches
 
 	before_validation :strip_attributes
@@ -13,7 +13,9 @@ class Course < ActiveRecord::Base
 	searchable do
 		text :name, boost: 2.0
 		text :description, :department
-		string(:school_id_str) { |p| p.school_id.to_s }
+		string :school_id_str, stored: true do
+      school_id.to_s
+    end
 		latlon(:location) { Sunspot::Util::Coordinates.new(school.latitude, school.longitude) }
 	end
 

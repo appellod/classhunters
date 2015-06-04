@@ -14,6 +14,14 @@ class UsersController < ApplicationController
     else
       @schools = @user.schools
     end
+    if request.xhr?
+      params["_"] = nil
+      results_html = render_to_string(partial: 'schools')
+      respond_to do |format|
+        msg = { results_html: results_html }
+        format.json  { render :json => msg }
+      end
+    end
   end
 
   def new

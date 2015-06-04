@@ -1,0 +1,29 @@
+<% provide(:title, 'Manage') %>
+<% breadcrumbs({ 'Home'=>root_url, 'Manage'=>'' }) %>
+<div class="content">
+	<div class="container account">
+		<%= yield(:crumbs) %>
+		<h1><span>My Account</span></h1>
+		<div class="col-sm-2 col-sm-offset-4">
+			<%= label_tag :email, "Email:" %>
+		</div>
+		<div class="col-sm-6">
+			<%= @user.email %>
+		</div>
+		<div class="clearfix"></div>
+		<div class="col-sm-2 col-sm-offset-4">
+			<%= label_tag :joined, "Joined:" %>
+		</div>
+		<div class="col-sm-6">
+			<%= @user.created_at.strftime("%B %d, %Y") %>
+		</div>
+		<div class="clearfix"></div>
+		<%= link_to "Edit Account", edit_user_path(current_user), class: "button" %>
+		<br><br>
+		<a name="schools"></a>
+		<h1><span>My Schools</span></h1>
+		<div class="results">
+			<%= render 'site/results' %>
+		</div>
+		</div>
+</div>

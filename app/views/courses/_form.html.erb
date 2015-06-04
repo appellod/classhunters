@@ -1,13 +1,17 @@
-<%= render 'shared/error_messages', object: f.object %>
-
 <%= f.label :name %>
 <%= f.text_field :name %>
+<%= render 'shared/errors', object: f.object, field: :name %>
 
 <%= f.label :description %>
-<%= f.text_field :description %>
+<%= f.text_area :description, size: '12x6' %>
+<%= render 'shared/errors', object: f.object, field: :description %>
 
 <%= f.label :department %>
 <%= f.text_field :department %>
+<%= render 'shared/errors', object: f.object, field: :department %>
 
 <%= f.label :number %>
 <%= f.text_field :number %>
+<%= render 'shared/errors', object: f.object, field: :number %>
+
+<%= f.hidden_field :school_id, value: f.object.school.id %>

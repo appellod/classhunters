@@ -1,3 +1,62 @@
+.account {
+	.categories-container {
+		border: 1px solid #aaaaaa;
+		border-top: none;
+		border-radius: 0px 0px 5px 5px;
+		ul {
+			padding: 0px;
+			margin: 0px;
+			list-style-type: none;
+			li {
+				border-bottom: 1px solid #cccccc;
+				&:last-child {
+					border-bottom: none;
+				}
+				a {
+					display: block;
+					padding: 10px 20px;
+					background: linear-gradient(#ffffff, #eeeeee);
+					color: black;
+					font-family: 'Oswald';
+					font-size: 1.15em;
+					&:hover {
+						background: linear-gradient(#dddddd, #cccccc);
+						text-decoration: none;
+					}
+					&.active {
+						background: linear-gradient(#dddddd, #cccccc);
+						text-decoration: none;
+					}
+				}
+			}
+		}
+	}
+	.schools-container {
+		border: 1px solid #aaaaaa;
+	}
+	.school {
+		padding: 10px;
+		vertical-align: middle;
+		.icon {
+			float: right;
+			display: inline-block;
+			img {
+				height: 20px;
+				opacity: .7;
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+		&:nth-child(odd) {
+			background-color: #FFFFFF;
+		}
+		&:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+	}
+}
+
 .user {
 	text-align: left;
 	h1 {
@@ -18,19 +77,7 @@
 	button {
 		margin: 0px auto;
 	}
-	.school {
-		padding: 10px;
-		.icon {
-			float: right;
-			display: inline-block;
-			img {
-				height: 20px;
-			}
-		}
-		&:nth-child(even) {
-			background-color: #f2f2f2;
-		}
-	}
+	
 }
 
 @media (max-width: 767px) {

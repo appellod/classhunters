@@ -1,0 +1,17 @@
+<% provide(:title, "Edit Course Session") %>
+<% breadcrumbs({ 'Home'=>root_url, 'Account'=>user_path(current_user), @school.name=>edit_school_path(@school), 'Courses'=>school_edit_courses_path(@school), 'Sessions'=>school_edit_sessions_path(@school), @session.course.name=>'' }) %>
+
+<h1><span>Edit Course Session</span></h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@session, url: school_session_path(@school, @session)) do |f| %>
+    	<%= f.fields_for :course, f.object.course do |c| %>
+				<%= render 'courses/form', f: c %>
+			<% end %>
+      <%= render "form", f: f %>
+
+      <%= f.submit "Save Changes", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

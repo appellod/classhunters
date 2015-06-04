@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427180704) do
+ActiveRecord::Schema.define(version: 20150528204254) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -68,6 +68,16 @@ ActiveRecord::Schema.define(version: 20150427180704) do
     t.integer "user_id"
   end
 
+  create_table "emails", force: true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "emails", ["school_id"], name: "index_emails_on_school_id", using: :btree
+
   create_table "instructors", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -76,6 +86,26 @@ ActiveRecord::Schema.define(version: 20150427180704) do
   end
 
   add_index "instructors", ["school_id"], name: "index_instructors_on_school_id", using: :btree
+
+  create_table "links", force: true do |t|
+    t.string   "name"
+    t.text     "url"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "links", ["school_id"], name: "index_links_on_school_id", using: :btree
+
+  create_table "phone_numbers", force: true do |t|
+    t.string   "name"
+    t.string   "number"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "phone_numbers", ["school_id"], name: "index_phone_numbers_on_school_id", using: :btree
 
   create_table "plugin_accesses", force: true do |t|
     t.string   "remote_ip"
@@ -116,8 +146,8 @@ ActiveRecord::Schema.define(version: 20150427180704) do
     t.string   "name"
     t.string   "website"
     t.string   "address"
-    t.decimal  "latitude",   precision: 15, scale: 10
-    t.decimal  "longitude",  precision: 15, scale: 10
+    t.decimal  "latitude",      precision: 15, scale: 10
+    t.decimal  "longitude",     precision: 15, scale: 10
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "phone"
@@ -128,6 +158,9 @@ ActiveRecord::Schema.define(version: 20150427180704) do
     t.string   "category"
     t.date     "start_date"
     t.date     "end_date"
+    t.boolean  "active",                                  default: false, null: false
+    t.text     "description"
+    t.string   "founding_date"
   end
 
   add_index "schools", ["name"], name: "index_schools_on_name", unique: true, using: :btree
@@ -142,6 +175,14 @@ ActiveRecord::Schema.define(version: 20150427180704) do
     t.string   "input"
     t.string   "remote_ip"
     t.string   "page"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "semesters", force: true do |t|
+    t.string   "name"
+    t.integer  "year"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -177,13 +218,13 @@ ActiveRecord::Schema.define(version: 20150427180704) do
   end
 
   create_table "sessions", force: true do |t|
-    t.boolean  "sunday"
-    t.boolean  "monday"
-    t.boolean  "tuesday"
-    t.boolean  "wednesday"
-    t.boolean  "thursday"
-    t.boolean  "friday"
-    t.boolean  "saturday"
+    t.boolean  "sunday",                                default: false, null: false
+    t.boolean  "monday",                                default: false, null: false
+    t.boolean  "tuesday",                               default: false, null: false
+    t.boolean  "wednesday",                             default: false, null: false
+    t.boolean  "thursday",                              default: false, null: false
+    t.boolean  "friday",                                default: false, null: false
+    t.boolean  "saturday",                              default: false, null: false
     t.time     "start_time"
     t.time     "end_time"
     t.integer  "course_id"
@@ -194,8 +235,8 @@ ActiveRecord::Schema.define(version: 20150427180704) do
     t.string   "location"
     t.integer  "crn"
     t.decimal  "credits",       precision: 4, scale: 2
-    t.string   "semester"
-    t.boolean  "online"
+    t.boolean  "online",                                default: false, null: false
+    t.integer  "semester_id"
   end
 
   add_index "sessions", ["course_id"], name: "index_sessions_on_course_id", using: :btree

@@ -85,12 +85,27 @@ module ApplicationHelper
     red = (color[0..1].hex + offset).to_s(16)
     green = (color[2..3].hex + offset).to_s(16)
     blue = (color[4..5].hex + offset).to_s(16)
-    red = '00' if red.to_f <= 0
-    green = '00' if green.to_f <= 0
-    blue = '00' if blue.to_f <= 0
-    red = '0' + red if red.length < 2
-    green = '0' + green if green.length < 2
-    blue = '0' + blue if blue.length < 2
+    if red.hex > 255
+      red = 'ff'
+    elsif red.hex < 0
+      red = '00'
+    elsif red.hex < 17
+      red = "0#{red}"
+    end
+    if green.hex > 255
+      green = 'ff'
+    elsif green.hex < 0
+      green = '00'
+    elsif green.hex < 17
+      green = "0#{green}"
+    end
+    if blue.hex > 255
+      blue = 'ff'
+    elsif blue.hex < 0
+      blue = '00'
+    elsif blue.hex < 17
+      blue = "0#{blue}"
+    end
     return red + green + blue
   end
 end

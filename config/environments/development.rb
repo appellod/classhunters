@@ -33,8 +33,8 @@ Site::Application.configure do
     address: 'smtp.gmail.com',
     port: '587',
     domain: 'smtp.gmail.com',
-    user_name: 'no-reply@classhunters.com',
-    password: 'Lenny12345!',
+    user_name: 'dan.appello@classhunters.com',
+    password: 'Lenny123!',
     authentication: 'plain',
     enable_starttls_auto: true
   }

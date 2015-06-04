@@ -1,0 +1,37 @@
+<%= form_tag schools_path, method: :get, id: "school-location-form", class: "search_form" do %>
+  <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" unless mobile? %>
+  <div class="expand-container">
+    <ul>
+      <li>
+        <label>Search by:</label>
+        <%= select_tag :sort, options_for_select([["Name", ""], ["Distance", "distance"], ["State", "state"], ["Map", "map"]], params[:sort]), class: "submit-onchange" %>
+      </li>
+      <% if !params[:sort].present? %>
+        <li>
+          <label>Search for a school:</label>
+          <%= text_field_tag :search, params[:search], class: 'clearable' %>
+        </li>
+        <!--
+        <hr>
+        <label>Schools starting with:</label>
+        <%= select_tag :page_alpha, options_for_select([["All Letters", ""]] + ("A".."Z").to_a, params[:page_alpha]), class: "submit-onchange" %>
+        -->
+      <% end %>
+      <% if params[:sort] == "distance" || params[:sort] == "map" %>
+        <li>
+          <%= render 'shared/location_form' %>
+        </li>
+      <% end %>
+      <% if params[:sort] == "state" %>
+        <li>
+          <label>Select a state:</label>
+          <%= select_tag :state, options_for_select(us_states, params[:state]), class: "submit-onchange" %>
+        </li>
+      <% end %>
+      <li>
+        <%= render 'shared/school_type_form' %>
+      </li>
+    </ul>
+  </div>
+  <%= submit_tag 'Apply Filters', id: 'submitbtn', class: "btn btn-large btn-primary" if mobile? %>
+<% end %>

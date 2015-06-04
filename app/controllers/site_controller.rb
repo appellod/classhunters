@@ -1,11 +1,45 @@
 class SiteController < ApplicationController
   include ApplicationHelper
+  protect_from_forgery except: :edit_user
   layout "application", only: [:stats]
 
   def home
   	@contact = Contact.new
     if mobile?
       render 'home_mobile'
+    end
+  end
+
+  def account
+    @user = current_user
+    if current_user.admin?
+      @schools = School.all.order(:name).paginate(page: params[:page])
+    else
+      @schools = @user.schools.paginate(page: params[:page])
+    end
+    if request.xhr?
+      params["_"] = nil
+      results_html = render_to_string(partial: 'results')
+      respond_to do |format|
+        msg = { results_html: results_html }
+        format.json  { render :json => msg }
+      end
+    end
+  end
+
+  def edit_user
+    @user = current_user
+    if @user.update_attributes(user_params)
+      flash.now[:success] = "Your account information has been updated successfully!"
+      params[:view] = "account"
+    else
+      params[:view] = "edit_account"
+    end
+    params["_"] = nil
+    results_html = render_to_string(partial: 'results')
+    respond_to do |format|
+      msg = { results_html: results_html }
+      format.json  { render :json => msg }
     end
   end
 
@@ -16,7 +50,7 @@ class SiteController < ApplicationController
     if request.post?
       @contact = Contact.new(contact_params)
       if @contact.save
-        flash[:notice] = "Contact information submitted! Thank you for expressing interest in Classhunters."
+        flash[:success] = "Contact information submitted! Thank you for expressing interest in Classhunters."
         Mailer.contact_email(@contact.name, @contact.email, @contact.school, @contact.message).deliver
         redirect_to contact_url
       else
@@ -63,5 +97,9 @@ class SiteController < ApplicationController
     def contact_params
       params.require(:contact).permit(:name, :email,
         :school, :message)
+    end
+
+    def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation)
     end
 end

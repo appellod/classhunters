@@ -1,0 +1,32 @@
+<div class="pagination">
+  <%= form_tag nil, method: :get do %>
+    <% params.each do |key, value| %>
+      <% if key != 'action' && key != 'controller' && key != 'page' && key != 'utf8' && key != 'school_id' && key != '_' %>
+        <%= hidden_field_tag key, value %>
+      <% end %>
+    <% end %>
+    <ul>
+      <% if @page > 1 %>
+        <li><%= link_to "<i class=\"glyphicon glyphicon-step-backward\"></i>".html_safe, params.merge(page: 1) %></li>
+      <% else %>
+        <li><i class="glyphicon glyphicon-step-backward"></i></li>
+      <% end %>
+      <% if @page > 1 %>
+        <li><%= link_to "<i class=\"glyphicon glyphicon-backward\"></i>".html_safe, params.merge(page: @page-1) %></li>
+      <% else %>
+        <li><i class="glyphicon glyphicon-backward"></i></li>
+      <% end %>
+      <li><strong>Page: <input type="text" name="page" value="<%= @page %>"> of <%= items.total_pages %></strong></li>
+      <% if @page < items.total_pages %>
+        <li><%= link_to "<i class=\"glyphicon glyphicon-forward\"></i>".html_safe, params.merge(page: @page+1) %></li>
+      <% else %>
+        <li><i class="glyphicon glyphicon-forward"></i></li>
+      <% end %>
+      <% if @page < items.total_pages %>
+        <li><%= link_to '<i class="glyphicon glyphicon-step-forward"></i>'.html_safe, params.merge(page: items.total_pages) %></li>
+      <% else %>
+        <li><i class="glyphicon glyphicon-step-forward"></i></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

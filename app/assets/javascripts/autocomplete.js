@@ -30,6 +30,8 @@ $( document ).ready(function() {
 			schools : schools
 		}
 	})();
-	autocomplete.cities($('#location'));
-	autocomplete.schools($('.search-container #search'));
+	if(document.documentElement.clientWidth > 767) {
+		autocomplete.cities($('#location'));
+		autocomplete.schools($('.expand-container #search'));
+	}
 });

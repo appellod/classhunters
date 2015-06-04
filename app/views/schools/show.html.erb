@@ -2,10 +2,16 @@
 <% provide(:meta, "Important information for #{@school.name}") %>
 <% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>'' }) %>
 
+<h1 itemprop="name"><span><%= @school.name %></span></h1>
+
 <div class="school" itemscope itemtype ="http://schema.org/CollegeOrUniversity">
-  <h1 itemprop="name"><%= @school.name %></h1>
-  <h2><%= link_to 'View Courses', school_courses_path(@school) %></h2>
+  <div class="actions">
+    <%= link_to 'View Courses', school_courses_path(@school), class: "button-regular" %>
+  </div>
   <table>
+    <% if @school.description.present? %>
+      <tr><td>Description:</td><td itemprop="description"><%= @school.description %></td></tr>
+    <% end %>
     <tr>
       <td>Address:</td>
       <td itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
@@ -15,11 +21,29 @@
         <span itemprop="addressLocality"><%= @school.city %></span>, <span itemprop="addressRegion"><%= @school.state %></span> <span itemprop="postalCode"><%= @school.zip %></span>
       </td>
     </tr>
-    <% if @school.phone.present? %>
-      <tr><td>Phone:</td><td itemprop="telephone"><%= @school.phone %></td></tr>
-    <% end %>
     <% if @school.website.present? %>
       <tr><td>Website:</td><td><%= link_to @school.website, school_website_url(@school), target: '_blank', itemprop: "sameAs url" %></td></tr>
+    <% end %>
+    <% if @school.phone_numbers.present? %>
+      <tr><td>Phone:</td><td>
+      <% @school.phone_numbers.each do |phone| %>
+        <%= phone.name.present? ? "#{phone.name}: " : "" %><span itemprop="telephone"><%= phone.number %></span><br>
+      <% end %>
+      </td></tr>
+    <% end %>
+    <% if @school.emails.present? %>
+      <tr><td>Email:</td><td>
+      <% @school.emails.each do |email| %>
+        <%= email.name %>: <a href="mailto:<%= email.address %>" itemprop="email"><%= email.address %></a><br>
+      <% end %>
+      </td></tr>
+    <% end %>
+    <% if @school.links.present? %>
+      <tr><td>Important Links:</td><td>
+      <% @school.links.each do |link| %>
+        <%= link_to link.name, link.url %><br>
+      <% end %>
+      </td></tr>
     <% end %>
   </table>
   <div id="map-canvas"></div>

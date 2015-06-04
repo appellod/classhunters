@@ -62,4 +62,12 @@ module SchoolsHelper
       def school_website_url(school)
             return "http://#{school.website.gsub('http://', '').gsub('>', '')}"
       end
+
+      def school_categories
+            return ['Four-Year', 'Two-Year']
+      end
+
+      def alpha_array
+            ("A".."Z").to_a
+      end
 end

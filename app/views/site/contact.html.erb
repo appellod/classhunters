@@ -4,6 +4,8 @@
 <div class="container-fluid content">
 	<div class="container contact">
 		<%= yield(:crumbs) %>
-		<%= render 'contacts/form', contact: @contact %>
+		<h1><span>Contact Us</span></h1>
+		<%= render 'shared/flash' %>
+		<%= render 'contacts/form', contact: @contact unless flash.any? %>
 	</div>
 </div>

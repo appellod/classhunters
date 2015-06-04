@@ -7,7 +7,7 @@ class Mailer < ActionMailer::Base
   	@email = email
   	@school = school
   	@message = message
-  	mail(to: 'dan.appello@classhunters.com', subject: 'Contact Form Submission')
+  	mail(to: 'info@classhunters.com', subject: 'Contact Form Submission')
   end
 
   def reset_password_email(email, hash)

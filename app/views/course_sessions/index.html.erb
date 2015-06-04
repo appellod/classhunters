@@ -1,0 +1,40 @@
+<%= render 'shared/mobile_shortcuts' %>
+
+<a name="filters" class="anchor"></a>
+<% if @user.present? %>
+	<% provide(:title, 'My Sessions') %>
+  <h1>My Sessions</h1>
+<% elsif @school.present? %>
+	<% if @edit %>
+		<% provide(:title, "Edit Course Sessions at #{@school.name}".html_safe) %>
+		<% provide(:meta, "Browse all course sessions offered at #{@school.name}") %>
+		<% breadcrumbs({ 'Home'=>root_url, 'Account'=>user_path(current_user), @school.name=>edit_school_path(@school), 'Courses'=>school_edit_courses_path(@school), 'Sessions'=>'' }) %>
+	  <h1><span>Edit Course Sessions at <%= @school.name %></span></h1>
+	  <div class="actions">
+	  	<%= link_to "New Course Session", school_new_session_path(@school) %>
+	  	<%= link_to "Import Courses", school_import_courses_path(@school) %>
+	  </div>
+	<% else %>
+		<% provide(:title, "Sessions at #{@school.name}".html_safe) %>
+		<% provide(:meta, "Browse schedules of all courses offered at #{@school.name}") %>
+		<% breadcrumbs({ 'Home'=>root_url, 'Schools'=>schools_path, @school.name=>school_path(@school), 'Courses'=>school_courses_path(@school), 'Sessions'=>'' }) %>
+	  <h1><span>Course Sessions at <%= @school.name %></span></h1>
+	<% end %>
+<% else %>
+	<% provide(:title, 'Search All Sessions') %>
+	<% provide(:meta, 'Find the schedules of classes being offered at colleges and universities near you by keyword, time and many other criteria') %>
+	<% breadcrumbs({ 'Home'=>root_url, 'Courses'=>courses_path, 'Sessions'=>"" }) %>
+  <h1><span>Search Sessions</span></h1>
+<% end %>
+
+<div class="col-sm-3">
+	<%= render 'search_form' %>
+</div>
+<% if mobile? %>
+  <hr>
+  <a name="results" class="anchor"></a>
+  <h1>Results</h1>
+<% end %>
+<div class="col-sm-9 results">
+	<%= render(partial: 'results') %>
+</div>
