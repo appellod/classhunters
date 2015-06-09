@@ -58,6 +58,11 @@ Site::Application.routes.draw do
   match "/plugin/:school_id", to: "plugins#index", via: "get", as: "plugin_school"
   match "/plugin/:school_id/sessions", to: "plugins#sessions", via: "get", as: "plugin_school_sessions"
 
+  #APIs
+  match '/apis/courses/select', to: 'apis#courses_select', via: 'get'
+  match '/apis/courses/view/:id', to: 'apis#courses_view', via: 'get'
+
+  #Errors
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
