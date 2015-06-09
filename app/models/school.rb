@@ -31,7 +31,7 @@ class School < ActiveRecord::Base
 
 	searchable do
 		text :name, boost: 2.0
-		text :address, :phone, :website, :city, :state, :zip
+		text :address, :website, :city, :state, :zip
 	end
 
 	def strip_attributes
