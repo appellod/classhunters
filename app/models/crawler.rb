@@ -126,7 +126,7 @@ class Crawler
 					parse_academic_level(row)
 					get_description(row)
 					save_row(row)
-				raise
+				rescue
 				end
 			end
 		return table
