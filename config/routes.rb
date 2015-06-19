@@ -33,6 +33,7 @@ Site::Application.routes.draw do
   match "/schools/import", to: "schools#import", via: "get", as: "import_schools"
   match "/schools/import", to: "schools#import", via: "post", as: "import_schools_action"
   match "/schools/autocomplete", to: "schools#autocomplete", via: "get"
+  match "/schools/:id/sync", to: "schools#sync", via: :all, as: "school_sync"
   resources :schools do
     match "/courses/import", to: "courses#import", via: "get", as: "import_courses"
     match "/courses/import", to: "courses#import_action", via: "post"
@@ -61,11 +62,14 @@ Site::Application.routes.draw do
   #APIs
   match '/apis/courses/select', to: 'apis#courses_select', via: 'get'
   match '/apis/courses/view/:id', to: 'apis#courses_view', via: 'get'
+  match '/apis/courses/json', to: 'apis#courses_json', via: 'get'
 
   #Errors
   match '/404', to: 'errors#file_not_found', via: :all
   match '/422', to: 'errors#unprocessable', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
+
+  match '/test', to: 'site#test', via: :all
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

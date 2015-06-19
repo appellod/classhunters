@@ -1,0 +1,29 @@
+<style>
+table {
+	border-collapse: collapse;
+	width: 900px;
+}
+td, th {
+	border: 1px solid black;
+	padding: 5px 10px;
+	text-align: left;
+}
+</style>
+<table>
+	<thead>
+		<tr><th>CRN</th><th>Name</th><th>Description</th><th>Department</th><th>Number</th><th>Start Time</th><th>End Time</th></tr>
+	</thead>
+	<tbody>
+		<% @results.each do |result| %>
+			<tr>
+				<td><%= result['crn'] %></td>
+				<td><%= result['name'] %></td>
+				<td><%= result['description'] %></td>
+				<td><%= result['department'] %></td>
+				<td><%= result['number'] %></td>
+				<td><%= result['start_time'] %></td>
+				<td><%= result['end_time'] %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,29 @@
+<% provide(:title, "Automated Management") %>
+<% breadcrumbs({ 'Home'=>root_url, 'Account'=>user_path(current_user), @school.name=>edit_school_path(@school), 'Automated Management'=>'' }) %>
+<h1><span>Automated Management</span></h1>
+
+<%= form_tag school_sync_path do %>
+
+	<%= label_tag :url %>
+	<%= text_field_tag :url, params[:url] %>
+
+  <%= submit_tag "Sync", class: "btn btn-large btn-primary" %>
+<% end %>
+
+<% if request.post? %>
+	<h1><span>Results</span></h1>
+	<% if @results.is_a?(String) %>
+		<strong>Response</strong><br>
+		<%= @results %><br>
+	<% else %>
+		<strong>Results</strong><br>
+		<table class="sync-results">
+			<tr><th>CRN</th><th>Name</th><th>Description</th><th>Department</th><th>Number</th><th>Days</th><th>Start</th><th>End</th></tr>
+			<% @results.each do |result| %>
+				<tr><td><%= result['crn'] %></td><td><%= result['name'] %></td><td><%= result['description'] %></td><td><%= result['department'] %></td><td><%= result['number'] %></td><td><%= result['sunday'] ? "Su" : "" %><%= result['monday'] ? "M" : "" %><%= result['tuesday'] ? "T" : "" %><%= result['wednesday'] ? "W" : "" %><%= result['thursday'] ? "R" : "" %><%= result['friday'] ? "F" : "" %><%= result['saturday'] ? "S" : "" %></td><td><%= result['start_time'].present? ? result['start_time'].to_time.strftime('%H:%M') : "" %></td><td><%= result['end_time'].present? ? result['end_time'].to_time.strftime('%H:%M') : "" %></td></tr>
+			<% end %>
+		</table>
+		<strong>Response</strong><br>
+		<%= @results %><br>
+	<% end %>
+<% end %>

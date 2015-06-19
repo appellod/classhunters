@@ -1,4 +1,6 @@
 class SchoolsController < ApplicationController
+  require 'open-uri'
+
 	before_action :signed_in_user, only: [:new, :create, :edit, :update, :destroy, :import]
 	before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :admin_user, only: [:new, :create, :import]
@@ -142,6 +144,19 @@ class SchoolsController < ApplicationController
       end
       respond_to do |format|
         format.json  { render json: rows }
+      end
+    end
+  end
+
+  def sync
+    @school = School.find(params[:id])
+    if request.post?
+      @response = nil
+      @results = nil
+      begin
+        @results = JSON.parse(open(params[:url]).read)
+      rescue
+        @results = open(params[:url]).read
       end
     end
   end

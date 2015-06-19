@@ -3,6 +3,7 @@
 <h1><span>Edit School</span></h1>
 <div class="actions">
 	<%= link_to "Edit Courses", school_edit_courses_path(@school), class: "button-regular" %>
+	<%= link_to "Automated Management", school_sync_path(@school), class: "button-regular" %>
 </div>
 <%= form_for(@school) do |f| %>
 	<%= render 'shared/flash' %>

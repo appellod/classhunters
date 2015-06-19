@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150528204254) do
+ActiveRecord::Schema.define(version: 20150618220020) do
 
   create_table "cities", force: true do |t|
     t.string   "zip"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 20150528204254) do
     t.boolean  "active",                                  default: false, null: false
     t.text     "description"
     t.string   "founding_date"
+    t.text     "crawl_url"
   end
 
   add_index "schools", ["name"], name: "index_schools_on_name", unique: true, using: :btree
@@ -178,6 +179,37 @@ ActiveRecord::Schema.define(version: 20150528204254) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sections", force: true do |t|
+    t.string   "status"
+    t.integer  "crn"
+    t.string   "location"
+    t.boolean  "online",                                  default: false, null: false
+    t.boolean  "sunday",                                  default: false, null: false
+    t.boolean  "monday",                                  default: false, null: false
+    t.boolean  "tuesday",                                 default: false, null: false
+    t.boolean  "wednesday",                               default: false, null: false
+    t.boolean  "thursday",                                default: false, null: false
+    t.boolean  "friday",                                  default: false, null: false
+    t.boolean  "saturday",                                default: false, null: false
+    t.time     "start_time"
+    t.time     "end_time"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "faculty"
+    t.integer  "available"
+    t.integer  "capacity"
+    t.integer  "waitlist"
+    t.decimal  "credits",        precision: 10, scale: 0
+    t.string   "academic_level"
+    t.integer  "semester_id"
+    t.integer  "course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sections", ["course_id"], name: "index_sections_on_course_id", using: :btree
+  add_index "sections", ["semester_id"], name: "index_sections_on_semester_id", using: :btree
 
   create_table "semesters", force: true do |t|
     t.string   "name"

@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/roo-rb/roo-xls.git
-  revision: 02150bb6e6bce49d834c6d5a5bcf6c495e789a51
+  revision: 0a5ef88c8312c48b1a97cefa9e5f21e9a7f64209
   specs:
     roo-xls (1.0.0)
       nokogiri
@@ -15,9 +15,9 @@ GIT
 
 GIT
   remote: git://github.com/roo-rb/roo.git
-  revision: 67381a616fb6e2f4cd174aa01a01a9a2c36d63d1
+  revision: 8fabd03ba653230a6814158156b86d8ccfa02c1d
   specs:
-    roo (2.0.0)
+    roo (2.0.1)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
 
@@ -69,7 +69,11 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.3.1)
+      capybara (>= 2.0.2, < 2.5.0)
+      json
     chronic (0.10.2)
+    cliver (0.3.2)
     colorize (0.7.7)
     cucumber (2.0.0)
       builder (>= 2.1.2)
@@ -95,7 +99,7 @@ GEM
       railties (>= 3.0.0)
     faker (1.1.2)
       i18n (~> 0.5)
-    geocoder (1.2.8)
+    geocoder (1.2.9)
     gherkin (2.12.2)
       multi_json (~> 1.3)
     highline (1.6.21)
@@ -103,7 +107,7 @@ GEM
     i18n (0.7.0)
     jbuilder (1.0.2)
       activesupport (>= 3.0.0)
-    json (1.8.2)
+    json (1.8.3)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -114,7 +118,7 @@ GEM
       rack-mobile-detect
       rails
     mono_logger (1.1.0)
-    multi_json (1.11.0)
+    multi_json (1.11.1)
     multi_test (0.1.2)
     mysql2 (0.3.18)
     net-scp (1.2.1)
@@ -123,12 +127,17 @@ GEM
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     options (2.3.2)
+    poltergeist (1.6.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      multi_json (~> 1.0)
+      websocket-driver (>= 0.2.0)
     polyglot (0.3.5)
     pr_geohash (1.0.0)
     progress_bar (1.0.3)
       highline (~> 1.6.1)
       options (~> 2.3.0)
-    rack (1.5.3)
+    rack (1.5.4)
     rack-mobile-detect (0.4.0)
       rack
     rack-protection (1.5.3)
@@ -224,6 +233,9 @@ GEM
       multi_json (~> 1.0, >= 1.0.2)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    websocket-driver (0.5.4)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
     whenever (0.9.4)
       chronic (>= 0.6.3)
     will_paginate (3.0.4)
@@ -239,6 +251,7 @@ DEPENDENCIES
   capistrano
   capistrano-rails (~> 1.1.2)
   capybara (= 2.1.0)
+  capybara-webkit
   cucumber-rails (= 1.4.0)
   database_cleaner!
   factory_girl_rails (= 4.2.0)
@@ -247,6 +260,7 @@ DEPENDENCIES
   jbuilder (= 1.0.2)
   mobile-fu (~> 1.3.1)
   mysql2 (~> 0.3.16)
+  poltergeist
   progress_bar
   rails (= 4.0.8)
   resque

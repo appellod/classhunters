@@ -21,6 +21,8 @@ gem 'jbuilder', '1.0.2'
 gem 'progress_bar'
 gem 'rubyzip', '1.1.7', :require => 'zip'
 gem 'whenever', '0.9.4', require: false
+gem 'capybara-webkit'
+gem 'poltergeist'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'

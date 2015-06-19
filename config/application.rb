@@ -22,5 +22,6 @@ module Site
 
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
     config.exceptions_app = self.routes
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
   end
 end

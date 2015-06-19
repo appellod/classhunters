@@ -85,6 +85,15 @@
 	}
 }
 
+table.sync-results {
+	border-collapse: collapse;
+	margin-bottom: 15px;
+	td, th {
+		padding: 5px 10px;
+		border: 1px solid black;
+	}
+}
+
 @media (max-width: 767px) {
 	.school {
 		h1 {

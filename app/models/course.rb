@@ -4,6 +4,7 @@ class Course < ActiveRecord::Base
 	belongs_to :school
 	has_and_belongs_to_many :users
 	has_many :sessions, dependent: :destroy
+	has_many :sections, dependent: :destroy
 	has_and_belongs_to_many :course_searches
 
 	before_validation :strip_attributes

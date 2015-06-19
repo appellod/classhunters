@@ -1,18 +1,34 @@
-class ApisController < ApplicationController
+class ApisController < ActionController::Metal
+	require 'open-uri'
+
+	include ActionController::Rendering        # enables rendering
+  include ActionController::MimeResponds     # enables serving different content types like :xml or :json
+  include AbstractController::Callbacks      # callbacks for your authentication logic
+
+  append_view_path "#{Rails.root}/app/views"
+
 	#before_action :check_credentials
 
 	def courses_select
 		headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
-		courses = Course.limit(50)
-		send_json(courses.to_json)
+		@results = Course.limit(50).to_json
+		render 'results'
 	end
 
 	def courses_view
 		headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
-    course = Course.find(params[:id])
-    send_json(course.to_json)
+    @results = Session.joins(:course).select('sessions.id', :crn, 'courses.name AS name', 
+    	'courses.description AS description', 'courses.department AS department', 'courses.number AS number', 
+    	:start_time, :end_time, :sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday).limit(50).to_json
+    render 'results'
+	end
+
+	def courses_json
+		@results = open('http://classhunters.dev/apis/courses/select').read
+		@results = JSON.parse @results
+		render 'test'
 	end
 
 	private
@@ -25,14 +41,8 @@ class ApisController < ApplicationController
 		end
 
 		def send_json(results)
-			if request.xhr?
-				respond_to do |format|
-					msg = { results: results }
-	      	format.json  { render :json => msg }
-	      end
-			else
-				@results = results
-				render 'results', layout: nil
-			end
+			respond_to do |format|
+      	format.json  { render json: results }
+      end
 		end
 end

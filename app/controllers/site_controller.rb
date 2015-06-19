@@ -1,4 +1,7 @@
 class SiteController < ApplicationController
+  require 'capybara/dsl'
+  require 'capybara-webkit'
+
   include ApplicationHelper
   protect_from_forgery except: :edit_user
   layout "application", only: [:stats]
@@ -92,11 +95,15 @@ class SiteController < ApplicationController
     end
   end
 
+  def test
+    crawler = Crawler.new
+    @results = crawler.crawl(School.find(3046))
+  end
+
   private
 
     def contact_params
-      params.require(:contact).permit(:name, :email,
-        :school, :message)
+      params.require(:contact).permit(:name, :email, :school, :message)
     end
 
     def user_params
