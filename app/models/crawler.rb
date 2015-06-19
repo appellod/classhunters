@@ -155,7 +155,11 @@ class Crawler
 			department = title.split(/[^[:alnum:]]+/)[0]
 			number = title.split(/[^[:alnum:]]+/)[1]
 			crn = title.split(/[^[:alnum:]]+/)[3]
-			name = title.split(')')[1]
+			if title.include?(')')
+				name = title.split(')')[1]
+			else
+				name = title.rpartition(/[0-9]{2,}/)[2]
+			end
 			name = name.strip if name.present?
 			row['course_department'] = department
 			row['course_number'] = number
@@ -263,7 +267,7 @@ class Crawler
 			course.description = row['course_description'] if row['course_description'].present?
 		else
 			course = @school.courses.create!(name: row['course_name'], description: row['course_description'],
-				department: row['course_department'], number: row['course_number'])
+				department: row['course_department'], number: row['course_number']) if row['course_name'].present?
 		end
 		if row['semester_season'].present?
 			temp_semester = Semester.where(name: row['semester_season'], year: row['semester_year'])
