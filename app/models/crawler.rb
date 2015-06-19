@@ -5,7 +5,7 @@ class Crawler
 
 	def initialize
 		Capybara.register_driver :poltergeist do |app|
-	    Capybara::Poltergeist::Driver.new(app)
+	    Capybara::Poltergeist::Driver.new(app, timeout: 90)
 	  end
 	  Capybara.default_selector = :xpath
 	  Capybara.default_driver = :poltergeist
