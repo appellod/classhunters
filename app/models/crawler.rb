@@ -34,7 +34,7 @@ class Crawler
 	  pages = Nokogiri::HTML.parse(@session.html).css('.envisionWindow table tbody tr td:nth-child(2)').to_s.match(/Page [0-9]+ of [0-9]+/).to_s
 	  current_page = pages.scan(/[0-9]+/)[0].to_i
 	  total_pages = pages.scan(/[0-9]+/)[1].to_i
-	  raise "End"
+	  raise "End" if Rails.env == 'development'
 	  while current_page < total_pages
 	  	@session.first(:button, 'NEXT').click
 	  	table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
