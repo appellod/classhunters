@@ -112,20 +112,23 @@ class Crawler
 	end
 
 	def parse_table(table)
-		table.each do |row|
-			parse_terms(row)
-			parse_status(row)
-			parse_section_name_and_title(row)
-			parse_location(row)
-			parse_meeting_information(row)
-			parse_faculty(row)
-			parse_available_capacity_waitlist(row)
-			parse_credits(row)
-			parse_ceus(row)
-			parse_academic_level(row)
-			get_description(row)
-			save_row(row)
-		end
+			table.each do |row|
+				begin
+					parse_terms(row)
+					parse_status(row)
+					parse_section_name_and_title(row)
+					parse_location(row)
+					parse_meeting_information(row)
+					parse_faculty(row)
+					parse_available_capacity_waitlist(row)
+					parse_credits(row)
+					parse_ceus(row)
+					parse_academic_level(row)
+					get_description(row)
+					save_row(row)
+				raise
+				end
+			end
 		return table
 	end
 
