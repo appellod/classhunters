@@ -97,7 +97,7 @@ class SiteController < ApplicationController
 
   def test
     crawler = Crawler.new
-    @results = crawler.crawl(School.find(3046))
+    @results = crawler.crawl(School.find(850))
   end
 
   private

@@ -2,8 +2,6 @@ class Crawler
 	require 'capybara/poltergeist'
 	@session = nil
 	@school = nil
-	#@current_semester = nil
-	#@total_semesters = nil
 
 	def initialize
 		Capybara.register_driver :poltergeist do |app|
@@ -17,12 +15,10 @@ class Crawler
 
 	def crawl(school)
 		@school = school
-		#@current_semester = 0
 		crawl_web_advisor
 	end
 	
   def crawl_web_advisor
-  	#@current_semester += 1
   	url = @school.crawl_url
 	  @session.visit(url)
 	  click_students_link
@@ -43,9 +39,6 @@ class Crawler
 	  	current_page = pages.scan(/[0-9]+/)[0].to_i
 	  	total_pages = pages.scan(/[0-9]+/)[1].to_i
 	  end
-	  #while @current_semester < @total_semesters
-	  	#crawl_web_advisor
-	  #end
 	  return table
 	end
 
@@ -72,10 +65,6 @@ class Crawler
 	end
 
 	def fill_search_form
-		#term_field_id = @session.find_field('Term')[:id]
-		#semesters = @session.all(:css, '#' + term_field_id + ' option')
-		#@total_semesters = semesters.count
-		#semesters[@current_semester].select_option
 		@session.find_field('Starting On/After Date').set(Time.now.strftime('%m/%d/%Y'))
 		@session.find_field('Ending By Date').set('12/31/' + Time.now.year.to_s)
 		@session.find_field('Mon').set(true)
@@ -85,8 +74,8 @@ class Crawler
 		@session.find_field('Fri').set(true)
 		@session.find_field('Sat').set(true)
 		@session.find_field('Sun').set(true)
-		academic_level_field_id = @session.find_field('Academic Level')[:id]
-		@session.all(:css, '#' + academic_level_field_id + ' option')[1].select_option
+		#academic_level_field_id = @session.find_field('Academic Level')[:id]
+		#@session.all(:css, '#' + academic_level_field_id + ' option')[1].select_option
 	end
 
 	def generate_table(table)
