@@ -3,7 +3,15 @@ class Crawler
 	@session = nil
 	@school = nil
 
-	def initialize
+	def self.crawl_schools
+		schools = School.where.not(crawl_url: nil).pluck(:id)
+		schools.each do |school|
+			Resque.enqueue(CrawlerJob, school)
+		end
+	end
+
+	def crawl_school(id)
+		start_time = Time.now
 		Capybara.register_driver :poltergeist do |app|
 	    Capybara::Poltergeist::Driver.new(app, timeout: 300)
 	  end
@@ -11,11 +19,9 @@ class Crawler
 	  Capybara.default_driver = :poltergeist
 	  @session = Capybara::Session.new(:poltergeist)
 	  @session.driver.headers = { 'User-Agent' =>"Mozilla/5.0 (Macintosh; Intel Mac OS X)" }
-	end
-
-	def crawl(school)
-		@school = school
+	  @school = School.find(id)
 		crawl_web_advisor
+		return Time.now - start_time
 	end
 	
   def crawl_web_advisor
@@ -24,13 +30,12 @@ class Crawler
 	  click_students_link
 	  click_search_link
 	  fill_search_form
-	  @session.click_button('SUBMIT')
 	  table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
 	  table = parse_table(table)
 	  pages = Nokogiri::HTML.parse(@session.html).css('.envisionWindow table tbody tr td:nth-child(2)').to_s.match(/Page [0-9]+ of [0-9]+/).to_s
 	  current_page = pages.scan(/[0-9]+/)[0].to_i
 	  total_pages = pages.scan(/[0-9]+/)[1].to_i
-	  raise "End" if Rails.env == 'development'
+	  raise "End"
 	  while current_page < total_pages
 	  	@session.first(:button, 'NEXT').click
 	  	table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
@@ -39,28 +44,36 @@ class Crawler
 	  	current_page = pages.scan(/[0-9]+/)[0].to_i
 	  	total_pages = pages.scan(/[0-9]+/)[1].to_i
 	  end
-	  return table
 	end
 
 	def click_students_link
 		begin
-			@session.find_link('Prospective Students').click
+			@session.find_link('Guest and Prospective Students').click
 		rescue
 			begin
-			@session.find_link('Students').click
+				@session.find_link('Prospective Students').click
 			rescue
+				begin
+				@session.find_link('Students').click
+				rescue
+				end
 			end
 		end
 	end
 
 	def click_search_link
 		begin
-			@session.find_link('Search for Sections').click
+			@session.first(:link, 'Search for Sections').click
 		rescue
 			begin
 			@session.find_link('Search for Classes (No Login Required)').click
 			rescue
 			end
+		end
+		#For Rockland Community College
+		begin
+			@session.find_link('Search for Sections').click
+		rescue
 		end
 	end
 
@@ -74,8 +87,25 @@ class Crawler
 		@session.find_field('Fri').set(true)
 		@session.find_field('Sat').set(true)
 		@session.find_field('Sun').set(true)
-		#academic_level_field_id = @session.find_field('Academic Level')[:id]
-		#@session.all(:css, '#' + academic_level_field_id + ' option')[1].select_option
+		academic_level_field = @session.find_field('Academic Level')
+		begin
+			academic_level_field.select('Undergraduate')
+		rescue
+			#@session.all(:css, '#' + academic_level_field[:id] + ' option')[1].select_option
+		end
+		@session.click_button('SUBMIT')
+		#Handle End Date Errors
+		error = Nokogiri::HTML.parse(@session.html).css('#bodyForm .custom .errorText').to_s
+		if error.present?
+			dates = error.scan(/[0-9]+.[0-9]+.[0-9]+/)
+			@session.find_field('Ending By Date').set(dates[1])
+			@session.click_button('SUBMIT')
+		end
+		error = Nokogiri::HTML.parse(@session.html).css('#bodyForm .custom .errorText').to_s
+		if error.present?
+			day_count = error.scan(/[0-9]+.days/).first.to_i
+			@session.find_field('Ending By Date').set((Time.now + day_count.days).strftime('%m/%d/%Y'))
+		end
 	end
 
 	def generate_table(table)
@@ -115,7 +145,10 @@ class Crawler
 					parse_academic_level(row)
 					get_description(row)
 					save_row(row)
-				rescue
+				rescue Exception => e
+					if Rails.env == 'development'
+						raise e
+					end
 				end
 			end
 		return table
@@ -177,7 +210,10 @@ class Crawler
 	def parse_meeting_information(row)
 		if row['meeting_information'].present?
 			str = row['meeting_information'].downcase
-			dates = str.scan(/[0-9]+\/[0-9]+\/[0-9]+/)
+			dates = str.scan(/[0-9]+.[0-9]+.[0-9]+/)
+			dates.each do |date|
+				date.gsub!(/[^0-9]/i, '/')
+			end
 			start_date = Date.strptime(dates[0], '%m/%d/%Y').to_s
 			end_date = Date.strptime(dates[1], '%m/%d/%Y').to_s
 			day_names = Date::DAYNAMES
@@ -247,7 +283,16 @@ class Crawler
 			rescue
 				row['course_description'] = ""
 			end
-			@session.click_button('CLOSE WINDOW')
+			begin
+				@session.find(:css, '.submit .expandingButton').click
+			rescue
+				sleep 5
+				begin
+					@session.find(:css, '.submit .expandingButton').click
+				rescue
+					@session.execute_script('forceCloseWindow();')
+				end
+			end
 		end
 	end
 

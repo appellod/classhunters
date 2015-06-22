@@ -19,6 +19,12 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day do
-	runner "School.check_dates_for_active"
-end
+set :environment, 'staging' 
+
+#every 1.day do
+#	runner "School.check_dates_for_active"
+#end
+
+#every 5.minutes do
+#	runner "Crawler.crawl_schools"
+#end
