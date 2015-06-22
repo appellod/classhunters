@@ -30,7 +30,12 @@ class Crawler
 	  click_students_link
 	  click_search_link
 	  fill_search_form
-	  table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
+	  begin
+	  	table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
+	  rescue
+	  	sleep 10
+			table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
+		end
 	  table = parse_table(table)
 	  pages = Nokogiri::HTML.parse(@session.html).css('.envisionWindow table tbody tr td:nth-child(2)').to_s.match(/Page [0-9]+ of [0-9]+/).to_s
 	  current_page = pages.scan(/[0-9]+/)[0].to_i
