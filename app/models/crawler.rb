@@ -10,6 +10,33 @@ class Crawler
 		end
 	end
 
+	def self.crawl_for_webadvisor
+		Capybara.register_driver :poltergeist do |app|
+	    Capybara::Poltergeist::Driver.new(app, timeout: 15)
+	  end
+	  Capybara.default_selector = :xpath
+	  Capybara.default_driver = :poltergeist
+	  @session = Capybara::Session.new(:poltergeist)
+	  @session.driver.headers = { 'User-Agent' =>"Mozilla/5.0 (Macintosh; Intel Mac OS X)" }
+	  @ids = Array.new
+	  schools = School.all
+	  schools.each do |school|
+	  	if school.website.present?
+		  	url = school.website.gsub!('www', 'webadvisor')
+		  	if url.present?
+		  		begin
+				  	@session.visit(url)
+				  	if @session.has_content?('WebAdvisor')
+				  		@ids << school.id
+				  	end
+				  rescue
+				  end
+			  end
+			end
+	  end
+	  return @ids
+	end
+
 	def crawl_school(id)
 		start_time = Time.now
 		Capybara.register_driver :poltergeist do |app|

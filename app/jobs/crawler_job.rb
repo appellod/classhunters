@@ -7,7 +7,7 @@ class CrawlerJob
     school_name = School.find(id).name
     begin
       time = crawler.crawl_school(id)
-      logger.info school_name + ": Completed in " + time + " seconds."
+      logger.info school_name + ": Completed in " + time.round.to_s + " seconds."
     rescue Exception => e
       logger.info school_name + ": " + e.to_s
     end

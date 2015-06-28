@@ -38,7 +38,6 @@ class School < ActiveRecord::Base
 		self.name = self.name.strip
 		self.website = self.website.strip unless self.website.nil?
 		self.address = self.address.strip unless self.address.nil?
-		self.phone = self.phone.strip unless self.phone.nil?
 	end
 
 	def to_param
