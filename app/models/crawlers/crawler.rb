@@ -40,6 +40,7 @@ class Crawler
 	end
 
 	def crawl_for_urls(id)
+		start_time = Time.now
 		Capybara.register_driver :poltergeist do |app|
 	    Capybara::Poltergeist::Driver.new(app, { js_errors: false, timeout: 30 })
 	  end
@@ -49,6 +50,8 @@ class Crawler
 	  @session.driver.headers = { 'User-Agent' =>"Mozilla/5.0 (Macintosh; Intel Mac OS X)" }
 
 		school = School.find(id)
+
+		return school.crawl_url if school.crawl_url.present?
 
 		str = URI.encode("#{school.name.downcase.split('-')[0].strip} course schedule")
 	  @session.visit("https://www.google.com/#q=#{str}")
@@ -71,17 +74,27 @@ class Crawler
 	  end
 
 	  nokogiri_links = Nokogiri::HTML.parse(@session.html).css('a')
+
 	  nokogiri_links.each do |link|
+	  	break if url.present? || (Time.now - start_time) > 300
 	  	begin
-	  		if link['href'].match(/bwckschd/i)
-	  			url ||= link['href']
-	  			crawl_type ||= 'portal'
-	  			break
-	  		elsif link['href'].match(/webadvisor/i)
-	  			url ||= link['href']
-	  			crawl_type = 'wa'
-	  			break
-	  		end
+	  		uri = URI.parse(link['href'])
+		  	if uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
+			  	if link['href'].match(/bwckschd/i)
+		  			url ||= link['href']
+		  			crawl_type ||= 'portal'
+		  		elsif link['href'].match(/webadvisor/i)
+		  			url ||= link['href']
+		  			crawl_type = 'wa'
+		  		end
+		  	end
+	  	rescue
+	  	end
+	  end
+
+	  nokogiri_links.each do |link|
+	  	break if url.present? || (Time.now - start_time) > 300
+	  	begin
 		  	uri = URI.parse(link['href'])
 		  	if uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
 			  	@session.visit(link['href'])
@@ -89,11 +102,9 @@ class Crawler
 			  	if html.match(/headerwrapperdiv/i) || @session.current_url.match(/bwckschd/i)
 			  		url ||= @session.current_url
 			  		crawl_type = 'portal'
-			  		break
 			  	elsif html.match(/displayFormHTML/i) || @session.current_url.match(/webadvisor/i)
 			  		url ||= @session.current_url
 			  		crawl_type = 'wa'
-			  		break
 			  	end
 		  	end
 	  	rescue
@@ -103,6 +114,7 @@ class Crawler
 	  if url.present?
 	  	school.update_attributes(crawl_url: url, crawl_type: crawl_type)
 	  end
+
 	  return url.present? ? url : "No URL found"
 	end
   
