@@ -7,10 +7,10 @@ class CrawlerJob
   	crawler = Crawler.new
     school_name = School.find(id).name
     begin
-      result = crawler.crawl_for_urls(id)
+      result = crawler.crawl(id)
       logger.info school_name + " -> " + result + " : " + (Time.now - start_time).round.to_s + " seconds."
     rescue Exception => e
-      logger.info school_name + ": " + e.to_s
+      logger.info school_name + "(#{id}): " + School.find(id).crawl_type + ": " + e.to_s
     end
   end
 end

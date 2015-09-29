@@ -1,10 +1,22 @@
 class PortalCrawler < Crawler
 	require 'uri'
 
-	def crawl
+	def self.queue_schools
+	  logger = Logger.new('log/crawl.log')
+	  logger.info "Portal Crawler: Queueing Schools"
+	  if Rails.env == 'development'
+	  	schools = School.where(crawl_type: 'portal')
+	  else
+	  	schools = School.where(crawl_type: 'portal')
+	  end
+	  schools.each do |school|
+	  	Resque.enqueue(PortalCrawlerJob, school.id)
+	  end
+	end
+
+	def crawl(id)
 		initialize_session
-		@session.visit("https://selfservice.drew.edu/prod/bwckschd.p_disp_dyn_sched")
-		@school = School.find(849)
+		@school = School.find(id)
 		@logger = Logger.new('log/crawl.log')
 		select_term_or_dates
 		select_all_subjects

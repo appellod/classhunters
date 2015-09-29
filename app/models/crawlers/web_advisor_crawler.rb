@@ -1,7 +1,25 @@
-class WebadvisorCrawler < Crawler
+class WebAdvisorCrawler < Crawler
 
-	def crawl
+	def self.queue_schools
+	  logger = Logger.new('log/crawl.log')
+	  logger.info "WebAdvisor Crawler: Queueing Schools"
+	  if Rails.env == 'development'
+	  	schools = School.where(crawl_type: 'wa')
+	  else
+	  	schools = School.where(crawl_type: 'wa')
+	  end
+	  schools.each do |school|
+	  	Resque.enqueue(WebAdvisorCrawlerJob, school.id)
+	  end
+	end
+
+	def crawl(id)
+		initialize_session
+		@school = School.find(id)
   	url = @school.crawl_url
+  	if url.include?('?')
+  		url = url.split('?')[0]
+  	end
 	  @session.visit(url)
 	  click_students_link
 	  click_search_link
@@ -16,7 +34,6 @@ class WebadvisorCrawler < Crawler
 	  pages = Nokogiri::HTML.parse(@session.html).css('.envisionWindow table tbody tr td:nth-child(2)').to_s.match(/Page [0-9]+ of [0-9]+/).to_s
 	  current_page = pages.scan(/[0-9]+/)[0].to_i
 	  total_pages = pages.scan(/[0-9]+/)[1].to_i
-	  raise "End"
 	  while current_page < total_pages
 	  	@session.first(:button, 'NEXT').click
 	  	table = generate_table(Nokogiri::HTML.parse(@session.html).css('table[summary=Sections]'))
@@ -29,14 +46,46 @@ class WebadvisorCrawler < Crawler
 
 	def click_students_link
 		begin
-			@session.find_link('Guest and Prospective Students').click
+			html = Nokogiri::HTML.parse(@session.html).css('a')
+			link_text = nil
+			html.each do |link|
+				if link.to_s.include?('WBST')
+					link_text = link.text
+				end
+			end
+			@session.first(:link, link_text.strip).click
 		rescue
 			begin
-				@session.find_link('Prospective Students').click
+				html = Nokogiri::HTML.parse(@session.html).css('a')
+				link_text = nil
+				html.each do |link|
+					if link.to_s.include?('WBAP')
+						link_text = link.text
+					end
+				end
+				@session.first(:link, link_text.strip).click
 			rescue
 				begin
-				@session.find_link('Students').click
+					html = Nokogiri::HTML.parse(@session.html).css('a')
+					link_text = nil
+					html.each do |link|
+						if link.to_s.include?('WBGU')
+							link_text = link.text
+						end
+					end
+					@session.find_link(link_text.strip).click
 				rescue
+					begin
+						html = Nokogiri::HTML.parse(@session.html).css('a')
+						link_text = nil
+						html.each do |link|
+							if link.to_s.include?('WBCE')
+								link_text = link.text
+							end
+						end
+						@session.find_link(link_text.strip).click
+					rescue
+					end
 				end
 			end
 		end
@@ -44,23 +93,41 @@ class WebadvisorCrawler < Crawler
 
 	def click_search_link
 		begin
+			html = Nokogiri::HTML.parse(@session.html).css('a')
+			link_text = nil
+			html.each do |link|
+				if link.to_s.include?('WESTS')
+					link_text ||= link.text
+				end
+			end
+			@session.first(:link, link_text.strip).click
+		rescue
+		end
+=begin
+		begin
 			@session.first(:link, 'Search for Sections').click
 		rescue
 			begin
 			@session.find_link('Search for Classes (No Login Required)').click
 			rescue
+				begin
+					@session.find_link('Search for Sections').click
+				rescue
+				end
 			end
 		end
-		#For Rockland Community College
-		begin
-			@session.find_link('Search for Sections').click
-		rescue
-		end
+=end
 	end
 
 	def fill_search_form
-		@session.find_field('Starting On/After Date').set(Time.now.strftime('%m/%d/%Y'))
-		@session.find_field('Ending By Date').set('12/31/' + Time.now.year.to_s)
+		#@session.find_field('Starting On/After Date').set(Time.now.strftime('%m/%d/%Y'))
+		#@session.find_field('Ending By Date').set('12/31/' + Time.now.year.to_s)
+		begin
+			@session.find(:css, '#DATE_VAR1').set(Time.now.strftime('%m/%d/%Y'))
+			@session.find(:css, '#DATE_VAR2').set('12/31/' + Time.now.year.to_s)
+		rescue
+			@session.all(:css, '#VAR1 option')[1].select_option
+		end
 		@session.find_field('Mon').set(true)
 		@session.find_field('Tue').set(true)
 		@session.find_field('Wed').set(true)
