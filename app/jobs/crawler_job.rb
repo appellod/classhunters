@@ -3,7 +3,7 @@ class CrawlerJob
 
   def self.perform(id)
     start_time = Time.now
-    logger = Logger.new('log/crawl.log')
+    logger = Logger.new("#{Rails.root}/log/crawl.log")
   	crawler = Crawler.new
     school_name = School.find(id).name
     begin
